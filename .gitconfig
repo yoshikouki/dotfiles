@@ -1,0 +1,12 @@
+[ghq]
+	root = ~/src
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = yoshikouki
+	email = yoshikouki@pepabo.com
+[init]
+	templatedir = ~/.git_template
