@@ -10,9 +10,13 @@ echo '---------- Linked ----------'
 
 for file in $files
 do
-  if [[ "${ignore_files[@]}" =~ $file ]]; then
-    continue
-  fi
+  for ign in "${ignore_files[@]}"
+  do
+    if [ "$ign" = "$file" ]
+    then
+      continue 2
+    fi
+  done
 
   ln -sfnv "$dotfiles_dir/$file" "$HOME/$file"
 done
