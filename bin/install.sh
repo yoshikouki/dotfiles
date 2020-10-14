@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dotfiles_dir=$(cd $(dirname $0)../; pwd)
+dotfiles_dir=$(cd "$(dirname "$0")"/../ || return; pwd)
 
 ## Create symlink to home directory
 echo 'Start to deploy dotfiles to home directory.'
