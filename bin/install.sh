@@ -12,10 +12,7 @@ for file in $files
 do
   for ign in "${ignore_files[@]}"
   do
-    if [ "$ign" = "$file" ]
-    then
-      continue 2
-    fi
+    [[ "$ign" = "$file" ]] && continue 2
   done
 
   ln -sfnv "$dotfiles_dir/$file" "$HOME/$file"
