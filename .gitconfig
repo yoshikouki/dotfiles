@@ -10,3 +10,5 @@
 	email = yoshikouki@pepabo.com
 [init]
 	templatedir = ~/.git_template
+[core]
+	excludesfile = /Users/yoshikouki/.gitignore_global
