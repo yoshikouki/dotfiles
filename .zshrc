@@ -88,3 +88,6 @@ export PGDATA=/usr/local/var/postgres
 # MySQL Gem インストールエラーの対応
 export LDFLAGS="-L/usr/local/opt/openssl/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl/include"
+
+# iTerm2 の shell を統合
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
