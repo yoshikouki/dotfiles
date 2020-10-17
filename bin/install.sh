@@ -24,7 +24,7 @@ if has_command "git";then
     cd "$DOTPATH" || exit
     git pull
   else
-    git clone --recursive "$GITHUB_URL.git" "$DOTPATH"
+    git clone --recursive "https://$GITHUB_URL.git" "$DOTPATH"
   fi
 
 ## curl / wget が使える場合
