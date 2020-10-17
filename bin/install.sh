@@ -3,8 +3,8 @@
 FILES='.??*'
 IGNORE_FILES=(.git .gitignore .DS_Store)
 GITHUB_URL=github.com/yoshikouki/dotfiles
-DOTPATH=~/.dotfiles
-TMPFILE=~/.dotfiles.zip
+DOTPATH=~/dotfiles
+TMPFILE=~/dotfiles.zip
 
 has_command() {
   if type "$1" > /dev/null 2>&1; then
@@ -31,7 +31,7 @@ if has_command "git";then
 
 ## curl / wget が使える場合
 elif has_command "curl" || has_command "wget"; then
-  # 既存の .dotfiles は名前を変更する
+  # 既存の dotfiles は名前を変更する
   if [[ -d "$DOTPATH" ]]; then
     mv "$DOTPATH" "$DOTPATH-$( date '+%Y%m%d-%H%M%S' ).backup"
   fi
@@ -52,7 +52,7 @@ else
   exit
 fi
 
-## ~/.dotfiles があるか確認
+## ~/dotfiles があるか確認
 cd "$DOTPATH" || { echo "[ERROR] not found: $DOTPATH"; exit 1; }
 echo "---------- Downloaded ----------"; echo ""
 
