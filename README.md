@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-curl -L raw.githubusercontent.com/yoshikouki/dotfiles/main/bin/install.sh | sh
+bash -c "$(curl -L raw.githubusercontent.com/yoshikouki/dotfiles/main/bin/install.sh)"
 ```
 
 or
