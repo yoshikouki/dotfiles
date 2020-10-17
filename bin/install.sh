@@ -20,7 +20,8 @@ echo '---------- Download dotfiles ----------'
 ## git が使える場合
 if has_command "git";then
   echo 'use git'
-  if cd "$DOTPATH" || false; then
+  if [ -d "$DOTPATH" ]; then
+    cd "$DOTPATH" || exit
     git pull
   else
     git clone --recursive "$GITHUB_URL.git" "$DOTPATH"
@@ -45,7 +46,7 @@ else
 fi
 
 ## ~/.dotfiles があるか確認
-cd "$DOTPATH" || { echo "not found: $DOTPATH"; exit 1; }
+cd "$DOTPATH" || { echo "[ERROR] not found: $DOTPATH"; exit 1; }
 echo "---------- Downloaded ----------"; echo ""
 
 # ドットファイルのシンボリックリンクをホームディレクトリに配置する
