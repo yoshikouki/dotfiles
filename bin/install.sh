@@ -1,20 +1,18 @@
 #!/bin/bash
 
-dotfiles_dir=$(cd "$(dirname "$0")"/../ || return; pwd)
-files='.??*'
-ignore_files=(.git .gitignore .DS_Store)
+FILES='.??*'
+IGNORE_FILES=(.git .gitignore .DS_Store)
+DOTPATH=~/.dotfiles
 
-## Create symlink to home directory
 echo 'Start to deploy dotfiles to home directory.'
-echo '---------- Linked ----------'
 
-for file in $files
-do
-  for ign in "${ignore_files[@]}"
-  do
+# ドットファイルのシンボリックリンクをホームディレクトリに配置する
+echo '---------- Create symbolic link  ----------'
+for file in $FILES; do
+  for ign in "${IGNORE_FILES[@]}"; do
     [[ "$ign" = "$file" ]] && continue 2
   done
 
-  ln -sfnv "$dotfiles_dir/$file" "$HOME/$file"
+  ln -sfnv "$DOTPATH/$file" "$HOME/$file"
 done
-echo '---------- Done Linked ----------'
+echo '---------- Created ----------'
