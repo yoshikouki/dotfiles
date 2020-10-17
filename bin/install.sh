@@ -4,6 +4,7 @@ FILES='.??*'
 IGNORE_FILES=(.git .gitignore .DS_Store)
 GITHUB_URL=github.com/yoshikouki/dotfiles
 DOTPATH=~/.dotfiles
+TMPFILE=~/.dotfiles.zip
 
 has_command() {
   if type "$1" > /dev/null 2>&1; then
@@ -20,24 +21,30 @@ echo '---------- Download dotfiles ----------'
 ## git が使える場合
 if has_command "git";then
   echo 'use git'
-  if [ -d "$DOTPATH" ]; then
+  if [ -d "$DOTPATH" ] && [ -e "$DOTPATH/.git" ] ; then
     cd "$DOTPATH" || exit
     git pull
   else
+    mv "$DOTPATH" "$DOTPATH-$( date '+%Y%m%d-%H%M%S' ).backup"
     git clone --recursive "https://$GITHUB_URL.git" "$DOTPATH"
   fi
 
 ## curl / wget が使える場合
 elif has_command "curl" || has_command "wget"; then
+  # 既存の .dotfiles は名前を変更する
+  if [[ -d "$DOTPATH" ]]; then
+    mv "$DOTPATH" "$DOTPATH-$( date '+%Y%m%d-%H%M%S' ).backup"
+  fi
   tarball="$GITHUB_URL/archive/main.zip"
   if has_command "curl"; then
     echo 'use curl'
-    curl -L "$tarball"
+    curl -L "$tarball" -o "$TMPFILE"
   elif has_command "wget"; then
     echo 'use wget'
-    wget -O - "$tarball"
-  fi | tar zxv -C ~/
-  mv -iT ~/dotfiles-main "$DOTPATH"
+    wget "$tarball" -O "$TMPFILE"
+  fi
+  unzip -o "$TMPFILE" -d ~/
+  mv ~/dotfiles-main "$DOTPATH"
 
 # どちらもない場合は終了する
 else
