@@ -20,7 +20,7 @@ echo '---------- Download dotfiles ----------'
 ## git が使える場合
 if has_command "git";then
   echo 'use git'
-  if [ -d "$DOTPATH" ]; then
+  if cd "$DOTPATH"; then
     git pull
   else
     git clone --recursive "$GITHUB_URL.git" "$DOTPATH"
