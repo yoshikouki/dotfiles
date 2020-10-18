@@ -1,25 +1,23 @@
-
+# ####################
 # キーバインド
+#
 ## Peco コマンドヒストリー
 bindkey '^r' peco-select-history
 ## Peco Git リポジトリ
 bindkey '^g' peco-src
 
+# ####################
 # エイリアス
+#
 ## ターミナル再起動
 alias relogin='exec $SHELL -l'
 ## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
 alias kc='kubectl-cluster-caution'
 
-# anyenv
-export PATH="$HOME/.anyenv/bin:$PATH"
-eval "$(anyenv init -)"
-
-# Go
-export GOPATH=$HOME
-export PATH=$PATH:$GOPATH/bin
-
+# ####################
 # peco
+#
+## git repository を検索
 function peco-src () {
   local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
@@ -29,15 +27,8 @@ function peco-src () {
   zle clear-screen
 }
 zle -N peco-src
-
-# zsh-completions(補完機能)の設定
-if [ -e /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions $fpath)
-fi
-autoload -U compinit
-compinit -u
-
-# histroyをpecoで選択
+### bindkey '^g' peco-src
+## command histroy を検索
 function peco-select-history() {
     local tac
     if which tac > /dev/null; then
@@ -52,20 +43,51 @@ function peco-select-history() {
     zle clear-screen
 }
 zle -N peco-select-history
+### bindkey '^r' peco-select-history
 
+# ####################
+# Go
+#
+export GOPATH=$HOME
+export PATH=$PATH:$GOPATH/bin
+
+# ####################
+# anyenv
+#
+export PATH="$HOME/.anyenv/bin:$PATH"
+eval "$(anyenv init -)"
+
+# ####################
+# zsh-completions(補完機能)の設定
+#
+if [ -e /usr/local/share/zsh-completions ]; then
+    fpath=(/usr/local/share/zsh-completions $fpath)
+fi
+autoload -U compinit
+compinit -u
+
+# ####################
 # PostgreSQL
+#
 export PGDATA=/usr/local/var/postgres
 
+# ####################
 # MySQL Gem インストールエラーの対応
+#
 export LDFLAGS="-L/usr/local/opt/openssl/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
+# ####################
 # iTerm2 の shell を統合
+#
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# ####################
 # Prezto の設定ファイルを読み込む
+#
 source "$HOME/.zprezto/init.zsh"
 
+# ####################
 # 2020-10-18 Prezto 導入に伴いコメントアウト
 # # プロンプト表示設定
 # autoload -Uz vcs_info
