@@ -1,7 +1,4 @@
 
-# Prezto の設定ファイルを読み込む
-source "$HOME/.zprezto/init.zsh"
-
 # キーバインド
 ## Peco コマンドヒストリー
 bindkey '^r' peco-select-history
@@ -13,38 +10,6 @@ bindkey '^g' peco-src
 alias relogin='exec $SHELL -l'
 ## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
 alias kc='kubectl-cluster-caution'
-
-# プロンプト表示設定
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats '[%b]'
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-precmd () {
-  # 1行あける
-  print
-  # カレントディレクトリ
-  local left=' %{\e[38;5;2m%}(%~)%{\e[m%}'
-  # バージョン管理されてた場合、ブランチ名
-  vcs_info
-  local right="%{\e[38;5;32m%}${vcs_info_msg_0_}%{\e[m%}"
-  # スペースの長さを計算
-  # テキストを装飾する場合、エスケープシーケンスをカウントしないようにします
-  local invisible='%([BSUbfksu]|([FK]|){*})'
-  local leftwidth=${#${(S%%)left//$~invisible/}}
-  local rightwidth=${#${(S%%)right//$~invisible/}}
-  local padwidth=$(($COLUMNS - ($leftwidth + $rightwidth) % $COLUMNS))
-
-  print -P $left${(r:$padwidth:: :)}$right
-}
-# ユーザ名@ホスト名
-PROMPT='> '
-# PROMPT='%n %# '
-# 現在時刻
-# RPROMPT=$'%{\e[38;5;251m%}%D{%b %d}, %*%{\e[m%}'
-# TMOUT=1
-# TRAPALRM() {
-#   zle reset-prompt
-# }
-##### ここまでプロンプト表示設定 #####
 
 # anyenv
 export PATH="$HOME/.anyenv/bin:$PATH"
@@ -97,3 +62,39 @@ export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 # iTerm2 の shell を統合
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# Prezto の設定ファイルを読み込む
+source "$HOME/.zprezto/init.zsh"
+
+# 2020-10-18 Prezto 導入に伴いコメントアウト
+# # プロンプト表示設定
+# autoload -Uz vcs_info
+# zstyle ':vcs_info:*' formats '[%b]'
+# zstyle ':vcs_info:*' actionformats '[%b|%a]'
+# precmd () {
+#   # 1行あける
+#   print
+#   # カレントディレクトリ
+#   local left=' %{\e[38;5;2m%}(%~)%{\e[m%}'
+#   # バージョン管理されてた場合、ブランチ名
+#   vcs_info
+#   local right="%{\e[38;5;32m%}${vcs_info_msg_0_}%{\e[m%}"
+#   # スペースの長さを計算
+#   # テキストを装飾する場合、エスケープシーケンスをカウントしないようにします
+#   local invisible='%([BSUbfksu]|([FK]|){*})'
+#   local leftwidth=${#${(S%%)left//$~invisible/}}
+#   local rightwidth=${#${(S%%)right//$~invisible/}}
+#   local padwidth=$(($COLUMNS - ($leftwidth + $rightwidth) % $COLUMNS))
+
+#   print -P $left${(r:$padwidth:: :)}$right
+# }
+# ## ユーザ名@ホスト名
+# PROMPT='> '
+# # PROMPT='%n %# '
+# # 現在時刻
+# # RPROMPT=$'%{\e[38;5;251m%}%D{%b %d}, %*%{\e[m%}'
+# # TMOUT=1
+# # TRAPALRM() {
+# #   zle reset-prompt
+# # }
+##### ここまでプロンプト表示設定 #####
