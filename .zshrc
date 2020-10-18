@@ -13,6 +13,10 @@ bindkey '^g' peco-src
 alias relogin='exec $SHELL -l'
 ## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
 alias kc='kubectl-cluster-caution'
+## 便利コマンド
+alias ll='ls -l'
+alias la='ls -al'
+alias la.='ls -al .??*'
 
 # ####################
 # peco
