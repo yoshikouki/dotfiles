@@ -54,6 +54,22 @@ fi
 cd "$DOTPATH" || { echo "[ERROR] not found: $DOTPATH"; exit 1; }
 echo "---------- Downloaded ----------"; echo ""
 
+# Prezto をインストールする
+if [[ ! -d ~/.zprezto ]]; then
+  echo "---------- Install Prezto ----------";
+  git clone \
+    --recursive https://github.com/sorin-ionescu/prezto.git \
+    "$HOME/.zprezto"
+  echo "---------- Installed Prezto ----------"; echo ""
+
+  # 既存の zsh 設定ファイルをバックアップ
+  cd "$HOME" || exit 1
+  BUCKUP_DIR="$HOME/backup-zsh-$(date "+%Y%m%d%H%M%S")" \
+  && mkdir "$BUCKUP_DIR" \
+  && mv zshmv .zlogin .zlogout .zprofile .zshenv .zshrc "$BUCKUP_DIR"
+  cd "$DOTPATH" || exit 1
+fi
+
 # ドットファイルのシンボリックリンクをホームディレクトリに配置する
 echo '---------- Create symbolic link  ----------'
 for file in $FILES; do
