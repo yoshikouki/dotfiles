@@ -1,3 +1,7 @@
+
+# Prezto の設定ファイルを読み込む
+source "$HOME/.zprezto/init.zsh"
+
 # キーバインド
 ## Peco コマンドヒストリー
 bindkey '^r' peco-select-history
@@ -91,6 +95,3 @@ export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 # iTerm2 の shell を統合
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# Prezto セットアップエラー対応（公式）
-source "/Users/yoshikouki/.zprezto/init.zsh"
