@@ -1,4 +1,9 @@
 # ####################
+# Prezto の設定ファイルを読み込む
+#
+source "$HOME/.zprezto/init.zsh"
+
+# ####################
 # キーバインド
 #
 ## Peco コマンドヒストリー
@@ -85,11 +90,6 @@ export CPPFLAGS="-I/usr/local/opt/openssl/include"
 # iTerm2 の shell を統合
 #
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# ####################
-# Prezto の設定ファイルを読み込む
-#
-source "$HOME/.zprezto/init.zsh"
 
 # ####################
 # 2020-10-18 Prezto 導入に伴いコメントアウト
