@@ -307,9 +307,9 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>586 528 620 392 0 0 1792 1097 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>512 0 1279 1097 0 0 1792 1097 </string>
+	<string>896 530 730 567 0 0 1792 1097 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>2 0 892 1097 0 0 1792 1097 </string>
+	<string>-1280 -317 1279 1414 -2560 -320 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -577,6 +577,13 @@
 			</array>
 			<key>Keyboard Map</key>
 			<dict>
+				<key>0x19-0xa0000</key>
+				<dict>
+					<key>Action</key>
+					<integer>31</integer>
+					<key>Text</key>
+					<string></string>
+				</dict>
 				<key>0x2d-0x40000</key>
 				<dict>
 					<key>Action</key>
@@ -633,6 +640,20 @@
 					<key>Text</key>
 					<string>0x7f</string>
 				</dict>
+				<key>0x7f-0x80000</key>
+				<dict>
+					<key>Action</key>
+					<integer>11</integer>
+					<key>Text</key>
+					<string>0x17</string>
+				</dict>
+				<key>0x9-0x80000</key>
+				<dict>
+					<key>Action</key>
+					<integer>30</integer>
+					<key>Text</key>
+					<string></string>
+				</dict>
 				<key>0xf700-0x220000</key>
 				<dict>
 					<key>Action</key>
@@ -657,9 +678,9 @@
 				<key>0xf700-0x280000</key>
 				<dict>
 					<key>Action</key>
-					<integer>11</integer>
+					<integer>20</integer>
 					<key>Text</key>
-					<string>0x1b 0x1b 0x5b 0x41</string>
+					<string></string>
 				</dict>
 				<key>0xf701-0x220000</key>
 				<dict>
@@ -685,9 +706,9 @@
 				<key>0xf701-0x280000</key>
 				<dict>
 					<key>Action</key>
-					<integer>11</integer>
+					<integer>21</integer>
 					<key>Text</key>
-					<string>0x1b 0x1b 0x5b 0x42</string>
+					<string></string>
 				</dict>
 				<key>0xf702-0x220000</key>
 				<dict>
@@ -979,7 +1000,7 @@
 		<key>screenFrame</key>
 		<string>{{-2560, -320}, {2560, 1440}}</string>
 		<key>topLeft</key>
-		<string>{-1099, 697}</string>
+		<string>{-1602, 495}</string>
 	</dict>
 	<key>NoSyncHaveUsedCopyMode</key>
 	<true/>
@@ -988,7 +1009,7 @@
 	<key>NoSyncLastTipTime</key>
 	<real>613034700.76084101</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>116</integer>
+	<integer>118</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1829,7 +1850,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-10-17T05:05:24Z</date>
+	<date>2020-10-18T05:05:25Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
