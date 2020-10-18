@@ -2,9 +2,8 @@
 
 FILES='.??*'
 IGNORE_FILES=(.git .gitignore .DS_Store)
-GITHUB_URL=github.com/yoshikouki/dotfiles
+GITHUB_REPO=yoshikouki/dotfiles
 DOTPATH=~/dotfiles
-TMPFILE=~/dotfiles.zip
 
 # コマンドがインストールされていれば true
 is_exists() {
@@ -15,40 +14,42 @@ is_exists() {
   fi
 }
 
+# ####################
+# インストールコマンド
+#
+# git がない場合はインストール
+if ! is_exists "git"; then
+  case "$(uname)" in
+    # Linux の場合
+    *'Linux'*)
+      if [[ -f /etc/os-release ]]; then
+          sudo apt install git
+      fi
+      ;;
+    # Mac の場合
+    *'Darwin'*)
+      # brew がなければインストール
+      if ! is_exists "brew"; then
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      fi
+      brew install git
+      ;;
+    # 例外
+    *)
+      e_error "このOSでは使えません"
+      exit 1
+      ;;
+  esac
+fi
 echo 'Start to deploy dotfiles to home directory.'; echo ""
 
 # HTTP経由でのインストールを実装する
 echo '---------- Download dotfiles ----------'
-## git が使える場合
-if is_exists "git";then
-  echo 'use git'
-  if [ -d "$DOTPATH" ] && [ -e "$DOTPATH/.git" ] ; then
-    cd "$DOTPATH" || exit
-    git pull
-  else
-    mv "$DOTPATH" "$DOTPATH-$( date '+%Y%m%d-%H%M%S' ).backup"
-    git clone --recursive "https://$GITHUB_URL.git" "$DOTPATH"
-  fi
-## curl / wget が使える場合
-elif is_exists "curl" || is_exists "wget"; then
-  # 既存の dotfiles は名前を変更する
-  if [[ -d "$DOTPATH" ]]; then
-    mv "$DOTPATH" "$DOTPATH-$( date '+%Y%m%d-%H%M%S' ).backup"
-  fi
-  tarball="$GITHUB_URL/archive/main.zip"
-  if is_exists "curl"; then
-    echo 'use curl'
-    curl -L "$tarball" -o "$TMPFILE"
-  elif is_exists "wget"; then
-    echo 'use wget'
-    wget "$tarball" -O "$TMPFILE"
-  fi
-  unzip -o "$TMPFILE" -d ~/
-  mv ~/dotfiles-main "$DOTPATH"
-## どちらもない場合は終了する
+if [ -d "$DOTPATH" ]; then
+  cd "$DOTPATH" || exit
+  git pull
 else
-  echo "[ERROR] curl or wget required"
-  exit
+  git clone --recursive "https://github.com/$GITHUB_REPO.git" "$DOTPATH"
 fi
 ## ~/dotfiles があるか確認
 cd "$DOTPATH" || { echo "[ERROR] not found: $DOTPATH"; exit 1; }
