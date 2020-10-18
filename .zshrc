@@ -9,6 +9,8 @@ bindkey '^r' peco-select-history
 bindkey '^g' peco-src
 
 # エイリアス
+## ターミナル再起動
+alias relogin='exec $SHELL -l'
 ## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
 alias kc='kubectl-cluster-caution'
 
