@@ -22,6 +22,8 @@ alias kc='kubectl-cluster-caution'
 alias ll='ls -l'
 alias la='ls -al'
 alias la.='ls -al .??*'
+alias be='bundle exec'
+
 
 # ####################
 # peco
