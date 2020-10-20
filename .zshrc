@@ -23,7 +23,10 @@ alias ll='ls -l'
 alias la='ls -al'
 alias la.='ls -al .??*'
 alias be='bundle exec'
-
+## やばいやつは確認する
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 
 # ####################
 # peco
