@@ -163,6 +163,9 @@ zstyle ':prezto:module:prompt' show-return-val 'yes'
 # Syntax Highlighting
 #
 
+# シンタックスハイライトを有効にする
+zstyle ':prezto:module:syntax-highlighting' color 'yes'
+
 # Set syntax highlighters.
 # By default, only the main highlighter is enabled.
 zstyle ':prezto:module:syntax-highlighting' highlighters \
