@@ -3,6 +3,68 @@
 #
 source "$HOME/.zprezto/init.zsh"
 
+
+# ####################
+# 基本設定
+#
+## 色を使用出来るようにする
+autoload -Uz colors
+colors
+## ヒストリの設定
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
+## 単語の区切り文字を指定する
+autoload -Uz select-word-style
+select-word-style default
+### ここで指定した文字は単語区切りとみなされる
+### / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
+zstyle ':zle:*' word-chars " /=;@:{},|"
+zstyle ':zle:*' word-style unspecified
+## zsh-completions(補完機能)の設定
+if [ -e /usr/local/share/zsh-completions ]; then
+    fpath=(/usr/local/share/zsh-completions $fpath)
+fi
+autoload -U compinit
+compinit -u
+## 補完で小文字でも大文字にマッチさせる
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+## sudo の後ろでコマンド名を補完する
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
+                                           /usr/sbin /usr/bin \
+                                           /sbin /bin \
+                                           /usr/X11R6/bin
+## ps コマンドのプロセス名補完
+zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
+
+
+# ####################
+# オプション設定
+#
+## 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+## beep を無効にする
+setopt no_beep
+## Ctrl+Dでzshを終了しない
+setopt ignore_eof
+## '#' 以降をコメントとして扱う
+setopt interactive_comments
+## ディレクトリ名だけでcdする
+setopt auto_cd
+## cd したら自動的にpushdする
+setopt auto_pushd
+### 重複したディレクトリを追加しない
+setopt pushd_ignore_dups
+## 同じコマンドをヒストリに残さない
+setopt hist_ignore_all_dups
+## スペースから始まるコマンド行はヒストリに残さない
+setopt hist_ignore_space
+## ヒストリに保存するときに余分なスペースを削除する
+setopt hist_reduce_blanks
+## 高機能なワイルドカード展開を使用する
+setopt extended_glob
+
+
 # ####################
 # キーバインド
 #
@@ -10,6 +72,7 @@ source "$HOME/.zprezto/init.zsh"
 bindkey '^r' peco-select-history
 ## Peco Git リポジトリ
 bindkey '^g' peco-src
+
 
 # ####################
 # エイリアス
@@ -23,10 +86,38 @@ alias ll='ls -l'
 alias la='ls -al'
 alias la.='ls -al .??*'
 alias be='bundle exec'
+alias mkdir='mkdir -p'
 ## やばいやつは確認する
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+## sudo の後のコマンドでエイリアスを有効にする
+alias sudo='sudo '
+## C で標準出力をクリップボードにコピーする
+## mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
+if which pbcopy >/dev/null 2>&1 ; then
+    # Mac
+    alias -g C='| pbcopy'
+elif which xsel >/dev/null 2>&1 ; then
+    # Linux
+    alias -g C='| xsel --input --clipboard'
+elif which putclip >/dev/null 2>&1 ; then
+    # Cygwin
+    alias -g C='| putclip'
+fi
+## OS 別の設定
+case ${OSTYPE} in
+    darwin*)
+        #Mac用の設定
+        export CLICOLOR=1
+        alias ls='ls -G -F'
+        ;;
+    linux*)
+        #Linux用の設定
+        alias ls='ls -F --color=auto'
+        ;;
+esac
+
 
 # ####################
 # peco
@@ -70,15 +161,6 @@ export PATH=$PATH:$GOPATH/bin
 #
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
-
-# ####################
-# zsh-completions(補完機能)の設定
-#
-if [ -e /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions $fpath)
-fi
-autoload -U compinit
-compinit -u
 
 # ####################
 # PostgreSQL
