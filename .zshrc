@@ -36,6 +36,9 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
                                            /usr/X11R6/bin
 ## ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
+## エディタをVimで固定
+EDITOR=vim
+VISUAL=vim
 
 
 # ####################
@@ -57,8 +60,6 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 ## 同じコマンドをヒストリに残さない
 setopt hist_ignore_all_dups
-## スペースから始まるコマンド行はヒストリに残さない
-setopt hist_ignore_space
 ## ヒストリに保存するときに余分なスペースを削除する
 setopt hist_reduce_blanks
 ## 高機能なワイルドカード展開を使用する
@@ -87,6 +88,7 @@ alias la='ls -al'
 alias la.='ls -al .??*'
 alias be='bundle exec'
 alias mkdir='mkdir -p'
+alias gc='git checkout'
 ## やばいやつは確認する
 alias rm='rm -i'
 alias cp='cp -i'
@@ -97,7 +99,7 @@ alias sudo='sudo '
 ## mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
 if which pbcopy >/dev/null 2>&1 ; then
     # Mac
-    alias -g C='| pbcopy'
+    alias -g C='| tee>(pbcopy)'
 elif which xsel >/dev/null 2>&1 ; then
     # Linux
     alias -g C='| xsel --input --clipboard'
@@ -161,6 +163,21 @@ export PATH=$PATH:$GOPATH/bin
 #
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
+
+# ####################
+# php
+#
+export PATH="/usr/local/opt/bison/bin:$PATH"
+export PATH="/usr/local/opt/libxml2/bin:$PATH"
+export PATH="/usr/local/opt/bzip2/bin:$PATH"
+export PATH="/usr/local/opt/curl/bin:$PATH"
+export PATH="/usr/local/opt/libiconv/bin:$PATH"
+export PATH="/usr/local/opt/krb5/bin:$PATH"
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # ####################
 # PostgreSQL
