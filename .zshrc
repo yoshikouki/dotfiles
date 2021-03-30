@@ -37,8 +37,25 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 ## ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 ## エディタをVimで固定
-EDITOR=vim
-VISUAL=vim
+# EDITOR=vim
+# VISUAL=vim
+## viins (zsh の入力方式) のEmacs風拡張
+bindkey -M viins '\er' history-incremental-pattern-search-forward
+bindkey -M viins '^?'  backward-delete-char
+bindkey -M viins '^A'  beginning-of-line
+bindkey -M viins '^B'  backward-char
+bindkey -M viins '^D'  delete-char-or-list
+bindkey -M viins '^E'  end-of-line
+bindkey -M viins '^F'  forward-char
+bindkey -M viins '^G'  send-break
+bindkey -M viins '^H'  backward-delete-char
+bindkey -M viins '^K'  kill-line
+bindkey -M viins '^N'  down-line-or-history
+bindkey -M viins '^P'  up-line-or-history
+bindkey -M viins '^R'  history-incremental-pattern-search-backward
+bindkey -M viins '^U'  backward-kill-line
+bindkey -M viins '^W'  backward-kill-word
+bindkey -M viins '^Y'  yank
 
 
 # ####################
@@ -53,7 +70,7 @@ setopt ignore_eof
 ## '#' 以降をコメントとして扱う
 setopt interactive_comments
 ## ディレクトリ名だけでcdする
-setopt auto_cd
+# setopt auto_cd
 ## cd したら自動的にpushdする
 setopt auto_pushd
 ### 重複したディレクトリを追加しない
@@ -73,6 +90,12 @@ setopt extended_glob
 bindkey '^r' peco-select-history
 ## Peco Git リポジトリ
 bindkey '^g' peco-src
+## Peco ディレクトリヒストリー
+bindkey '^x' peco-cdr
+## Peco ブランチ切り替え
+bindkey '^b' peco-branch
+## Peco リポジトリアクセス
+bindkey '^o' open-git-remote
 
 
 # ####################
@@ -97,16 +120,16 @@ alias mv='mv -i'
 alias sudo='sudo '
 ## C で標準出力をクリップボードにコピーする
 ## mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
-if which pbcopy >/dev/null 2>&1 ; then
-    # Mac
-    alias -g C='| tee>(pbcopy)'
-elif which xsel >/dev/null 2>&1 ; then
-    # Linux
-    alias -g C='| xsel --input --clipboard'
-elif which putclip >/dev/null 2>&1 ; then
-    # Cygwin
-    alias -g C='| putclip'
-fi
+# if which pbcopy >/dev/null 2>&1 ; then
+#     # Mac
+#     alias -g C='| tee>(pbcopy)'
+# elif which xsel >/dev/null 2>&1 ; then
+#     # Linux
+#     alias -g C='| xsel --input --clipboard'
+# elif which putclip >/dev/null 2>&1 ; then
+#     # Cygwin
+#     alias -g C='| putclip'
+# fi
 ## OS 別の設定
 case ${OSTYPE} in
     darwin*)
@@ -135,6 +158,7 @@ function peco-src () {
 }
 zle -N peco-src
 ### bindkey '^g' peco-src
+
 ## command histroy を検索
 function peco-select-history() {
     local tac
@@ -151,6 +175,58 @@ function peco-select-history() {
 }
 zle -N peco-select-history
 ### bindkey '^r' peco-select-history
+
+## 移動したディレクトリ履歴から検索 search a destination from cdr list
+function peco-get-destination-from-cdr() {
+  cdr -l | \
+  sed -e 's/^[[:digit:]]*[[:blank:]]*//' | \
+  peco --query "$LBUFFER"
+}
+## search a destination from cdr list and cd the destination
+function peco-cdr() {
+  local destination="$(peco-get-destination-from-cdr)"
+  if [ -n "$destination" ]; then
+    BUFFER="cd $destination"
+    zle accept-line
+  else
+    zle reset-prompt
+  fi
+}
+zle -N peco-cdr
+### bindkey '^x' peco-cdr
+
+## ブランチ切り替え
+function peco-branch() {
+
+    # commiterdate:relativeを commiterdate:localに変更すると普通の時刻表示
+    local selected_line="$(git for-each-ref --format='%(refname:short) | %(committerdate:relative) | %(committername) | %(subject)' --sort=-committerdate refs/heads refs/remotes \
+        | column -t -s '|' \
+        | grep -v 'origin' \
+        | peco \
+        | head -n 1 \
+        | awk '{print $1}')"
+    if [ -n "$selected_line" ]; then
+        BUFFER="git checkout ${selected_line}"
+        CURSOR=$#BUFFER
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-branch
+# bindkey '^b' peco-branch
+
+## リポジトリへのアクセス
+function open-git-remote() {
+  git rev-parse --git-dir >/dev/null 2>&1
+  if [[ $? == 0 ]]; then
+    git config --get remote.origin.url | sed -e 's#ssh://git@#https://#g' -e 's#git@#https://#g' -e 's#github.com:#github.com/#g' | xargs open
+  else
+    echo ".git not found.\n"
+  fi
+}
+zle -N open-git-remote
+# bindkey '^o' open-git-remote
+
 
 # ####################
 # Go

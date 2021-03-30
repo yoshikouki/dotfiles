@@ -8,7 +8,10 @@
 [user]
 	name = yoshikouki
 	email = yoshikouki@pepabo.com
+	id = yoshikouki
 [init]
 	templatedir = ~/.git_template
 [core]
 	excludesfile = /Users/yoshikouki/.gitignore_global
+[http]
+	postBuffer = 524288000
