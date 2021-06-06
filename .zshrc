@@ -2,6 +2,7 @@
 # Prezto の設定ファイルを読み込む
 #
 source "$HOME/.zprezto/init.zsh"
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 
 # ####################
@@ -14,6 +15,7 @@ colors
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
+setopt hist_ignore_dups     # ignore duplication command history list
 ## 単語の区切り文字を指定する
 autoload -Uz select-word-style
 select-word-style default
@@ -105,6 +107,12 @@ bindkey '^o' open-git-remote
 alias relogin='exec $SHELL -l'
 ## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
 alias kc='kubectl-cluster-caution'
+alias d='docker'
+alias dc='docker-compose' # sorry ex-dc...
+alias rm_docker_images='docker images -qf dangling=true | xargs docker rmi'
+alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v' # rm with volumes
+alias rm_docker_volumes='docker volume ls -qf dangling=true | xargs docker volume rm'
+alias rm_docker_compose_containers='docker-compose rm -fv'
 ## 便利コマンド
 alias ll='ls -l'
 alias la='ls -al'
@@ -229,20 +237,19 @@ zle -N open-git-remote
 
 
 # ####################
-# Go
-#
-export GOPATH=$HOME
-export PATH=$PATH:$GOPATH/bin
-
-# ####################
 # anyenv
 #
 export PATH="$HOME/.anyenv/bin:$PATH"
 eval "$(anyenv init -)"
-
-# ####################
-# php
-#
+## Go
+export GOPATH=$HOME
+export PATH=$PATH:$GOPATH/bin
+## pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv init --path)"
+## php
 export PATH="/usr/local/opt/bison/bin:$PATH"
 export PATH="/usr/local/opt/libxml2/bin:$PATH"
 export PATH="/usr/local/opt/bzip2/bin:$PATH"
@@ -254,6 +261,7 @@ export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
+
 
 # ####################
 # PostgreSQL
@@ -304,3 +312,21 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # #   zle reset-prompt
 # # }
 ##### ここまでプロンプト表示設定 #####
+eval export PATH="/Users/yoshikouki/.anyenv/envs/rbenv/shims:${PATH}"
+export RBENV_SHELL=zsh
+source '/Users/yoshikouki/.anyenv/envs/rbenv/libexec/../completions/rbenv.zsh'
+command rbenv rehash 2>/dev/null
+rbenv() {
+  local command
+  command="${1:-}"
+  if [ "$#" -gt 0 ]; then
+    shift
+  fi
+
+  case "$command" in
+  rehash|shell)
+    eval "$(rbenv "sh-$command" "$@")";;
+  *)
+    command rbenv "$command" "$@";;
+  esac
+}
