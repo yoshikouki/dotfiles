@@ -125,6 +125,8 @@ alias gcb='git checkout -b'
 alias gpl='git pull origin HEAD'
 alias gpl-r='git pull --rebase origin HEAD'
 alias gp='git push origin HEAD'
+alias gc='git commit -m'
+alias gc-e='git commit --allow-empty -m'
 ## やばいやつは確認する
 alias rm='rm -i'
 alias cp='cp -i'
