@@ -39,8 +39,8 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 ## ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 ## エディタをVimで固定
-# EDITOR=vim
-# VISUAL=vim
+EDITOR=vim
+VISUAL=vim
 ## viins (zsh の入力方式) のEmacs風拡張
 bindkey -M viins '\er' history-incremental-pattern-search-forward
 bindkey -M viins '^?'  backward-delete-char
@@ -108,7 +108,7 @@ alias relogin='exec $SHELL -l'
 ## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
 alias kc='kubectl-cluster-caution'
 alias d='docker'
-alias dc='docker-compose' # sorry ex-dc...
+alias dc='docker compose' # sorry ex-dc...
 alias rm_docker_images='docker images -qf dangling=true | xargs docker rmi'
 alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v' # rm with volumes
 alias rm_docker_volumes='docker volume ls -qf dangling=true | xargs docker volume rm'
@@ -119,7 +119,12 @@ alias la='ls -al'
 alias la.='ls -al .??*'
 alias be='bundle exec'
 alias mkdir='mkdir -p'
+## git
 alias gc='git checkout'
+alias gcb='git checkout -b'
+alias gpl='git pull origin HEAD'
+alias gpl-r='git pull --rebase origin HEAD'
+alias gp='git push origin HEAD'
 ## やばいやつは確認する
 alias rm='rm -i'
 alias cp='cp -i'
@@ -227,7 +232,7 @@ zle -N peco-branch
 function open-git-remote() {
   git rev-parse --git-dir >/dev/null 2>&1
   if [[ $? == 0 ]]; then
-    git config --get remote.origin.url | sed -e 's#ssh://git@#https://#g' -e 's#git@#https://#g' -e 's#github.com:#github.com/#g' | xargs open
+    git config --get remote.origin.url | sed -e 's#ssh://git@#https://#g' -e 's#git@#https://#g' -e 's#.com:#.com/#g' | xargs open
   else
     echo ".git not found.\n"
   fi
@@ -245,10 +250,12 @@ eval "$(anyenv init -)"
 export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
 ## pyenv
-export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_ROOT="$HOME/.anyenv/envs/pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 eval "$(pyenv init --path)"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
 ## php
 export PATH="/usr/local/opt/bison/bin:$PATH"
 export PATH="/usr/local/opt/libxml2/bin:$PATH"
@@ -263,57 +270,7 @@ export PATH="/usr/local/opt/icu4c/bin:$PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/krb5/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-
-# ####################
-# PostgreSQL
-#
-export PGDATA=/usr/local/var/postgres
-
-# ####################
-# MySQL Gem インストールエラーの対応
-#
-export LDFLAGS="-L/usr/local/opt/openssl/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl/include"
-
-# ####################
-# iTerm2 の shell を統合
-#
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-# ####################
-# 2020-10-18 Prezto 導入に伴いコメントアウト
-# # プロンプト表示設定
-# autoload -Uz vcs_info
-# zstyle ':vcs_info:*' formats '[%b]'
-# zstyle ':vcs_info:*' actionformats '[%b|%a]'
-# precmd () {
-#   # 1行あける
-#   print
-#   # カレントディレクトリ
-#   local left=' %{\e[38;5;2m%}(%~)%{\e[m%}'
-#   # バージョン管理されてた場合、ブランチ名
-#   vcs_info
-#   local right="%{\e[38;5;32m%}${vcs_info_msg_0_}%{\e[m%}"
-#   # スペースの長さを計算
-#   # テキストを装飾する場合、エスケープシーケンスをカウントしないようにします
-#   local invisible='%([BSUbfksu]|([FK]|){*})'
-#   local leftwidth=${#${(S%%)left//$~invisible/}}
-#   local rightwidth=${#${(S%%)right//$~invisible/}}
-#   local padwidth=$(($COLUMNS - ($leftwidth + $rightwidth) % $COLUMNS))
-
-#   print -P $left${(r:$padwidth:: :)}$right
-# }
-# ## ユーザ名@ホスト名
-# PROMPT='> '
-# # PROMPT='%n %# '
-# # 現在時刻
-# # RPROMPT=$'%{\e[38;5;251m%}%D{%b %d}, %*%{\e[m%}'
-# # TMOUT=1
-# # TRAPALRM() {
-# #   zle reset-prompt
-# # }
-##### ここまでプロンプト表示設定 #####
+## rbenv
 eval export PATH="/Users/yoshikouki/.anyenv/envs/rbenv/shims:${PATH}"
 export RBENV_SHELL=zsh
 source '/Users/yoshikouki/.anyenv/envs/rbenv/libexec/../completions/rbenv.zsh'
@@ -332,3 +289,26 @@ rbenv() {
     command rbenv "$command" "$@";;
   esac
 }
+
+
+# ####################
+# PostgreSQL
+#
+export PGDATA=/usr/local/var/postgres
+
+
+# ####################
+# MySQL Gem インストールエラーの対応
+#
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+
+
+# ####################
+# iTerm2 の shell を統合
+#
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+
+# heroku autocomplete setup
+HEROKU_AC_ZSH_SETUP_PATH=/Users/yoshikouki/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;

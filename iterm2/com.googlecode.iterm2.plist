@@ -1496,7 +1496,7 @@
 	<key>PromptForPasteWhenNotAtPrompt</key>
 	<true/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>SoundForEsc</key>
 	<false/>
 	<key>SwitchPaneModifier</key>
