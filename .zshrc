@@ -123,10 +123,10 @@ alias mkdir='mkdir -p'
 alias gc='git checkout'
 alias gcb='git checkout -b'
 alias gpl='git pull origin HEAD'
-alias gpl-r='git pull --rebase origin HEAD'
+alias gpl-r='git pull --rebase origin main'
 alias gp='git push origin HEAD'
-alias gc='git commit -m'
-alias gc-e='git commit --allow-empty -m'
+alias gcm='git commit -m'
+alias gcm-e='git commit --allow-empty -m'
 ## やばいやつは確認する
 alias rm='rm -i'
 alias cp='cp -i'
@@ -314,3 +314,4 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/Users/yoshikouki/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+eval "$(rbenv init -)"
