@@ -439,6 +439,8 @@
 	<real>250</real>
 	<key>DoubleClickPerformsSmartSelection</key>
 	<true/>
+	<key>EnableProxyIcon</key>
+	<false/>
 	<key>FocusFollowsMouse</key>
 	<true/>
 	<key>HapticFeedbackForEsc</key>
@@ -1509,10 +1511,14 @@
 	<array>
 		<string>Captured Output</string>
 	</array>
+	<key>UseBorder</key>
+	<false/>
 	<key>UseLionStyleFullscreen</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
+	<key>WindowNumber</key>
+	<true/>
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewPreferredModeKey</key>

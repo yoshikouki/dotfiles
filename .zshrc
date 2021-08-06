@@ -40,7 +40,7 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 ## エディタをVimで固定
 EDITOR=vim
-VISUAL=vim
+# VISUAL=vim
 ## viins (zsh の入力方式) のEmacs風拡張
 bindkey -M viins '\er' history-incremental-pattern-search-forward
 bindkey -M viins '^?'  backward-delete-char
@@ -72,7 +72,7 @@ setopt ignore_eof
 ## '#' 以降をコメントとして扱う
 setopt interactive_comments
 ## ディレクトリ名だけでcdする
-# setopt auto_cd
+setopt auto_cd
 ## cd したら自動的にpushdする
 setopt auto_pushd
 ### 重複したディレクトリを追加しない

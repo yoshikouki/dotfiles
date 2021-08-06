@@ -1,13 +1,12 @@
 #!/bin/bash
 
-echo '[warn] push to remote, continue? [y/N]'
-
-exec < /dev/tty
-read answer
-
-case $answer in
-    'y' | 'yes') echo '[info] OK. push start.';;
-    * ) echo '[error] push failed.';exit 1;;
-esac
-exit 0
-
+#echo '[warn] push to remote, continue? [y/N]'
+#
+#exec < /dev/tty
+#read answer
+#
+#case $answer in
+#    'y' | 'yes') echo '[info] OK. push start.';;
+#    * ) echo '[error] push failed.';exit 1;;
+#esac
+#exit 0
