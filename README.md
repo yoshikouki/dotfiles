@@ -9,7 +9,6 @@ bash -c "$(curl -L raw.githubusercontent.com/yoshikouki/dotfiles/main/bin/instal
 or
 
 ```
-cd ~/
-git clone https://github.com/yoshikouki/dotfiles.git
+git clone https://github.com/yoshikouki/dotfiles.git ~/
 sh ~/dotfiles/bin/install.sh
 ```
