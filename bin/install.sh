@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FILES='.??*'
-IGNORE_FILES=(.git .gitignore .DS_Store)
+IGNORE_FILES=(.git .gitignore .DS_Store .idea)
 GITHUB_REPO=yoshikouki/dotfiles
 DOTPATH=~/dotfiles
 
