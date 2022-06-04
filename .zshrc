@@ -275,6 +275,7 @@ export PKG_CONFIG_PATH="/usr/local/opt/icu4c/lib/pkgconfig:$PKG_CONFIG_PATH"
 ## rbenv
 eval export PATH="/Users/yoshikouki/.anyenv/envs/rbenv/shims:${PATH}"
 export RBENV_SHELL=zsh
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/usr/local/opt/openssl@1.1"
 source '/Users/yoshikouki/.anyenv/envs/rbenv/libexec/../completions/rbenv.zsh'
 command rbenv rehash 2>/dev/null
 rbenv() {
@@ -292,6 +293,10 @@ rbenv() {
   esac
 }
 
+# ####################
+# Deno
+#
+export PATH="$HOME/.deno/bin:$PATH"
 
 # ####################
 # PostgreSQL
@@ -315,3 +320,16 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/Users/yoshikouki/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
 eval "$(rbenv init -)"
+
+# ####################
+# GCP
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/yoshikouki/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/completion.zsh.inc'; fi
+
+# ####################
+# 未分類
+#
+eval "$(direnv hook zsh)"
