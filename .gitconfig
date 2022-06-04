@@ -19,3 +19,9 @@
     path = ~/.config/git/local.gitconfig
 [color]
 	ui = auto
+[pull]
+	rebase = false
+[alias]
+	push-f = push --force-with-lease
+[fetch]
+	prune = true
