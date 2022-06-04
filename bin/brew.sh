@@ -8,7 +8,7 @@ fi
 # brew がなければインストール
 if ! type "brew" > /dev/null 2>&1; then
     echo "Install brew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # ~/.Brewfile を基に依存をインストール

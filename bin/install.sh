@@ -30,7 +30,8 @@ if ! is_exists "git"; then
     *'Darwin'*)
       # brew がなければインストール
       if ! is_exists "brew"; then
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        echo "Install brew"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       fi
       brew install git
       ;;
