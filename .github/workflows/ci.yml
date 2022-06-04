@@ -1,0 +1,12 @@
+name: Scripts Test
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run scripts for test
+        run: make
