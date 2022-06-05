@@ -10,16 +10,16 @@ if [ "$(uname)" != "Darwin" ]; then
 	exit 1
 fi
 
-echo "#️⃣ INSTALL packages and applications"
+echo "#️⃣ INSTALL homebrew"
 ./install_brew.sh
+echo "✅ INSTALL homebrew" + "\n\n"
+
+echo "#️⃣ DOWNLOAD dotfiles"
 # git がない場合はインストール
 if ! type "git" > /dev/null 2>&1; then
   echo "Install git..."
   brew install git      
 fi
-echo "✅ INSTALL packages and applications" + "\n\n"
-
-echo "#️⃣ DOWNLOAD dotfiles"
 if [ -d "$DOTPATH" ]; then
   cd "$DOTPATH" || exit
   git pull
@@ -28,8 +28,8 @@ else
 fi
 echo "✅ DOWNLOAD dotfiles" + "\n\n"
 
+echo "#️⃣ SETUP Prezto"
 if [[ ! -d ~/.zprezto ]]; then
-  echo "Setup Prezto..."
   git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
 
   # 既存の zsh 設定ファイルをバックアップ
@@ -37,8 +37,8 @@ if [[ ! -d ~/.zprezto ]]; then
   BUCKUP_DIR="$HOME/backup-zsh-$(date '+%Y%m%d%H%M%S')" && mkdir "$BUCKUP_DIR" && \
   mv zshmv .zlogin .zlogout .zprofile .zshenv .zshrc "$BUCKUP_DIR"
   cd "$DOTPATH" || exit 1
-  echo "✅ Prezto has been Setuped." + "\n\n"
 fi
+echo "✅ SETUP Prezto" + "\n\n"
 
 # ドットファイルのシンボリックリンクをホームディレクトリに配置する
 echo "#️⃣ CREATE symbolic link"
@@ -54,3 +54,7 @@ echo "✅ CREATE symbolic link" + "\n\n"
 echo "#️⃣ REBOOT shell"
 exec "$SHELL" -l
 echo "✅ REBOOT shell" + "\n\n"
+
+echo "#️⃣ INSTALL packages and applications"
+./install_applications.sh
+echo "✅ INSTALL packages and applications" + "\n\n"
