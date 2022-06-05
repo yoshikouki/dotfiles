@@ -37,6 +37,10 @@ if [[ ! -d ~/.zprezto ]]; then
   BUCKUP_DIR="$HOME/backup-zsh-$(date '+%Y%m%d%H%M%S')" && mkdir "$BUCKUP_DIR" && \
   mv zshmv .zlogin .zlogout .zprofile .zshenv .zshrc "$BUCKUP_DIR"
   cd "$DOTPATH" || exit 1
+
+  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+  done
 fi
 echo "✅ SETUP Prezto" + "\n\n"
 
