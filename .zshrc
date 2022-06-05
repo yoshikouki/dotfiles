@@ -243,6 +243,42 @@ function open-git-remote() {
 zle -N open-git-remote
 # bindkey '^o' open-git-remote
 
+## Docker ログイン・ログ・削除
+bindkey '^te' peco-docker-login
+bindkey '^tl' peco-docker-log
+bindkey '^td' peco-docker-delete
+function peco-docker-login() {
+    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+    if [ -n "$cid" ]; then
+      BUFFER="docker exec -it $(echo $cid) /bin/bash"
+      CURSOR=$#BUFFER
+      zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-docker-login
+
+function peco-docker-log() {
+    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+    if [ -n "$cid" ]; then
+      BUFFER="docker logs -f $(echo $cid)"
+      CURSOR=$#BUFFER
+      zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-docker-log
+function peco-docker-delete() {
+    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+    if [ -n "$cid" ]; then
+      BUFFER="docker rm -f $(echo $cid)"
+      CURSOR=$#BUFFER
+      zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-docker-delete
+
 
 # ####################
 # anyenv
