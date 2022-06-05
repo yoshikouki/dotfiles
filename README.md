@@ -3,7 +3,7 @@
 ## Installation
 
 ```
-bash -c "$(curl -L raw.githubusercontent.com/yoshikouki/dotfiles/main/bin/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/yoshikouki/dotfiles/main/bin/install.sh)"
 ```
 
 or
