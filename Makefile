@@ -2,4 +2,4 @@ install:
 	@bin/install.sh
 
 brew:
-	@bin/brew.sh
+	@bin/install_brew.sh

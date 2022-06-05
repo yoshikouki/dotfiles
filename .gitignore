@@ -4,3 +4,4 @@
 .zsh/history/
 .config/antidote/state.json
 .tmux/*
+.vscode
