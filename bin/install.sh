@@ -12,7 +12,7 @@ fi
 
 echo "#️⃣ INSTALL homebrew"
 ./install_brew.sh
-echo "✅ INSTALL homebrew" + "\n\n"
+echo "✅ INSTALL homebrew" "\n"
 
 echo "#️⃣ DOWNLOAD dotfiles"
 # git がない場合はインストール
@@ -26,7 +26,7 @@ if [ -d "$DOTPATH" ]; then
 else
   git clone --recursive "https://github.com/$GITHUB_REPO.git" "$DOTPATH"
 fi
-echo "✅ DOWNLOAD dotfiles" + "\n\n"
+echo "✅ DOWNLOAD dotfiles" "\n"
 
 echo "#️⃣ SETUP Prezto"
 if [[ ! -d ~/.zprezto ]]; then
@@ -42,7 +42,7 @@ if [[ ! -d ~/.zprezto ]]; then
     ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
   done
 fi
-echo "✅ SETUP Prezto" + "\n\n"
+echo "✅ SETUP Prezto" "\n"
 
 # ドットファイルのシンボリックリンクをホームディレクトリに配置する
 echo "#️⃣ CREATE symbolic link"
@@ -52,13 +52,13 @@ for file in $FILES; do
   done
   ln -sfnv "$DOTPATH/$file" "$HOME/$file"
 done
-echo "✅ CREATE symbolic link" + "\n\n"
+echo "✅ CREATE symbolic link" "\n"
 
 # ターミナルを再起動する
 echo "#️⃣ REBOOT shell"
 exec "$SHELL" -l
-echo "✅ REBOOT shell" + "\n\n"
+echo "✅ REBOOT shell" "\n"
 
 echo "#️⃣ INSTALL packages and applications"
 ./install_applications.sh
-echo "✅ INSTALL packages and applications" + "\n\n"
+echo "✅ INSTALL packages and applications" "\n"
