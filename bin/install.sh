@@ -11,7 +11,12 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 echo "#️⃣ INSTALL homebrew"
-bin/install_brew.sh
+if type "brew" > /dev/null 2>&1; then
+  echo "✅ brew is already installed."
+else
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo "✅ brew has been installed."
+fi
 echo "✅ INSTALL homebrew" "\n"
 
 echo "#️⃣ DOWNLOAD dotfiles"
