@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 FILES='.??*'
 IGNORE_FILES=(.git .gitignore .DS_Store .idea)
