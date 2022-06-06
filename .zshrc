@@ -15,7 +15,6 @@ colors
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt hist_ignore_dups     # ignore duplication command history list
 ## 単語の区切り文字を指定する
 autoload -Uz select-word-style
 select-word-style default
@@ -23,10 +22,13 @@ select-word-style default
 ### / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
+## zsh-autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
 ## zsh-completions(補完機能)の設定
-if [ -e /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions $fpath)
+if [ -e $(brew --prefix)/share/zsh-completions ]; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 fi
+
 autoload -U compinit
 compinit -u
 ## 補完で小文字でも大文字にマッチさせる
@@ -84,6 +86,8 @@ setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
 ## 高機能なワイルドカード展開を使用する
 setopt extended_glob
+# ignore duplication command history list
+setopt hist_ignore_dups     
 
 
 # ####################
@@ -115,6 +119,7 @@ alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v' #
 alias rm_docker_volumes='docker volume ls -qf dangling=true | xargs docker volume rm'
 alias rm_docker_compose_containers='docker-compose rm -fv'
 ## 便利コマンド
+alias ls="ls -FG"
 alias ll='ls -l'
 alias la='ls -al'
 alias la.='ls -al .??*'
