@@ -8,5 +8,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run scripts for test
-        run: make
+      - name: test install scripts
+        run: make install
+      - name: test install applications
+        run: make applications
