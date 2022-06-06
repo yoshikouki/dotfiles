@@ -11,7 +11,7 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 echo "#️⃣ INSTALL homebrew"
-./install_brew.sh
+bin/install_brew.sh
 echo "✅ INSTALL homebrew" "\n"
 
 echo "#️⃣ DOWNLOAD dotfiles"
