@@ -2,6 +2,11 @@
 # cask install to /Applications
 cask_args appdir: "/Applications"
 
+## Tap
+tap "sanemat/font" # for brew "sanemat/font/ricty"
+tap "heroku/brew" # for brew "heroku/brew/heroku"
+tap "stripe/stripe-cli" # for brew "stripe/stripe-cli/stripe"
+
 ## Core
 brew "git"
 brew "ghq"
