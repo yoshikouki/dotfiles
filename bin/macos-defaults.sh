@@ -18,7 +18,8 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeF
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 
 # スクロールバーの常時表示
-defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+# defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+# デザインが崩れることもあるので無効化
 
 # 自動大文字の無効化
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false

@@ -472,7 +472,7 @@
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
 	<key>HotkeyModifiers</key>
-	<integer>524288</integer>
+	<integer>786721</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1561,6 +1561,8 @@
 	<true/>
 	<key>PromptForPasteWhenNotAtPrompt</key>
 	<true/>
+	<key>PromptOnQuit</key>
+	<false/>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>SeparateStatusBarsPerPane</key>
