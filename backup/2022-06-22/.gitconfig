@@ -1,0 +1,27 @@
+[ghq]
+	root = ~/src
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = yoshikouki
+	email = yoshikouki@gmail.com
+	id = yoshikouki
+[init]
+	templatedir = ~/.git_template
+[core]
+	excludesfile = /Users/yoshikouki/.gitignore_global
+[http]
+	postBuffer = 524288000
+[include]
+    path = ~/.config/git/local.gitconfig
+[color]
+	ui = auto
+[pull]
+	rebase = false
+[alias]
+	push-f = push --force-with-lease
+[fetch]
+	prune = true
