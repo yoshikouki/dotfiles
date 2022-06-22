@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-FILES='.??*'
 IGNORE_FILES=(.git .gitignore .DS_Store .idea)
 GITHUB_REPO=yoshikouki/dotfiles
 DOTPATH=~/dotfiles
@@ -51,7 +50,7 @@ echo "✅ SETUP Prezto" "\n"
 
 # ドットファイルのシンボリックリンクをホームディレクトリに配置する
 echo "#️⃣ CREATE symbolic link"
-for file in $FILES; do
+for file in .??*; do
   for ign in "${IGNORE_FILES[@]}"; do
     [[ "$ign" = "$file" ]] && continue 2
   done
