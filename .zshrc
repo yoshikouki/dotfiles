@@ -112,3 +112,124 @@ case ${OSTYPE} in
         alias ls='ls -F --color=auto'
         ;;
 esac
+
+# ####################
+# peco / 便利コマンド
+#
+
+## command histroy を検索
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | \
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+## 移動したディレクトリ履歴から検索 search a destination from cdr list
+function peco-get-destination-from-cdr() {
+  cdr -l | \
+  sed -e 's/^[[:digit:]]*[[:blank:]]*//' | \
+  peco --query "$LBUFFER"
+}
+## search a destination from cdr list and cd the destination
+function peco-cdr() {
+  local destination="$(peco-get-destination-from-cdr)"
+  if [ -n "$destination" ]; then
+    BUFFER="cd $destination"
+    zle accept-line
+  else
+    zle reset-prompt
+  fi
+}
+zle -N peco-cdr
+bindkey '^x' peco-cdr
+
+## git repository を検索
+function peco-src () {
+  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-src
+bindkey '^g' peco-src
+
+## git branch 切り替え
+function peco-branch() {
+
+    # commiterdate:relativeを commiterdate:localに変更すると普通の時刻表示
+    local selected_line="$(git for-each-ref --format='%(refname:short) | %(committerdate:relative) | %(committername) | %(subject)' --sort=-committerdate refs/heads refs/remotes \
+        | column -t -s '|' \
+        | grep -v 'origin' \
+        | peco \
+        | head -n 1 \
+        | awk '{print $1}')"
+    if [ -n "$selected_line" ]; then
+        BUFFER="git checkout ${selected_line}"
+        CURSOR=$#BUFFER
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-branch
+bindkey '^b' peco-branch
+
+## git リポジトリへのアクセス
+function open-git-remote() {
+  git rev-parse --git-dir >/dev/null 2>&1
+  if [[ $? == 0 ]]; then
+    git config --get remote.origin.url | sed -e 's#ssh://git@#https://#g' -e 's#git@#https://#g' -e 's#.com:#.com/#g' | xargs open
+  else
+    echo ".git not found.\n"
+  fi
+}
+zle -N open-git-remote
+bindkey '^o' open-git-remote
+
+## Docker ログイン・ログ・削除
+function peco-docker-login() {
+    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+    if [ -n "$cid" ]; then
+      BUFFER="docker exec -it $(echo $cid) /bin/bash"
+      CURSOR=$#BUFFER
+      zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-docker-login
+bindkey '^te' peco-docker-login
+
+function peco-docker-log() {
+    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+    if [ -n "$cid" ]; then
+      BUFFER="docker logs -f $(echo $cid)"
+      CURSOR=$#BUFFER
+      zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-docker-log
+bindkey '^tl' peco-docker-log
+
+function peco-docker-delete() {
+    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+    if [ -n "$cid" ]; then
+      BUFFER="docker rm -f $(echo $cid)"
+      CURSOR=$#BUFFER
+      zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-docker-delete
+bindkey '^td' peco-docker-delete
