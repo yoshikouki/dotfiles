@@ -122,7 +122,7 @@ function peco-select-history() {
     zle clear-screen
 }
 zle -N peco-select-history
-bindkey '^r' peco-select-history
+# bindkey '^r' peco-select-history
 
 ## 移動したディレクトリ履歴から検索 search a destination from cdr list
 function peco-get-destination-from-cdr() {
@@ -141,7 +141,7 @@ function peco-cdr() {
   fi
 }
 zle -N peco-cdr
-bindkey '^x' peco-cdr
+# bindkey '^x' peco-cdr
 
 ## git repository を検索
 function peco-src () {
@@ -153,7 +153,7 @@ function peco-src () {
   zle clear-screen
 }
 zle -N peco-src
-bindkey '^g' peco-src
+# bindkey '^g' peco-src
 
 ## git branch 切り替え
 function peco-branch() {
@@ -173,7 +173,7 @@ function peco-branch() {
     zle clear-screen
 }
 zle -N peco-branch
-bindkey '^b' peco-branch
+# bindkey '^b' peco-branch
 
 ## git リポジトリへのアクセス
 function open-git-remote() {
@@ -185,7 +185,7 @@ function open-git-remote() {
   fi
 }
 zle -N open-git-remote
-bindkey '^o' open-git-remote
+# bindkey '^o' open-git-remote
 
 ## Docker ログイン・ログ・削除
 function peco-docker-login() {
@@ -198,7 +198,7 @@ function peco-docker-login() {
     zle clear-screen
 }
 zle -N peco-docker-login
-bindkey '^te' peco-docker-login
+# bindkey '^te' peco-docker-login
 
 function peco-docker-log() {
     local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
@@ -210,7 +210,7 @@ function peco-docker-log() {
     zle clear-screen
 }
 zle -N peco-docker-log
-bindkey '^tl' peco-docker-log
+# bindkey '^tl' peco-docker-log
 
 function peco-docker-delete() {
     local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
@@ -222,7 +222,7 @@ function peco-docker-delete() {
     zle clear-screen
 }
 zle -N peco-docker-delete
-bindkey '^td' peco-docker-delete
+# bindkey '^td' peco-docker-delete
 
 
 # ####################
@@ -236,3 +236,13 @@ if [ -e $(brew --prefix)/share/zsh-completions ]; then
 fi
 ## Prezto (必ずzshrc末尾に置く必要がある)
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# Prezto との相性が悪いっぽい？
+bindkey '^r' peco-select-history
+bindkey '^x' peco-cdr
+bindkey '^g' peco-src
+bindkey '^b' peco-branch
+bindkey '^o' open-git-remote
+bindkey '^te' peco-docker-login
+bindkey '^tl' peco-docker-log
+bindkey '^td' peco-docker-delete
