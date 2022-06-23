@@ -55,16 +55,6 @@ setopt extended_glob
 setopt hist_ignore_dups     
 
 # ####################
-# プラグイン
-#
-## zsh-autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
-## zsh-completions(補完機能)の設定
-if [ -e $(brew --prefix)/share/zsh-completions ]; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-fi
-
-# ####################
 # エイリアス
 #
 ## ターミナル再起動
@@ -233,3 +223,16 @@ function peco-docker-delete() {
 }
 zle -N peco-docker-delete
 bindkey '^td' peco-docker-delete
+
+
+# ####################
+# プラグイン
+#
+## zsh-autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
+## zsh-completions(補完機能)の設定
+if [ -e $(brew --prefix)/share/zsh-completions ]; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+fi
+## Prezto (必ずzshrc末尾に置く必要がある)
+source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
