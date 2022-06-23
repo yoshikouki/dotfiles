@@ -6,3 +6,10 @@
 	id = yoshikouki
 [core]
 	excludesfile = /Users/yoshikouki/.gitignore_global
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[include]
+    path = ~/.config/git/local.gitconfig
