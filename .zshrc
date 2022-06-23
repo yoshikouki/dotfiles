@@ -224,6 +224,10 @@ function peco-docker-delete() {
 zle -N peco-docker-delete
 # bindkey '^td' peco-docker-delete
 
+# ####################
+# asdf
+#
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # ####################
 # プラグイン
