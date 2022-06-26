@@ -232,6 +232,8 @@ zle -N peco-docker-delete
 # ####################
 # プラグイン
 #
+# homebrew setup for M1 macOS
+eval "$(/opt/homebrew/bin/brew shellenv)"
 ## zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
 ## zsh-completions(補完機能)の設定
