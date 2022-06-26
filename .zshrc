@@ -234,14 +234,14 @@ zle -N peco-docker-delete
 #
 # homebrew setup for M1 macOS
 eval "$(/opt/homebrew/bin/brew shellenv)"
+## Prezto (必ずzshrc末尾に置く必要がある)
+source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 ## zsh-autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#ff00ff,bg=cyan,bold,underline"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#00a001,underline"
 ## zsh-completions(補完機能)の設定
 if [ -e $(brew --prefix)/share/zsh-completions ]; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 fi
-## Prezto (必ずzshrc末尾に置く必要がある)
-source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
 # Prezto との相性が悪いっぽい？
 bindkey '^r' peco-select-history
