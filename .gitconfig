@@ -13,3 +13,5 @@
 	required = true
 [include]
     path = ~/.config/git/local.gitconfig
+[init]
+	defaultBranch = main
