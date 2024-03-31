@@ -28,7 +28,21 @@ curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fi
 
 ## tide (theme) https://github.com/IlanCosman/tide
 fisher install IlanCosman/tide@v6
-tide configure --auto --style=Classic --prompt_colors='16 colors' --show_time='24-hour format' --classic_prompt_separators=Round --powerline_prompt_heads=Round --powerline_prompt_tails=Round --powerline_prompt_style='Two lines, frame' --prompt_connection=Solid --powerline_right_prompt_frame=Yes --prompt_spacing=Sparse --icons='Many icons' --transient=Yes
+tide configure \
+  --auto \
+  --style=Rainbow \
+  --prompt_colors='True color' \
+  --show_time='24-hour format' \
+  --rainbow_prompt_separators=Vertical \
+  --powerline_prompt_heads=Round \
+  --powerline_prompt_tails=Round \
+  --powerline_prompt_style='Two lines, frame' \
+  --prompt_connection=Solid \
+  --powerline_right_prompt_frame=No \
+  --prompt_connection_andor_frame_color=Darkest \
+  --prompt_spacing=Sparse \
+  --icons='Many icons' \
+  --transient=No
 
 # fzf
 sudo apt install -y fzf
