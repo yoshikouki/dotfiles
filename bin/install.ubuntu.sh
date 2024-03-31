@@ -36,7 +36,7 @@ tide configure \
   --rainbow_prompt_separators=Vertical \
   --powerline_prompt_heads=Round \
   --powerline_prompt_tails=Round \
-  --powerline_prompt_style='Two lines, frame' \
+  --powerline_prompt_style='Two lines, character' \
   --prompt_connection=Solid \
   --powerline_right_prompt_frame=No \
   --prompt_connection_andor_frame_color=Darkest \
