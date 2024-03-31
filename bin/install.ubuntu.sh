@@ -10,6 +10,11 @@ sudo apt install -y \
   unzip \
   fzf
 
+# dotfiles
+git clone https://github.com/yoshikouki/dotfiles.git $DOTPATH
+ln -sfnv "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
+ln -sfnv "$DOTPATH/.gitignore_global" "$HOME/.gitignore_global"
+
 # SSH
 sudo apt install -y openssh-server
 sudo service ssh restart
@@ -21,6 +26,7 @@ sudo apt install -y fish
 echo /usr/local/bin/fish | sudo tee -a /etc/shells
 fish
 chsh -s (which fish)
+ln -sfnv "$DOTPATH/config.fish" "$HOME/.config/fish/config.fish"
 exec $SHELL -l
 
 ## fisher https://github.com/jorgebucaran/fisher
@@ -64,8 +70,3 @@ asdf plugin add ghq
 asdf install ghq latest
 ## https://github.com/decors/fish-ghq?tab=readme-ov-file
 fisher install decors/fish-ghq
-
-# dotfiles
-git clone https://github.com/yoshikouki/dotfiles.git $DOTPATH
-ln -sfnv "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
-ln -sfnv "$DOTPATH/.gitignore_global" "$HOME/.gitignore_global"
