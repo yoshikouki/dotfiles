@@ -1,3 +1,5 @@
+DOTPATH="$HOME/dotfiles"
+
 sudo apt update -y && sudo apt upgrade -y
 
 # Tools
@@ -50,4 +52,6 @@ asdf install ghq latest
 fisher install decors/fish-ghq
 
 # dotfiles
-git clone https://github.com/yoshikouki/dotfiles.git ~/dotfiles
+git clone https://github.com/yoshikouki/dotfiles.git $DOTPATH
+ln -sfnv "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
+ln -sfnv "$DOTPATH/.gitignore_global" "$HOME/.gitignore_global"
