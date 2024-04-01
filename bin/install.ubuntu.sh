@@ -23,7 +23,7 @@ sudo service ssh restart
 sudo apt-add-repository ppa:fish-shell/release-3
 sudo apt update
 sudo apt install -y fish
-echo /usr/local/bin/fish | sudo tee -a /etc/shells
+echo $(which fish) | sudo tee -a /etc/shells
 fish
 chsh -s (which fish)
 ln -sfnv "$DOTPATH/config.fish" "$HOME/.config/fish/config.fish"

@@ -54,7 +54,7 @@ setopt hist_reduce_blanks
 ## 高機能なワイルドカード展開を使用する
 setopt extended_glob
 # ignore duplication command history list
-setopt hist_ignore_dups     
+setopt hist_ignore_dups
 
 # ####################
 # エイリアス
@@ -229,7 +229,7 @@ zle -N peco-docker-delete
 # ####################
 # asdf
 #
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+. "$HOME/.asdf/asdf.sh"
 
 # ####################
 # プラグイン
