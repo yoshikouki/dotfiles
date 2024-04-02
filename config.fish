@@ -8,3 +8,6 @@ if status is-interactive
 end
 
 source ~/.asdf/asdf.fish
+
+# https://github.com/tsub/fish-fzf-git-recent-branch
+bind \cb fzf_git_recent_branch

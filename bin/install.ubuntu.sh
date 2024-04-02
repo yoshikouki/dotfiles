@@ -53,7 +53,6 @@ tide configure \
 # fzf
 sudo apt install -y fzf
 fisher install PatrickF1/fzf.fish
-# Legacy keybindings are kept by default, but these have conflict with key bindings in Fish 2.4.0.
 exec $SHELL -l
 
 # asdf https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
