@@ -52,10 +52,8 @@ tide configure \
 
 # fzf
 sudo apt install -y fzf
-fisher install jethrokuan/fzf
+fisher install PatrickF1/fzf.fish
 # Legacy keybindings are kept by default, but these have conflict with key bindings in Fish 2.4.0.
-set -U FZF_LEGACY_KEYBINDINGS 0
-echo 'set -U FZF_LEGACY_KEYBINDINGS 0' >> cat ~/.config/fish/config.fish
 exec $SHELL -l
 
 # asdf https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
@@ -70,3 +68,8 @@ asdf plugin add ghq
 asdf install ghq latest
 ## https://github.com/decors/fish-ghq?tab=readme-ov-file
 fisher install decors/fish-ghq
+
+# https://github.com/tsub/fish-fzf-git-recent-branch
+fisher install tsub/fish-fzf-git-recent-branch
+bind \cb fzf_git_recent_branch
+echo 'bind \cb fzf_git_recent_branch' >> cat ~/.config/fish/config.fish
