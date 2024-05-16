@@ -2,55 +2,65 @@
 # cask install to /Applications
 cask_args appdir: "/Applications"
 
-## Tap
-tap "sanemat/font" # for brew "sanemat/font/ricty"
-tap "heroku/brew" # for brew "heroku/brew/heroku"
-tap "stripe/stripe-cli" # for brew "stripe/stripe-cli/stripe"
-
 ## Core
-brew "git"
-brew "ghq"
-brew "peco"
-brew "zsh-autosuggestions"
-brew "zsh-completions"
-brew "sanemat/font/ricty"
-cask "google-japanese-ime"
-cask "karabiner-elements"
-cask "pixelsnap"
-cask "monitorcontrol"
-cask "rectangle"
-cask "raycast"
 cask "google-chrome"
 cask "google-drive"
 
 ## Default
 cask "slack"
 cask "discord"
-cask "spark"
-cask "iterm2"
-cask "warp"
 cask "github"
 cask "1password"
 cask "notion"
+cask "notion-calendar"
 cask "tradingview"
+cask "arc"
+cask "deepl"
+cask "chatgpt"
+cask "kindle"
+# cask "xnapper"
 
-## Development
-### Tool
+## Utils
+cask "karabiner-elements"
+cask "monitorcontrol"
+cask "rectangle"
+cask "raycast"
+cask "tabby"
+
+## Editor
 cask "visual-studio-code"
-### Command
+
+## Command
 brew "curl"
 brew "jq"
 brew "tree"
-### Language
+brew "git"
+brew "ghq"
+# brew "peco"
+
+## Language
 brew "asdf"
-### DB
+
+## DB
 brew "mysql"
 brew "postgresql"
 cask "tableplus"
-### Service
+
+## Service
 cask "docker"
+tap "heroku/brew" # for brew "heroku/brew/heroku"
 brew "heroku/brew/heroku"
+tap "stripe/stripe-cli" # for brew "stripe/stripe-cli/stripe"
 brew "stripe/stripe-cli/stripe"
 cask "gitify"
 
 ## Other
+# brew "zsh-autosuggestions"
+# brew "zsh-completions"
+# tap "sanemat/font" # for brew "sanemat/font/ricty"
+# brew "sanemat/font/ricty"
+# cask "google-japanese-ime"
+# cask "pixelsnap"
+# cask "spark"
+# cask "iterm2"
+# cask "warp"
