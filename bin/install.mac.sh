@@ -32,22 +32,6 @@ else
 fi
 echo "✅ DOWNLOAD dotfiles" "\n"
 
-echo "#️⃣ SETUP Prezto"
-if [[ ! -d ~/.zprezto ]]; then
-  git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
-
-  # 既存の zsh 設定ファイルをバックアップ
-  cd "$HOME" || exit 1
-  BUCKUP_DIR="$HOME/backup-zsh-$(date '+%Y%m%d%H%M%S')" && mkdir "$BUCKUP_DIR" && \
-  mv zshmv .zlogin .zlogout .zprofile .zshenv .zshrc "$BUCKUP_DIR"
-  cd "$DOTPATH" || exit 1
-
-  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-  done
-fi
-echo "✅ SETUP Prezto" "\n"
-
 # ドットファイルのシンボリックリンクをホームディレクトリに配置する
 echo "#️⃣ CREATE symbolic link"
 for file in .??*; do
@@ -56,6 +40,7 @@ for file in .??*; do
   done
   ln -sfnv "$DOTPATH/$file" "$HOME/$file"
 done
+ln -sfnv "$DOTPATH/config.fish" "$HOME/.config/fish/config.fish"
 echo "✅ CREATE symbolic link" "\n"
 
 # ターミナルを再起動する
@@ -66,3 +51,19 @@ echo "✅ REBOOT shell" "\n"
 echo "#️⃣ INSTALL packages and applications"
 ./install_applications.sh
 echo "✅ INSTALL packages and applications" "\n"
+
+# echo "#️⃣ SETUP Prezto"
+# if [[ ! -d ~/.zprezto ]]; then
+#   git clone --recursive https://github.com/sorin-ionescu/prezto.git "$HOME/.zprezto"
+
+#   # 既存の zsh 設定ファイルをバックアップ
+#   cd "$HOME" || exit 1
+#   BUCKUP_DIR="$HOME/backup-zsh-$(date '+%Y%m%d%H%M%S')" && mkdir "$BUCKUP_DIR" && \
+#   mv zshmv .zlogin .zlogout .zprofile .zshenv .zshrc "$BUCKUP_DIR"
+#   cd "$DOTPATH" || exit 1
+
+#   for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+#     ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+#   done
+# fi
+# echo "✅ SETUP Prezto" "\n"
