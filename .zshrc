@@ -1,5 +1,5 @@
 # Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
+# [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 # ####################
 # 基本設定
 #
@@ -237,7 +237,7 @@ zle -N peco-docker-delete
 # homebrew setup for M1 macOS
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ## Prezto (必ずzshrc末尾に置く必要がある)
-source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 ## zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#00a001,underline"
 ## zsh-completions(補完機能)の設定
@@ -262,4 +262,18 @@ if [ -f '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yosh
 if [ -f '/Users/yoshikouki/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/completion.zsh.inc'; fi
 
 # Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+# [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+# pnpm
+export PNPM_HOME="/Users/yoshikouki/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# Setup for Starship: https://github.com/starship/starship
+eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/Users/yoshikouki/.bun/_bun" ] && source "/Users/yoshikouki/.bun/_bun"
