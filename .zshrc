@@ -230,12 +230,15 @@ zle -N peco-docker-delete
 # asdf
 #
 . "$HOME/.asdf/asdf.sh"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # ####################
 # プラグイン
 #
 # homebrew setup for M1 macOS
 eval "$(/opt/homebrew/bin/brew shellenv)"
+# MacPorts
+export PATH="/opt/local/bin:$PATH"
 ## Prezto (必ずzshrc末尾に置く必要がある)
 # source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 ## zsh-autosuggestions
@@ -272,8 +275,10 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# Setup for Starship: https://github.com/starship/starship
-eval "$(starship init zsh)"
-
 # bun completions
 [ -s "/Users/yoshikouki/.bun/_bun" ] && source "/Users/yoshikouki/.bun/_bun"
+export PATH="$HOME/.local/bin:$PATH"
+
+source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
+
+. "$HOME/.turso/env"
