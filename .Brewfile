@@ -39,7 +39,8 @@ brew "ghq"
 # brew "peco"
 
 ## Language
-brew "asdf"
+brew "coreutils"
+# brew "asdf" # https://asdf-vm.com/guide/getting-started.html
 
 ## DB
 brew "mysql"
@@ -52,7 +53,7 @@ tap "heroku/brew" # for brew "heroku/brew/heroku"
 brew "heroku/brew/heroku"
 tap "stripe/stripe-cli" # for brew "stripe/stripe-cli/stripe"
 brew "stripe/stripe-cli/stripe"
-cask "gitify"
+# cask "gitify"
 
 ## Other
 # brew "zsh-autosuggestions"
