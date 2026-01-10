@@ -6,6 +6,15 @@
 	id = yoshikouki
 [core]
 	excludesfile = /Users/yoshikouki/.gitignore_global
+	pager = delta
+	editor = nvim
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	dark = true
+	line-numbers = true
+	side-by-side = false
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
