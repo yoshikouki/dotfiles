@@ -8,6 +8,14 @@ return {
     "rcarriga/nvim-notify",
   },
   opts = {
+    cmdline = {
+      enabled = true,
+      view = "cmdline_popup",
+    },
+    popupmenu = {
+      enabled = true,
+      backend = "nui",
+    },
     lsp = {
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
