@@ -282,3 +282,6 @@ export PATH="$HOME/.local/bin:$PATH"
 source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
 
 . "$HOME/.turso/env"
+
+# zoxide (cd replacement)
+eval "$(zoxide init zsh --cmd cd)"
