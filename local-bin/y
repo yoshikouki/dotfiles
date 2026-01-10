@@ -1,0 +1,10 @@
+#!/bin/sh
+# yazi ファイルマネージャー - 終了後の cwd を出力
+tmp=$(mktemp -t "yazi-cwd.XXXXXX")
+target="${1:-.}"
+yazi "$target" --cwd-file="$tmp"
+cwd=$(cat "$tmp")
+rm -f "$tmp"
+if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    echo "$cwd"
+fi

@@ -1,0 +1,6 @@
+#!/bin/sh
+# git ブランチ検索・切り替え
+branch=$(git branch --sort=-committerdate | fzf --reverse)
+if [ -n "$branch" ]; then
+    git switch "$(echo "$branch" | sed 's/^[ *]*//')"
+fi

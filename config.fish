@@ -30,45 +30,9 @@ if not string match -q -- $PNPM_HOME $PATH
 end
 # pnpm end
 
-# ghq 検索
-function g
-  set repo_name (ghq list | fzf --reverse +m)
-  if test -n "$repo_name"
-    cd (ghq root)/$repo_name
-  end
-end
-
-# ブランチ検索
-function b
-  set branch (git branch --sort=-committerdate | fzf --reverse)
-  if test -n "$branch"
-    git switch (echo $branch | sed 's/^[ *]*//')
-  end
-end
-
-# ブランチ作成
-function c
-  if test (count $argv) -eq 0
-    read -P "branch name: " branch_name
-  else
-    set branch_name $argv[1]
-  end
-  if test -n "$branch_name"
-    git switch -c $branch_name
-  else
-    echo "Branch name is required."
-  end
-end
-
-# yazi
-function y
-	set tmp (mktemp -t "yazi-cwd.XXXXXX")
-	set -l target (test (count $argv) -gt 0; and echo $argv; or echo ".")
-	command yazi $target --cwd-file="$tmp"
-	if read -z cwd < "$tmp"; and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-		builtin cd -- "$cwd"
-	end
-	rm -f -- "$tmp"
+# Load wrapper functions for ~/.local/bin scripts
+if test -f ~/.local/bin/wrappers/local-bin.fish
+    source ~/.local/bin/wrappers/local-bin.fish
 end
 
 # asdf
@@ -100,17 +64,6 @@ if test -f '/Users/yoshikouki/google-cloud-sdk/path.fish.inc'
     source '/Users/yoshikouki/google-cloud-sdk/path.fish.inc'
 end
 
-# cdx function
-function cdx
-  if test "$argv[1]" = "update"
-    npm install -g @openai/codex@latest
-  else
-    codex \
-    --dangerously-bypass-approvals-and-sandbox \
-    -c model_reasoning_summary_format=experimental \
-    --search $argv
-  end
-end
 
 source ~/.safe-chain/scripts/init-fish.fish # Safe-chain Fish initialization script
 
@@ -120,9 +73,6 @@ fish_add_path /Users/yoshikouki/.antigravity/antigravity/bin
 # Chromium Developer Tools
 set -gx PATH ~/src/chromium.googlesource.com/chromium/tools/depot_tools $PATH
 
-# Claude Code
-set -U ENABLE_TOOL_SEARCH true
-
 # Add this to the end of your config file:
-zoxide init fish | source
+zoxide init fish --cmd cd | source
 
