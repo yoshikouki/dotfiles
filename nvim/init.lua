@@ -1,11 +1,12 @@
--- share clipboard with OS
-vim.opt.clipboard:append('unnamedplus,unnamed')
+-- Neovim configuration entry point
 
-vim.api.nvim_create_user_command(
-    'InitLua',
-    function()
-        vim.cmd.edit(vim.fn.stdpath('config') .. '/init.lua')
-    end,
-    { desc = 'Open init.lua' }
-)
+-- Global settings (must be set before lazy.nvim)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
+require('core.options')
+require('core.keymaps')
+require('core.autocmds')
+
+require('config.lazy')
 

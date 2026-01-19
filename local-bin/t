@@ -1,0 +1,21 @@
+#!/bin/sh
+# tmux: 現在のディレクトリ名でセッション作成 or attach
+
+# セッション名を決定（引数があれば使用、なければカレントディレクトリ名）
+if [ $# -eq 0 ]; then
+    session_name=$(basename "$PWD")
+else
+    session_name="$1"
+fi
+
+# セッション名のドットをアンダースコアに置換（tmuxはドットを許可しない）
+session_name=$(echo "$session_name" | tr '.' '_')
+
+# セッションが存在するかチェック
+if tmux has-session -t "$session_name" 2>/dev/null; then
+    # 既存セッションにattach
+    tmux attach-session -t "$session_name"
+else
+    # 新規セッション作成
+    tmux new-session -s "$session_name"
+fi
