@@ -24,6 +24,12 @@ keymap("n", "<space>w", "<cmd>write<cr>", { desc = "Write" })
 keymap("x", "p", "P", { desc = "Paste without change register" })
 keymap("x", "P", "p", { desc = "Paste with change register" })
 
+-- Insert mode (word movement and line navigation)
+keymap("i", "<M-Left>", "<C-o>b", { desc = "Move to previous word" })
+keymap("i", "<M-Right>", "<C-o>w", { desc = "Move to next word" })
+keymap("i", "<D-Left>", "<C-o>^", { desc = "Move to line start" })
+keymap("i", "<D-Right>", "<C-o>$", { desc = "Move to line end" })
+
 -- Command mode (Emacs-like)
 keymap("c", "<c-b>", "<left>", { desc = "Emacs like left" })
 keymap("c", "<c-f>", "<right>", { desc = "Emacs like right" })
