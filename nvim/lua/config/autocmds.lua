@@ -60,6 +60,9 @@ autocmd("FileType", {
   pattern = { "markdown" },
   callback = function()
     vim.opt_local.spell = false
+    -- Enable auto-continuing lists on new lines
+    vim.opt_local.formatoptions:append("ron")
+    vim.opt_local.comments = "b:*,b:-,b:+,n:>"
   end,
-  desc = "Disable spell check for markdown",
+  desc = "Disable spell check for markdown and enable list continuation",
 })
