@@ -1,0 +1,3 @@
+#!/bin/sh
+# lazygit - Git のターミナル UI
+lazygit
