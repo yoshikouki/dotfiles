@@ -21,6 +21,11 @@ opt.tabstop = 2
 -- Scroll
 opt.scrolloff = 3
 
+-- Text wrapping (行の折り返し)
+opt.wrap = true
+opt.breakindent = true
+opt.showbreak = "↪ "
+
 -- Cursor movement (move across line boundaries)
 opt.whichwrap = "b,s,h,l,<,>,[,],~"
 
