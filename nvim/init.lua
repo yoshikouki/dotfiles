@@ -1,12 +1,2 @@
--- Neovim configuration entry point
-
--- Global settings (must be set before lazy.nvim)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
-require('core.options')
-require('core.keymaps')
-require('core.autocmds')
-
-require('config.lazy')
-
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
