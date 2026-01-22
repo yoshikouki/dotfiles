@@ -1,0 +1,285 @@
+{
+  "actions" : [
+    {
+      "direction" : "BottomLeftQuarter",
+      "keybind" : [
+        38
+      ]
+    },
+    {
+      "direction" : "BottomRightQuarter",
+      "keybind" : [
+        40
+      ]
+    },
+    {
+      "direction" : "BottomScreen",
+      "keybind" : [
+        56,
+        125
+      ]
+    },
+    {
+      "direction" : "Center",
+      "keybind" : [
+        8
+      ]
+    },
+    {
+      "anchor" : 2,
+      "direction" : "Custom",
+      "height" : 33.299999999999997,
+      "keybind" : [
+        34,
+        56
+      ],
+      "name" : "右上1\/3高",
+      "positionMode" : 0,
+      "sizeMode" : 0,
+      "unit" : 1,
+      "width" : 50
+    },
+    {
+      "anchor" : 4,
+      "direction" : "Custom",
+      "height" : 33.299999999999997,
+      "keybind" : [
+        40,
+        56
+      ],
+      "name" : "右下1\/3高",
+      "positionMode" : 0,
+      "sizeMode" : 0,
+      "unit" : 1,
+      "width" : 50
+    },
+    {
+      "anchor" : 3,
+      "direction" : "Custom",
+      "height" : 33.299999999999997,
+      "keybind" : [
+        34,
+        40,
+        56
+      ],
+      "name" : "右中央1\/3高",
+      "positionMode" : 0,
+      "sizeMode" : 0,
+      "unit" : 1,
+      "width" : 50
+    },
+    {
+      "anchor" : 0,
+      "direction" : "Custom",
+      "height" : 33.299999999999997,
+      "keybind" : [
+        32,
+        56
+      ],
+      "name" : "左上1\/3高",
+      "positionMode" : 0,
+      "sizeMode" : 0,
+      "unit" : 1,
+      "width" : 50
+    },
+    {
+      "anchor" : 6,
+      "direction" : "Custom",
+      "height" : 33.299999999999997,
+      "keybind" : [
+        38,
+        56
+      ],
+      "name" : "左下1\/3高",
+      "positionMode" : 0,
+      "sizeMode" : 0,
+      "unit" : 1,
+      "width" : 50
+    },
+    {
+      "anchor" : 7,
+      "direction" : "Custom",
+      "height" : 33.299999999999997,
+      "keybind" : [
+        32,
+        38,
+        56
+      ],
+      "name" : "左中央1\/3高",
+      "positionMode" : 0,
+      "sizeMode" : 0,
+      "unit" : 1,
+      "width" : 50
+    },
+    {
+      "cycle" : [
+        {
+          "direction" : "TopHalf",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "TopThird",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "TopTwoThirds",
+          "keybind" : [
+
+          ]
+        }
+      ],
+      "direction" : "Cycle",
+      "keybind" : [
+        126
+      ],
+      "name" : "上部繰り返し"
+    },
+    {
+      "cycle" : [
+        {
+          "direction" : "BottomHalf",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "BottomThird",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "BottomTwoThirds",
+          "keybind" : [
+
+          ]
+        }
+      ],
+      "direction" : "Cycle",
+      "keybind" : [
+        125
+      ],
+      "name" : "下部繰り返し"
+    },
+    {
+      "cycle" : [
+        {
+          "direction" : "RightHalf",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "RightThird",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "RightTwoThirds",
+          "keybind" : [
+
+          ]
+        }
+      ],
+      "direction" : "Cycle",
+      "keybind" : [
+        124
+      ],
+      "name" : "右部繰り返し"
+    },
+    {
+      "cycle" : [
+        {
+          "direction" : "LeftHalf",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "LeftThird",
+          "keybind" : [
+
+          ]
+        },
+        {
+          "direction" : "LeftTwoThirds",
+          "keybind" : [
+
+          ]
+        }
+      ],
+      "direction" : "Cycle",
+      "keybind" : [
+        123
+      ],
+      "name" : "左部繰り返し"
+    },
+    {
+      "direction" : "LeftScreen",
+      "keybind" : [
+        4,
+        56
+      ]
+    },
+    {
+      "direction" : "LeftScreen",
+      "keybind" : [
+        56,
+        124
+      ]
+    },
+    {
+      "direction" : "Maximize",
+      "keybind" : [
+        36
+      ]
+    },
+    {
+      "direction" : "RightScreen",
+      "keybind" : [
+        37,
+        56
+      ]
+    },
+    {
+      "direction" : "RightScreen",
+      "keybind" : [
+        56,
+        123
+      ]
+    },
+    {
+      "cycle" : [
+
+      ],
+      "direction" : "TopLeftQuarter",
+      "keybind" : [
+        32
+      ],
+      "name" : ""
+    },
+    {
+      "direction" : "TopRightQuarter",
+      "keybind" : [
+        34
+      ]
+    },
+    {
+      "direction" : "TopScreen",
+      "keybind" : [
+        56,
+        126
+      ]
+    }
+  ],
+  "triggerKey" : [
+    58,
+    59
+  ],
+  "version" : "1.4.1"
+}
