@@ -1,5 +1,57 @@
+-- Neo-tree state persistence helpers
+local neotree_state_dir = vim.fn.stdpath("state") .. "/neotree-state"
+local state_restored = false
+
+local function get_state_file()
+  local cwd = vim.fn.getcwd():gsub("[\\/:]+", "%%")
+  return neotree_state_dir .. "/" .. cwd .. ".json"
+end
+
+local function load_saved_state()
+  local file = get_state_file()
+  if vim.fn.filereadable(file) == 0 then
+    return nil
+  end
+  local lines = vim.fn.readfile(file)
+  if #lines == 0 then
+    return nil
+  end
+  local ok, data = pcall(vim.fn.json_decode, lines[1])
+  if ok and data then
+    return data
+  end
+  return nil
+end
+
+local function save_state(state)
+  if not state or not state.tree then
+    return
+  end
+  local renderer = require("neo-tree.ui.renderer")
+  local expanded_nodes = renderer.get_expanded_nodes(state.tree)
+
+  vim.fn.mkdir(neotree_state_dir, "p")
+  local file = get_state_file()
+  local data = { expanded_nodes = expanded_nodes, path = state.path }
+  vim.fn.writefile({ vim.fn.json_encode(data) }, file)
+end
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  init = function()
+    -- Save state on VimLeavePre (before window closes)
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+      group = vim.api.nvim_create_augroup("neotree_state_save", { clear = true }),
+      callback = function()
+        local ok, manager = pcall(require, "neo-tree.sources.manager")
+        if not ok then
+          return
+        end
+        local state = manager.get_state("filesystem")
+        save_state(state)
+      end,
+    })
+  end,
   opts = {
     -- ========================================
     -- 全般設定
@@ -9,6 +61,30 @@ return {
     enable_git_status = true, -- Git ステータスを有効化
     enable_diagnostics = true, -- 診断情報を有効化
     -- sort_case_insensitive = false,        -- 大文字小文字を区別してソート
+
+    event_handlers = {
+      {
+        event = "before_render",
+        handler = function(state)
+          if state_restored then
+            return
+          end
+          local saved = load_saved_state()
+          if saved and saved.expanded_nodes then
+            state.force_open_folders = saved.expanded_nodes
+            state_restored = true
+          end
+        end,
+      },
+      {
+        event = "neo_tree_window_before_close",
+        handler = function()
+          local manager = require("neo-tree.sources.manager")
+          local state = manager.get_state("filesystem")
+          save_state(state)
+        end,
+      },
+    },
 
     -- ========================================
     -- コンポーネント設定 (default_component_configs)
