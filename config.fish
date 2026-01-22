@@ -73,6 +73,8 @@ fish_add_path /Users/yoshikouki/.antigravity/antigravity/bin
 # Chromium Developer Tools
 set -gx PATH ~/src/chromium.googlesource.com/chromium/tools/depot_tools $PATH
 
-# Add this to the end of your config file:
+# zoxide: cd を置き換えつつ、z と zi も使えるようにする
 zoxide init fish --cmd cd | source
+alias z='__zoxide_z'
+alias zi='__zoxide_zi'
 
