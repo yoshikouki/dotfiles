@@ -30,6 +30,6 @@ sh ~/dotfiles/bin/install.ubuntu.sh
 
 - **Shell**: Zsh (set as default)
 - **Tools**: curl, wget, git, unzip, fzf
-- **Version manager**: asdf
+- **Version manager**: mise
 - **Repository manager**: ghq
 - **SSH server**: openssh-server

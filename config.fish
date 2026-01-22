@@ -38,24 +38,7 @@ if test -f ~/.local/bin/wrappers/local-bin.fish
     source ~/.local/bin/wrappers/local-bin.fish
 end
 
-# asdf
-if test -f ~/.asdf/asdf.fish
-    source ~/.asdf/asdf.fish
-end
-
-# Add: Ensure asdf paths are prepended to PATH so they take precedence over system Ruby
-if functions -q fish_add_path
-    # fish >= 3.2 では fish_add_path が利用可能
-    fish_add_path --prepend $HOME/.asdf/shims $HOME/.asdf/bin
-else
-    # 旧バージョンの fish 向けフォールバック
-    if not contains -- $HOME/.asdf/shims $PATH
-        set -gx PATH $HOME/.asdf/shims $HOME/.asdf/bin $PATH
-    end
-end
-
-# Go
-source ~/.asdf/plugins/golang/set-env.fish
+# mise (自動でactivateされる)
 set -gx PATH ~/.local/bin $PATH
 
 set -gx PATH "/Users/yoshikouki/.local/bin" $PATH

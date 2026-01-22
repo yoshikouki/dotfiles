@@ -12,7 +12,8 @@ sudo apt install -y \
   git \
   unzip \
   fzf \
-  zsh
+  zsh \
+  neovim
 
 # dotfiles
 if [ ! -d "$DOTPATH" ]; then
@@ -21,6 +22,13 @@ fi
 ln -sfnv "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
 ln -sfnv "$DOTPATH/.gitignore_global" "$HOME/.gitignore_global"
 ln -sfnv "$DOTPATH/.zshrc" "$HOME/.zshrc"
+ln -sfnv "$DOTPATH/.zprofile" "$HOME/.zprofile"
+ln -sfnv "$DOTPATH/.zlogin" "$HOME/.zlogin"
+ln -sfnv "$DOTPATH/.zlogout" "$HOME/.zlogout"
+
+# Neovim
+mkdir -p "$HOME/.config"
+ln -sfnv "$DOTPATH/nvim" "$HOME/.config/nvim"
 
 # local-bin
 mkdir -p "$HOME/.local/bin"
@@ -45,18 +53,17 @@ if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
   ln -sfnv /usr/share/doc/fzf/examples/key-bindings.zsh "$HOME/.zsh/fzf-key-bindings.zsh"
 fi
 
-# asdf https://asdf-vm.com/guide/getting-started.html
-ASDF_VERSION="v0.14.0"
-if [ ! -d "$HOME/.asdf" ]; then
-  git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch "$ASDF_VERSION"
+# mise https://mise.jdx.dev/getting-started.html
+if ! command -v mise &> /dev/null; then
+  curl https://mise.run | sh
 fi
+eval "$(~/.local/bin/mise activate bash)"
 
 # ghq https://github.com/x-motemen/ghq
-source "$HOME/.asdf/asdf.sh"
-if ! asdf plugin list | grep -q ghq; then
-  asdf plugin add ghq
-fi
-asdf install ghq latest
-asdf global ghq latest
+mise use -g ghq@latest
+
+# Cleanup
+sudo apt autoremove -y
+sudo apt clean
 
 echo "Setup complete! Please restart your shell or run: exec zsh -l"
