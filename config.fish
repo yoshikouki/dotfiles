@@ -12,17 +12,6 @@ if status is-interactive
 end
 
 function fish_greeting
-    set -l normal (set_color normal)
-    set -l dim (set_color --dim)
-    set -l bold (set_color --bold)
-    set -l cyan (set_color cyan)
-    set -l blue (set_color blue)
-    set -l now (date "+%Y-%m-%d %H:%M")
-    set -l host (hostname)
-
-    echo "$bold$cyan""fish"$normal"  $dim$now$normal"
-    echo "  $bold$USER$normal@$bold$host$normal  $blue"(prompt_pwd)"$normal"
-    echo "  type: "$dim"help$normal""  |  "$dim"exit$normal""  |  "$dim"fish_key_bindings$normal"
 end
 
 # MacPorts
