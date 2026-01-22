@@ -19,6 +19,8 @@ keymap("n", "p", "p`]", { desc = "Paste and move to the end" })
 keymap("n", "P", "P`]", { desc = "Paste and move to the end" })
 keymap("n", "<space>;", "@:", { desc = "Re-run the last command" })
 keymap("n", "<space>w", "<cmd>write<cr>", { desc = "Write" })
+keymap("n", "<space>q", "<cmd>quit<cr>", { desc = "Quit" })
+keymap("n", "<space>Q", "<cmd>qa<cr>", { desc = "Quit all" })
 
 -- Visual mode
 keymap("x", "p", "P", { desc = "Paste without change register" })
