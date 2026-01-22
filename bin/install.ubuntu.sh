@@ -50,6 +50,7 @@ chsh -s "$(which zsh)"
 
 # fzf key bindings
 if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+  mkdir -p "$HOME/.zsh"
   ln -sfnv /usr/share/doc/fzf/examples/key-bindings.zsh "$HOME/.zsh/fzf-key-bindings.zsh"
 fi
 
