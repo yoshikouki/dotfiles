@@ -67,3 +67,13 @@ autocmd("FileType", {
   desc = "Disable spell check for markdown and enable list continuation",
 })
 
+-- Open neo-tree on startup when no file arguments
+autocmd("VimEnter", {
+  callback = function()
+    if vim.fn.argc() == 0 then
+      vim.cmd("Neotree show")
+    end
+  end,
+  desc = "Open neo-tree on startup",
+})
+
