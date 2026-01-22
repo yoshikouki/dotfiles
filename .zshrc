@@ -1,4 +1,13 @@
 # ####################
+# Pure prompt (https://github.com/sindresorhus/pure)
+#
+if [ -d "$HOME/.zsh/pure" ]; then
+  fpath+=("$HOME/.zsh/pure")
+  autoload -U promptinit; promptinit
+  prompt pure
+fi
+
+# ####################
 # 基本設定
 #
 ## 文字コードを UTF-8 に指定
@@ -234,12 +243,19 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # プラグイン
 #
 # homebrew setup for M1 macOS
-eval "$(/opt/homebrew/bin/brew shellenv)"
-# MacPorts
-export PATH="/opt/local/bin:$PATH"
-## zsh-completions(補完機能)の設定
-if [ -e $(brew --prefix)/share/zsh-completions ]; then
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+if [ -f /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  # MacPorts
+  export PATH="/opt/local/bin:$PATH"
+  ## zsh-completions(補完機能)の設定
+  if [ -e "$(brew --prefix)/share/zsh-completions" ]; then
+    FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
+  fi
+fi
+
+# fzf key-bindings (Ubuntu)
+if [ -f "$HOME/.zsh/fzf-key-bindings.zsh" ]; then
+  source "$HOME/.zsh/fzf-key-bindings.zsh"
 fi
 
 bindkey '^r' peco-select-history
