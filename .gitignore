@@ -5,3 +5,17 @@
 .config/antidote/state.json
 .tmux/*
 .vscode
+
+# secrets
+.env
+.env.*
+.turso/
+**/secrets.*
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.crt
+**/*.der
+**/*.jks
+**/*.keystore
