@@ -123,98 +123,6 @@ function fzf-select-history() {
 }
 zle -N fzf-select-history
 
-## 移動したディレクトリ履歴から検索 search a destination from cdr list
-function fzf-get-destination-from-cdr() {
-  cdr -l | \
-  sed -e 's/^[[:digit:]]*[[:blank:]]*//' | \
-  fzf --reverse --query "$LBUFFER"
-}
-## search a destination from cdr list and cd the destination
-function fzf-cdr() {
-  local destination="$(fzf-get-destination-from-cdr)"
-  if [ -n "$destination" ]; then
-    BUFFER="cd $destination"
-    zle accept-line
-  else
-    zle reset-prompt
-  fi
-}
-zle -N fzf-cdr
-
-## git repository を検索
-function fzf-src () {
-  local selected_dir=$(ghq list -p | fzf --reverse --query "$LBUFFER")
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-zle -N fzf-src
-
-## git branch 切り替え
-function fzf-branch() {
-    # commiterdate:relativeを commiterdate:localに変更すると普通の時刻表示
-    local selected_line="$(git for-each-ref --format='%(refname:short) | %(committerdate:relative) | %(committername) | %(subject)' --sort=-committerdate refs/heads refs/remotes \
-        | column -t -s '|' \
-        | grep -v 'origin' \
-        | fzf --reverse \
-        | head -n 1 \
-        | awk '{print $1}')"
-    if [ -n "$selected_line" ]; then
-        BUFFER="git checkout ${selected_line}"
-        CURSOR=$#BUFFER
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N fzf-branch
-
-## git リポジトリへのアクセス
-function open-git-remote() {
-  git rev-parse --git-dir >/dev/null 2>&1
-  if [[ $? == 0 ]]; then
-    git config --get remote.origin.url | sed -e 's#ssh://git@#https://#g' -e 's#git@#https://#g' -e 's#.com:#.com/#g' | xargs open
-  else
-    echo ".git not found.\n"
-  fi
-}
-zle -N open-git-remote
-
-## Docker ログイン・ログ・削除
-function fzf-docker-login() {
-    local cid=$(docker ps | grep -v 'CONTAINER ID' | fzf --reverse --query "$LBUFFER" | cut -d ' ' -f1)
-    if [ -n "$cid" ]; then
-      BUFFER="docker exec -it $(echo $cid) /bin/bash"
-      CURSOR=$#BUFFER
-      zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N fzf-docker-login
-
-function fzf-docker-log() {
-    local cid=$(docker ps | grep -v 'CONTAINER ID' | fzf --reverse --query "$LBUFFER" | cut -d ' ' -f1)
-    if [ -n "$cid" ]; then
-      BUFFER="docker logs -f $(echo $cid)"
-      CURSOR=$#BUFFER
-      zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N fzf-docker-log
-
-function fzf-docker-delete() {
-    local cid=$(docker ps | grep -v 'CONTAINER ID' | fzf --reverse --query "$LBUFFER" | cut -d ' ' -f1)
-    if [ -n "$cid" ]; then
-      BUFFER="docker rm -f $(echo $cid)"
-      CURSOR=$#BUFFER
-      zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N fzf-docker-delete
-
 # ####################
 # asdf
 #
@@ -241,13 +149,6 @@ if [ -f "$HOME/.zsh/fzf-key-bindings.zsh" ]; then
 fi
 
 bindkey '^r' fzf-select-history
-bindkey '^x' fzf-cdr
-bindkey '^g' fzf-src
-bindkey '^b' fzf-branch
-bindkey '^o' open-git-remote
-bindkey '^te' fzf-docker-login
-bindkey '^tl' fzf-docker-log
-bindkey '^td' fzf-docker-delete
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
