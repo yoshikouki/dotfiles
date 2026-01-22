@@ -40,6 +40,7 @@ end
 
 # mise (自動でactivateされる)
 set -gx PATH ~/.local/bin $PATH
+~/.local/bin/mise activate fish | source
 
 set -gx PATH "/Users/yoshikouki/.local/bin" $PATH
 
