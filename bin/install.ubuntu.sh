@@ -22,6 +22,14 @@ ln -sfnv "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
 ln -sfnv "$DOTPATH/.gitignore_global" "$HOME/.gitignore_global"
 ln -sfnv "$DOTPATH/.zshrc" "$HOME/.zshrc"
 
+# local-bin
+mkdir -p "$HOME/.local/bin"
+for script in "$DOTPATH/local-bin"/*; do
+  if [ -f "$script" ] && [ -x "$script" ]; then
+    ln -sfnv "$script" "$HOME/.local/bin/$(basename "$script")"
+  fi
+done
+
 # SSH
 sudo apt install -y openssh-server
 sudo service ssh restart

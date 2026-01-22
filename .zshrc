@@ -1,77 +1,130 @@
-# ####################
-# 基本設定
-#
-## 文字コードを UTF-8 に指定
+# ==============================================================================
+# Zsh Configuration
+# ==============================================================================
+# このファイルはインタラクティブシェルの起動時に読み込まれる
+# 設定は以下の順序で構成されている：
+#   1. 環境変数・基本設定
+#   2. Zsh コア設定（補完・色・単語区切り）
+#   3. ヒストリ設定
+#   4. オプション設定
+#   5. エイリアス
+#   6. 関数
+#   7. キーバインド
+#   8. 外部ツール（バージョン管理・パッケージマネージャー）
+#   9. サービス連携・その他
+# ==============================================================================
+
+
+# ==============================================================================
+# 1. 環境変数・基本設定
+# ==============================================================================
+# システム全体で使用される基本的な環境変数を設定
+
+# 文字コードを UTF-8 に統一（日本語環境）
 export LANG=ja_JP.UTF-8
-## zsh 補完
+
+# ローカルの実行ファイルを優先
+export PATH="$HOME/.local/bin:$PATH"
+
+
+# ==============================================================================
+# 2. Zsh コア設定
+# ==============================================================================
+# Zsh の基本機能を有効化
+
+# 補完システムの初期化（-u: 安全でないディレクトリの警告を抑制）
 autoload -Uz compinit && compinit -u
-## 色を使用出来るようにする
+
+# プロンプトなどで色を使用可能にする
 autoload -Uz colors && colors
-## ヒストリの設定
-HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=1000000
-## 単語の区切り文字を指定する
+
+# 単語区切りスタイルの設定
+# select-word-style: Ctrl+W などで単語単位の操作を行う際の区切り方を制御
 autoload -Uz select-word-style && select-word-style default
-### ここで指定した文字は単語区切りとみなされる
-### / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
+# 以下の文字を単語の区切りとして扱う（/ を含めることで Ctrl+W でパス1階層分削除可能）
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
-## 補完で小文字でも大文字にマッチさせる
+
+
+# ==============================================================================
+# 3. 補完設定
+# ==============================================================================
+# タブ補完の動作をカスタマイズ
+
+# 小文字入力で大文字にもマッチ（case-insensitive）
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-## sudo の後ろでコマンド名を補完する
+
+# sudo の後でもコマンド補完を有効に
 zstyle ':completion:*:sudo:*' command-path \
   /usr/local/sbin /usr/local/bin \
   /usr/sbin /usr/bin \
   /sbin /bin \
   /usr/X11R6/bin
-## ps コマンドのプロセス名補完
+
+# ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# ####################
-# オプション設定
-#
-## 日本語ファイル名を表示可能にする
-setopt print_eight_bit
-## beep を無効にする
-setopt no_beep
-## Ctrl+Dでzshを終了しない
-setopt ignore_eof
-## '#' 以降をコメントとして扱う
-setopt interactive_comments
-## ディレクトリ名だけでcdする
-setopt auto_cd
-## cd したら自動的にpushdする
-setopt auto_pushd
-### 重複したディレクトリを追加しない
-setopt pushd_ignore_dups
-## 同じコマンドをヒストリに残さない
-setopt hist_ignore_all_dups
-## ヒストリに保存するときに余分なスペースを削除する
-setopt hist_reduce_blanks
-## 高機能なワイルドカード展開を使用する
-setopt extended_glob
-# ignore duplication command history list
-setopt hist_ignore_dups
 
-# ####################
-# エイリアス
-#
-## ターミナル再起動
-alias relogin='exec $SHELL -l'
-## 便利コマンド
-alias ls="ls -FG"
-alias ll='ls -l'
-alias la='ls -al'
-alias la.='ls -al .??*'
-alias mkdir='mkdir -p'
-## やばいやつは確認する
+# ==============================================================================
+# 4. ヒストリ設定
+# ==============================================================================
+# コマンド履歴の保存と検索の設定
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000          # メモリ上に保持する履歴数
+SAVEHIST=1000000          # ファイルに保存する履歴数
+
+
+# ==============================================================================
+# 5. オプション設定 (setopt)
+# ==============================================================================
+# Zsh の動作をカスタマイズする各種オプション
+
+# --- 表示・入出力 ---
+setopt print_eight_bit    # 日本語ファイル名を正しく表示
+setopt no_beep            # ビープ音を無効化
+setopt ignore_eof         # Ctrl+D でシェルを終了しない
+
+# --- コマンドライン編集 ---
+setopt interactive_comments  # '#' 以降をコメントとして扱う（コマンドラインでも）
+setopt extended_glob         # 拡張グロブ（**/, (#i) など）を有効化
+
+# --- ディレクトリ移動 ---
+setopt auto_cd            # ディレクトリ名だけで cd
+setopt auto_pushd         # cd 時に自動で pushd（cd - で戻れる）
+setopt pushd_ignore_dups  # pushd で重複を追加しない
+
+# --- ヒストリ ---
+setopt hist_ignore_dups       # 直前と同じコマンドは履歴に追加しない
+setopt hist_ignore_all_dups   # 重複するコマンドは古い方を削除
+setopt hist_reduce_blanks     # 余分な空白を削除して保存
+
+
+# ==============================================================================
+# 6. エイリアス
+# ==============================================================================
+# よく使うコマンドの短縮形
+
+# --- シェル操作 ---
+alias relogin='exec $SHELL -l'  # 設定を再読み込み
+
+# --- ファイル操作（基本） ---
+alias ls="ls -FG"         # ファイルタイプ表示 + カラー
+alias ll='ls -l'          # 詳細表示
+alias la='ls -al'         # 隠しファイル含む詳細表示
+alias la.='ls -al .??*'   # 隠しファイルのみ表示
+alias mkdir='mkdir -p'    # 親ディレクトリも作成
+
+# --- 安全対策（確認プロンプト） ---
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-## sudo の後のコマンドでエイリアスを有効にする
+
+# --- sudo でエイリアスを有効化 ---
+# sudo の後にスペースを入れることで、続くコマンドもエイリアス展開される
 alias sudo='sudo '
-## git
+
+# --- Git ---
 alias gc='git checkout'
 alias gcb='git checkout -b'
 alias gpl='git pull origin HEAD'
@@ -79,98 +132,120 @@ alias gpl-r='git pull --rebase origin main'
 alias gp='git push origin HEAD'
 alias gcm='git commit -m'
 alias gcm-e='git commit --allow-empty -m'
-## docker
+
+# --- Docker ---
 alias d='docker'
-alias dc='docker compose' # sorry ex-dc...
+alias dc='docker compose'
 alias rm_docker_images='docker images -qf dangling=true | xargs docker rmi'
-alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v' # rm with volumes
+alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v'
 alias rm_docker_volumes='docker volume ls -qf dangling=true | xargs docker volume rm'
 alias rm_docker_compose_containers='docker-compose rm -fv'
-## K8s でクラスタのご操作を防ぐラッパー（P山さん作）
+
+# --- Kubernetes ---
+# クラスタ誤操作防止ラッパー
 alias kc='kubectl-cluster-caution'
-## その他
+
+# --- その他 ---
 alias be='bundle exec'
-## OS 別の設定
+
+# --- OS 別設定 ---
 case ${OSTYPE} in
-    darwin*)
-        #Mac用の設定
-        export CLICOLOR=1
-        alias ls='ls -G -F'
-        ;;
-    linux*)
-        #Linux用の設定
-        alias ls='ls -F --color=auto'
-        ;;
+  darwin*)
+    # macOS
+    export CLICOLOR=1
+    alias ls='ls -G -F'
+    ;;
+  linux*)
+    # Linux
+    alias ls='ls -F --color=auto'
+    ;;
 esac
 
-# ####################
-# fzf / 便利コマンド
-#
 
-## command histroy を検索
+# ==============================================================================
+# 7. 関数
+# ==============================================================================
+# カスタム関数の定義
+
+# fzf を使ったコマンド履歴検索
+# Ctrl+R で起動し、インクリメンタルに履歴を検索
 function fzf-select-history() {
-    local tac
-    if which tac > /dev/null; then
-        tac="tac"
-    else
-        tac="tail -r"
-    fi
-    BUFFER=$(\history -n 1 | \
-        eval $tac | \
-        fzf --reverse --query "$LBUFFER")
-    CURSOR=$#BUFFER
-    zle clear-screen
+  local tac
+  if which tac > /dev/null; then
+    tac="tac"
+  else
+    tac="tail -r"  # macOS には tac がないので tail -r で代用
+  fi
+  BUFFER=$(\history -n 1 | \
+    eval $tac | \
+    fzf --reverse --query "$LBUFFER")
+  CURSOR=$#BUFFER
+  zle clear-screen
 }
 zle -N fzf-select-history
 
-# ####################
-# asdf
-#
+
+# ==============================================================================
+# 8. キーバインド
+# ==============================================================================
+# カスタムキーバインドの設定
+
+# Ctrl+R: fzf による履歴検索
+bindkey '^r' fzf-select-history
+
+
+# ==============================================================================
+# 9. 外部ツール - バージョン管理
+# ==============================================================================
+
+# --- asdf (多言語バージョンマネージャー) ---
 . "$HOME/.asdf/asdf.sh"
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
-# ####################
-# プラグイン
-#
-# homebrew setup for M1 macOS
+
+# ==============================================================================
+# 10. 外部ツール - パッケージマネージャー
+# ==============================================================================
+
+# --- Homebrew (macOS) ---
 if [ -f /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-  # MacPorts
+
+  # MacPorts との共存
   export PATH="/opt/local/bin:$PATH"
-  ## zsh-completions(補完機能)の設定
+
+  # zsh-completions（Homebrew 経由でインストール）
   if [ -e "$(brew --prefix)/share/zsh-completions" ]; then
     FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
   fi
 fi
 
-# fzf key-bindings (Ubuntu)
+# --- fzf キーバインド (Ubuntu) ---
+# Ubuntu では fzf のキーバインドを別ファイルから読み込む
 if [ -f "$HOME/.zsh/fzf-key-bindings.zsh" ]; then
   source "$HOME/.zsh/fzf-key-bindings.zsh"
 fi
 
-bindkey '^r' fzf-select-history
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
+# ==============================================================================
+# 11. サービス連携・その他
+# ==============================================================================
+# 各種クラウドサービスやツールとの連携設定
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/yoshikouki/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/completion.zsh.inc'; fi
+# --- Google Cloud SDK ---
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then
+  . "$HOME/google-cloud-sdk/path.zsh.inc"
+fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
+  . "$HOME/google-cloud-sdk/completion.zsh.inc"
+fi
 
-# pnpm
-export PNPM_HOME="/Users/yoshikouki/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-# bun completions
-[ -s "/Users/yoshikouki/.bun/_bun" ] && source "/Users/yoshikouki/.bun/_bun"
-export PATH="$HOME/.local/bin:$PATH"
-
-source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
-
+# --- Turso (SQLite エッジデータベース) ---
 . "$HOME/.turso/env"
 
-# zoxide (cd replacement)
+# --- Safe-chain ---
+source ~/.safe-chain/scripts/init-posix.sh
+
+# --- zoxide (スマート cd) ---
+# cd コマンドを zoxide で置き換え、よく使うディレクトリに素早く移動
 eval "$(zoxide init zsh --cmd cd)"
