@@ -1,5 +1,12 @@
 # Dotfiles Project Instructions
 
+## Supported Operating Systems
+
+This dotfiles project supports **macOS** and **Ubuntu**. When writing scripts or configurations:
+- Use conditional checks to handle OS-specific paths and commands
+- Avoid hardcoding OS-specific paths without fallbacks
+- Test compatibility on both platforms when possible
+
 ## Local Bin Scripts
 
 When creating or modifying scripts in `local-bin/`:

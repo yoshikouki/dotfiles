@@ -40,7 +40,13 @@ end
 
 # mise (自動でactivateされる)
 set -gx PATH ~/.local/bin $PATH
-~/.local/bin/mise activate fish | source
+if type -q mise
+    mise activate fish | source
+else if test -x /opt/homebrew/bin/mise
+    /opt/homebrew/bin/mise activate fish | source
+else if test -x ~/.local/bin/mise
+    ~/.local/bin/mise activate fish | source
+end
 
 set -gx PATH "/Users/yoshikouki/.local/bin" $PATH
 
