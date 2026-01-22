@@ -104,11 +104,11 @@ case ${OSTYPE} in
 esac
 
 # ####################
-# peco / 便利コマンド
+# fzf / 便利コマンド
 #
 
 ## command histroy を検索
-function peco-select-history() {
+function fzf-select-history() {
     local tac
     if which tac > /dev/null; then
         tac="tac"
@@ -117,22 +117,21 @@ function peco-select-history() {
     fi
     BUFFER=$(\history -n 1 | \
         eval $tac | \
-        peco --query "$LBUFFER")
+        fzf --reverse --query "$LBUFFER")
     CURSOR=$#BUFFER
     zle clear-screen
 }
-zle -N peco-select-history
-# bindkey '^r' peco-select-history
+zle -N fzf-select-history
 
 ## 移動したディレクトリ履歴から検索 search a destination from cdr list
-function peco-get-destination-from-cdr() {
+function fzf-get-destination-from-cdr() {
   cdr -l | \
   sed -e 's/^[[:digit:]]*[[:blank:]]*//' | \
-  peco --query "$LBUFFER"
+  fzf --reverse --query "$LBUFFER"
 }
 ## search a destination from cdr list and cd the destination
-function peco-cdr() {
-  local destination="$(peco-get-destination-from-cdr)"
+function fzf-cdr() {
+  local destination="$(fzf-get-destination-from-cdr)"
   if [ -n "$destination" ]; then
     BUFFER="cd $destination"
     zle accept-line
@@ -140,29 +139,26 @@ function peco-cdr() {
     zle reset-prompt
   fi
 }
-zle -N peco-cdr
-# bindkey '^x' peco-cdr
+zle -N fzf-cdr
 
 ## git repository を検索
-function peco-src () {
-  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+function fzf-src () {
+  local selected_dir=$(ghq list -p | fzf --reverse --query "$LBUFFER")
   if [ -n "$selected_dir" ]; then
     BUFFER="cd ${selected_dir}"
     zle accept-line
   fi
   zle clear-screen
 }
-zle -N peco-src
-# bindkey '^g' peco-src
+zle -N fzf-src
 
 ## git branch 切り替え
-function peco-branch() {
-
+function fzf-branch() {
     # commiterdate:relativeを commiterdate:localに変更すると普通の時刻表示
     local selected_line="$(git for-each-ref --format='%(refname:short) | %(committerdate:relative) | %(committername) | %(subject)' --sort=-committerdate refs/heads refs/remotes \
         | column -t -s '|' \
         | grep -v 'origin' \
-        | peco \
+        | fzf --reverse \
         | head -n 1 \
         | awk '{print $1}')"
     if [ -n "$selected_line" ]; then
@@ -172,8 +168,7 @@ function peco-branch() {
     fi
     zle clear-screen
 }
-zle -N peco-branch
-# bindkey '^b' peco-branch
+zle -N fzf-branch
 
 ## git リポジトリへのアクセス
 function open-git-remote() {
@@ -185,11 +180,10 @@ function open-git-remote() {
   fi
 }
 zle -N open-git-remote
-# bindkey '^o' open-git-remote
 
 ## Docker ログイン・ログ・削除
-function peco-docker-login() {
-    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+function fzf-docker-login() {
+    local cid=$(docker ps | grep -v 'CONTAINER ID' | fzf --reverse --query "$LBUFFER" | cut -d ' ' -f1)
     if [ -n "$cid" ]; then
       BUFFER="docker exec -it $(echo $cid) /bin/bash"
       CURSOR=$#BUFFER
@@ -197,11 +191,10 @@ function peco-docker-login() {
     fi
     zle clear-screen
 }
-zle -N peco-docker-login
-# bindkey '^te' peco-docker-login
+zle -N fzf-docker-login
 
-function peco-docker-log() {
-    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+function fzf-docker-log() {
+    local cid=$(docker ps | grep -v 'CONTAINER ID' | fzf --reverse --query "$LBUFFER" | cut -d ' ' -f1)
     if [ -n "$cid" ]; then
       BUFFER="docker logs -f $(echo $cid)"
       CURSOR=$#BUFFER
@@ -209,11 +202,10 @@ function peco-docker-log() {
     fi
     zle clear-screen
 }
-zle -N peco-docker-log
-# bindkey '^tl' peco-docker-log
+zle -N fzf-docker-log
 
-function peco-docker-delete() {
-    local cid=$(docker ps |grep -v 'CONTAINER ID' | peco --query "$LBUFFER"| cut -d ' ' -f1)
+function fzf-docker-delete() {
+    local cid=$(docker ps | grep -v 'CONTAINER ID' | fzf --reverse --query "$LBUFFER" | cut -d ' ' -f1)
     if [ -n "$cid" ]; then
       BUFFER="docker rm -f $(echo $cid)"
       CURSOR=$#BUFFER
@@ -221,8 +213,7 @@ function peco-docker-delete() {
     fi
     zle clear-screen
 }
-zle -N peco-docker-delete
-# bindkey '^td' peco-docker-delete
+zle -N fzf-docker-delete
 
 # ####################
 # asdf
@@ -249,14 +240,14 @@ if [ -f "$HOME/.zsh/fzf-key-bindings.zsh" ]; then
   source "$HOME/.zsh/fzf-key-bindings.zsh"
 fi
 
-bindkey '^r' peco-select-history
-bindkey '^x' peco-cdr
-bindkey '^g' peco-src
-bindkey '^b' peco-branch
+bindkey '^r' fzf-select-history
+bindkey '^x' fzf-cdr
+bindkey '^g' fzf-src
+bindkey '^b' fzf-branch
 bindkey '^o' open-git-remote
-bindkey '^te' peco-docker-login
-bindkey '^tl' peco-docker-log
-bindkey '^td' peco-docker-delete
+bindkey '^te' fzf-docker-login
+bindkey '^tl' fzf-docker-log
+bindkey '^td' fzf-docker-delete
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
