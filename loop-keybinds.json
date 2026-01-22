@@ -3,19 +3,18 @@
     {
       "direction" : "BottomLeftQuarter",
       "keybind" : [
-        38
+        32
       ]
     },
     {
       "direction" : "BottomRightQuarter",
       "keybind" : [
-        40
+        34
       ]
     },
     {
       "direction" : "BottomScreen",
       "keybind" : [
-        56,
         125
       ]
     },
@@ -30,8 +29,7 @@
       "direction" : "Custom",
       "height" : 33.299999999999997,
       "keybind" : [
-        34,
-        56
+        29
       ],
       "name" : "右上1\/3高",
       "positionMode" : 0,
@@ -44,8 +42,7 @@
       "direction" : "Custom",
       "height" : 33.299999999999997,
       "keybind" : [
-        40,
-        56
+        35
       ],
       "name" : "右下1\/3高",
       "positionMode" : 0,
@@ -58,9 +55,8 @@
       "direction" : "Custom",
       "height" : 33.299999999999997,
       "keybind" : [
-        34,
-        40,
-        56
+        29,
+        35
       ],
       "name" : "右中央1\/3高",
       "positionMode" : 0,
@@ -73,8 +69,7 @@
       "direction" : "Custom",
       "height" : 33.299999999999997,
       "keybind" : [
-        32,
-        56
+        25
       ],
       "name" : "左上1\/3高",
       "positionMode" : 0,
@@ -87,8 +82,7 @@
       "direction" : "Custom",
       "height" : 33.299999999999997,
       "keybind" : [
-        38,
-        56
+        31
       ],
       "name" : "左下1\/3高",
       "positionMode" : 0,
@@ -101,9 +95,8 @@
       "direction" : "Custom",
       "height" : 33.299999999999997,
       "keybind" : [
-        32,
-        38,
-        56
+        25,
+        31
       ],
       "name" : "左中央1\/3高",
       "positionMode" : 0,
@@ -134,7 +127,7 @@
       ],
       "direction" : "Cycle",
       "keybind" : [
-        126
+        40
       ],
       "name" : "上部繰り返し"
     },
@@ -161,7 +154,7 @@
       ],
       "direction" : "Cycle",
       "keybind" : [
-        125
+        38
       ],
       "name" : "下部繰り返し"
     },
@@ -188,7 +181,7 @@
       ],
       "direction" : "Cycle",
       "keybind" : [
-        124
+        37
       ],
       "name" : "右部繰り返し"
     },
@@ -215,22 +208,21 @@
       ],
       "direction" : "Cycle",
       "keybind" : [
-        123
+        4
       ],
       "name" : "左部繰り返し"
     },
     {
       "direction" : "LeftScreen",
       "keybind" : [
-        4,
-        56
+        123
       ]
     },
     {
       "direction" : "LeftScreen",
       "keybind" : [
-        56,
-        124
+        4,
+        56
       ]
     },
     {
@@ -242,15 +234,14 @@
     {
       "direction" : "RightScreen",
       "keybind" : [
-        37,
-        56
+        124
       ]
     },
     {
       "direction" : "RightScreen",
       "keybind" : [
-        56,
-        123
+        37,
+        56
       ]
     },
     {
@@ -259,20 +250,19 @@
       ],
       "direction" : "TopLeftQuarter",
       "keybind" : [
-        32
+        26
       ],
       "name" : ""
     },
     {
       "direction" : "TopRightQuarter",
       "keybind" : [
-        34
+        28
       ]
     },
     {
       "direction" : "TopScreen",
       "keybind" : [
-        56,
         126
       ]
     }
