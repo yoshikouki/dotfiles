@@ -41,6 +41,10 @@ for file in .??*; do
   ln -sfnv "$DOTPATH/$file" "$HOME/$file"
 done
 ln -sfnv "$DOTPATH/config.fish" "$HOME/.config/fish/config.fish"
+
+# OS-specific git config
+mkdir -p "$HOME/.config/git"
+ln -sfnv "$DOTPATH/.gitconfig.macos" "$HOME/.config/git/local.gitconfig"
 echo "✅ CREATE symbolic link" "\n"
 
 # ターミナルを再起動する

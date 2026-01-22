@@ -5,7 +5,7 @@
 	email = yoshikouki@gmail.com
 	id = yoshikouki
 [core]
-	excludesfile = /Users/yoshikouki/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	pager = delta
 	editor = nvim
 [interactive]
@@ -20,15 +20,8 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[include]
-    path = ~/.config/git/local.gitconfig
 [init]
 	defaultBranch = main
-[credential]
-	helper = osxkeychain
-[credential "https://github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+# OS-specific settings are loaded from local.gitconfig
+[include]
+	path = ~/.config/git/local.gitconfig

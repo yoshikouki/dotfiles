@@ -21,6 +21,9 @@ if [ ! -d "$DOTPATH" ]; then
 fi
 ln -sfnv "$DOTPATH/.gitconfig" "$HOME/.gitconfig"
 ln -sfnv "$DOTPATH/.gitignore_global" "$HOME/.gitignore_global"
+# OS-specific git config
+mkdir -p "$HOME/.config/git"
+ln -sfnv "$DOTPATH/.gitconfig.linux" "$HOME/.config/git/local.gitconfig"
 ln -sfnv "$DOTPATH/.zshrc" "$HOME/.zshrc"
 ln -sfnv "$DOTPATH/.zprofile" "$HOME/.zprofile"
 ln -sfnv "$DOTPATH/.zlogin" "$HOME/.zlogin"
