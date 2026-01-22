@@ -11,6 +11,20 @@ if status is-interactive
     eval (/opt/homebrew/bin/brew shellenv)
 end
 
+function fish_greeting
+    set -l normal (set_color normal)
+    set -l dim (set_color --dim)
+    set -l bold (set_color --bold)
+    set -l cyan (set_color cyan)
+    set -l blue (set_color blue)
+    set -l now (date "+%Y-%m-%d %H:%M")
+    set -l host (hostname)
+
+    echo "$bold$cyan""fish"$normal"  $dim$now$normal"
+    echo "  $bold$USER$normal@$bold$host$normal  $blue"(prompt_pwd)"$normal"
+    echo "  type: "$dim"help$normal""  |  "$dim"exit$normal""  |  "$dim"fish_key_bindings$normal"
+end
+
 # MacPorts
 if functions -q fish_add_path
     fish_add_path --prepend /opt/local/bin
@@ -77,4 +91,3 @@ set -gx PATH ~/src/chromium.googlesource.com/chromium/tools/depot_tools $PATH
 zoxide init fish --cmd cd | source
 alias z='__zoxide_z'
 alias zi='__zoxide_zi'
-
