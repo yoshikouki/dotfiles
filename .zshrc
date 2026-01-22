@@ -240,10 +240,14 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
 fi
 
 # --- Turso (SQLite エッジデータベース) ---
-. "$HOME/.turso/env"
+if [ -f "$HOME/.turso/env" ]; then
+  . "$HOME/.turso/env"
+fi
 
 # --- Safe-chain ---
-source ~/.safe-chain/scripts/init-posix.sh
+if [ -f "$HOME/.safe-chain/scripts/init-posix.sh" ]; then
+  source "$HOME/.safe-chain/scripts/init-posix.sh"
+fi
 
 # --- zoxide (スマート cd) ---
 # cd コマンドを zoxide で置き換え、よく使うディレクトリに素早く移動
