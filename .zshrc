@@ -1,13 +1,4 @@
 # ####################
-# Pure prompt (https://github.com/sindresorhus/pure)
-#
-if [ -d "$HOME/.zsh/pure" ]; then
-  fpath+=("$HOME/.zsh/pure")
-  autoload -U promptinit; promptinit
-  prompt pure
-fi
-
-# ####################
 # 基本設定
 #
 ## 文字コードを UTF-8 に指定

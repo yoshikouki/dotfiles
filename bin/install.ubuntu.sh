@@ -32,13 +32,6 @@ if ! grep -q "$(which zsh)" /etc/shells; then
 fi
 chsh -s "$(which zsh)"
 
-# Pure prompt https://github.com/sindresorhus/pure
-PURE_DIR="$HOME/.zsh/pure"
-if [ ! -d "$PURE_DIR" ]; then
-  mkdir -p "$HOME/.zsh"
-  git clone https://github.com/sindresorhus/pure.git "$PURE_DIR"
-fi
-
 # fzf key bindings
 if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
   ln -sfnv /usr/share/doc/fzf/examples/key-bindings.zsh "$HOME/.zsh/fzf-key-bindings.zsh"
