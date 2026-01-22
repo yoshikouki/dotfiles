@@ -66,3 +66,4 @@ autocmd("FileType", {
   end,
   desc = "Disable spell check for markdown and enable list continuation",
 })
+

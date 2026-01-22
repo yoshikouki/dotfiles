@@ -6,11 +6,36 @@ return {
     priority = 1000,
     opts = {
       extra_groups = {
-        "NormalFloat", -- フローティングウィンドウ
+        -- 基本的なフローティングウィンドウ
+        "NormalFloat", -- フローティングウィンドウ本体
+        "FloatBorder", -- フローティングウィンドウのボーダー
+
+        -- ファイルツリー
         "NvimTreeNormal", -- nvim-tree
         "NeoTreeNormal", -- neo-tree
-        "NeoTreeNormalNC",
+        "NeoTreeNormalNC", -- neo-tree（非アクティブ）
+
+        -- ポップアップ
         "WhichKeyFloat", -- which-key
+
+        -- ウィンドウ区切り線
+        "WinSeparator", -- ウィンドウの区切り線
+        "VertSplit", -- 垂直分割線（古いバージョン互換用）
+
+        -- ステータスライン
+        "StatusLine", -- アクティブなステータスライン
+        "StatusLineNC", -- 非アクティブなステータスライン
+
+        -- タブライン/バッファライン
+        "TabLine", -- タブライン
+        "TabLineFill", -- タブラインの背景
+        "TabLineSel", -- 選択中のタブ
+        "BufferLineBackground", -- bufferline の背景
+        "BufferLineFill", -- bufferline の塗りつぶし領域
+
+        -- その他の UI 要素
+        "SignColumn", -- サインカラム（gitsigns、診断アイコンなど）
+        "EndOfBuffer", -- バッファ終端の ~ 記号
       },
       exclude_groups = {},
     },
