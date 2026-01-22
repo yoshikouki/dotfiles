@@ -4,70 +4,70 @@ return {
     -- ========================================
     -- 全般設定
     -- ========================================
-    -- close_if_last_window = false,        -- 最後のウィンドウなら Neo-tree を閉じる
+    close_if_last_window = true, -- 最後のウィンドウなら Neo-tree を閉じる
     -- popup_border_style = "NC",            -- ポップアップのボーダースタイル
-    -- enable_git_status = true,             -- Git ステータスを有効化
-    -- enable_diagnostics = true,            -- 診断情報を有効化
+    enable_git_status = true, -- Git ステータスを有効化
+    enable_diagnostics = true, -- 診断情報を有効化
     -- sort_case_insensitive = false,        -- 大文字小文字を区別してソート
 
     -- ========================================
     -- コンポーネント設定 (default_component_configs)
     -- ========================================
-    -- default_component_configs = {
-    --   container = {
-    --     enable_character_fade = true,     -- 文字フェード効果
-    --   },
-    --   indent = {
-    --     indent_size = 2,                  -- インデントサイズ
-    --     padding = 1,                      -- 左パディング
-    --     with_markers = true,              -- インデントマーカーを表示
-    --     indent_marker = "│",
-    --     last_indent_marker = "└",
-    --     with_expanders = nil,             -- ファイルネスト用エキスパンダー
-    --     expander_collapsed = "",
-    --     expander_expanded = "",
-    --   },
-    --   icon = {
-    --     folder_closed = "",
-    --     folder_open = "",
-    --     folder_empty = "󰜌",
-    --     default = "*",
-    --   },
-    --   modified = {
-    --     symbol = "[+]",
-    --   },
-    --   name = {
-    --     trailing_slash = false,           -- ディレクトリ末尾にスラッシュ
-    --     use_git_status_colors = true,     -- Git ステータスに応じた色
-    --   },
-    --   git_status = {
-    --     symbols = {
-    --       added     = "",
-    --       modified  = "",
-    --       deleted   = "✖",
-    --       renamed   = "󰁕",
-    --       untracked = "",
-    --       ignored   = "",
-    --       unstaged  = "󰄱",
-    --       staged    = "",
-    --       conflict  = "",
-    --     },
-    --   },
-    --   diagnostics = {
-    --     symbols = {
-    --       hint = "H",
-    --       info = "I",
-    --       warn = "!",
-    --       error = "X",
-    --     },
-    --   },
-    --   -- ファイル情報カラム
-    --   file_size = { enabled = true, width = 12, required_width = 64 },
-    --   type = { enabled = true, width = 10, required_width = 122 },
-    --   last_modified = { enabled = true, width = 20, required_width = 88 },
-    --   created = { enabled = true, width = 20, required_width = 110 },
-    --   symlink_target = { enabled = false },
-    -- },
+    default_component_configs = {
+      --   container = {
+      --     enable_character_fade = true,     -- 文字フェード効果
+      --   },
+      --   indent = {
+      --     indent_size = 2,                  -- インデントサイズ
+      --     padding = 1,                      -- 左パディング
+      --     with_markers = true,              -- インデントマーカーを表示
+      --     indent_marker = "│",
+      --     last_indent_marker = "└",
+      --     with_expanders = nil,             -- ファイルネスト用エキスパンダー
+      --     expander_collapsed = "",
+      --     expander_expanded = "",
+      --   },
+      --   icon = {
+      --     folder_closed = "",
+      --     folder_open = "",
+      --     folder_empty = "󰜌",
+      --     default = "*",
+      --   },
+      --   modified = {
+      --     symbol = "[+]",
+      --   },
+      --   name = {
+      --     trailing_slash = false,           -- ディレクトリ末尾にスラッシュ
+      --     use_git_status_colors = true,     -- Git ステータスに応じた色
+      --   },
+      --   git_status = {
+      --     symbols = {
+      --       added     = "",
+      --       modified  = "",
+      --       deleted   = "✖",
+      --       renamed   = "󰁕",
+      --       untracked = "",
+      --       ignored   = "",
+      --       unstaged  = "󰄱",
+      --       staged    = "",
+      --       conflict  = "",
+      --     },
+      --   },
+      --   diagnostics = {
+      --     symbols = {
+      --       hint = "H",
+      --       info = "I",
+      --       warn = "!",
+      --       error = "X",
+      --     },
+      --   },
+      --   -- ファイル情報カラム
+      --   file_size = { enabled = true, width = 12, required_width = 64 },
+      --   type = { enabled = true, width = 10, required_width = 122 },
+      --   last_modified = { enabled = true, width = 20, required_width = 88 },
+      --   created = { enabled = true, width = 20, required_width = 110 },
+      --   symlink_target = { enabled = false },
+    },
 
     -- ========================================
     -- ウィンドウ設定
@@ -111,10 +111,10 @@ return {
     -- ========================================
     filesystem = {
       filtered_items = {
-        visible = true,                     -- 隠しファイルをグレーアウト表示
-        hide_dotfiles = false,              -- dotfiles を表示
-        hide_gitignored = false,            -- gitignore されたファイルを表示
-        hide_hidden = false,                -- OS の隠しファイルを表示 (Windows)
+        visible = true, -- 隠しファイルをグレーアウト表示
+        hide_dotfiles = false, -- dotfiles を表示
+        hide_gitignored = false, -- gitignore されたファイルを表示
+        hide_hidden = false, -- OS の隠しファイルを表示 (Windows)
         -- hide_by_name = {                 -- 特定の名前を非表示
         --   ".DS_Store",
         --   "thumbs.db",
@@ -124,12 +124,12 @@ return {
         --   "*.meta",
         --   "*/src/*/tsconfig.json",
         -- },
-        -- always_show = {                  -- 常に表示
-        --   ".gitignore",
-        -- },
-        -- always_show_by_pattern = {       -- パターンで常に表示
-        --   ".env*",
-        -- },
+        always_show = { -- 常に表示
+          ".gitignore",
+        },
+        always_show_by_pattern = { -- パターンで常に表示
+          ".env*",
+        },
         -- never_show = {                   -- 絶対に非表示
         --   ".DS_Store",
         --   "thumbs.db",
@@ -138,10 +138,10 @@ return {
         --   ".null-ls_*",
         -- },
       },
-      -- follow_current_file = {
-      --   enabled = false,                 -- カレントファイルを追従
-      --   leave_dirs_open = false,         -- ディレクトリを開いたままにする
-      -- },
+      follow_current_file = {
+        --   enabled = false,                 -- カレントファイルを追従
+        leave_dirs_open = false, -- ディレクトリを開いたままにする
+      },
       -- group_empty_dirs = false,          -- 空ディレクトリをグループ化
       -- hijack_netrw_behavior = "open_default",  -- "open_default", "open_current", "disabled"
       -- use_libuv_file_watcher = false,    -- ファイル変更を自動検知
