@@ -1,0 +1,7 @@
+[tools]
+ghq = "latest"
+go = "1.24.4"
+lazygit = "latest"
+node = "24"
+ruby = "3.4.4"
+yazi = "latest"
