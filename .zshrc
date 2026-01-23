@@ -121,11 +121,14 @@ setopt hist_reduce_blanks     # 余分な空白を削除して保存
 alias relogin='exec $SHELL -l'  # 設定を再読み込み
 
 # --- ファイル操作（基本） ---
-alias ls="ls -FG"         # ファイルタイプ表示 + カラー
-alias ll='ls -l'          # 詳細表示
-alias la='ls -al'         # 隠しファイル含む詳細表示
-alias la.='ls -al .??*'   # 隠しファイルのみ表示
+alias ls='eza'            # モダンな ls 代替（eza）
+alias ll='eza -l'         # 詳細表示
+alias la='eza -la'        # 隠しファイル含む詳細表示
+alias lt='eza -T'         # ツリー表示
 alias mkdir='mkdir -p'    # 親ディレクトリも作成
+
+# --- ファイル表示 ---
+alias cat='bat --paging=never'  # シンタックスハイライト付き cat
 
 # --- 安全対策（確認プロンプト） ---
 alias rm='rm -i'
@@ -165,11 +168,9 @@ case ${OSTYPE} in
   darwin*)
     # macOS
     export CLICOLOR=1
-    alias ls='ls -G -F'
     ;;
   linux*)
-    # Linux
-    alias ls='ls -F --color=auto'
+    # Linux (no additional settings needed with eza)
     ;;
 esac
 

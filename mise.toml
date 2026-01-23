@@ -1,12 +1,28 @@
 [tools]
+# Core CLI tools
 fd = "latest"
 fzf = "latest"
 ghq = "latest"
-go = "1.24.4"
-lazygit = "latest"
-node = "24"
 ripgrep = "latest"
+jq = "latest"
+bat = "latest"
+# eza: macOS arm64向けプリビルドがないためBrewで管理
+delta = "latest"
+
+# Languages & Runtimes
+go = "1.24.4"
+node = "24"
 ruby = "3.4.4"
+python = "3.13"
+bun = "latest"
+rust = "latest"
+
+# TUI & Utilities
+lazygit = "latest"
 tmux = "latest"
 yazi = "latest"
 zoxide = "latest"
+neovim = "latest"
+
+# Service CLIs
+gh = "latest"
