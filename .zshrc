@@ -219,6 +219,11 @@ eval "$(mise activate zsh)"
 # 10. 外部ツール - パッケージマネージャー
 # ==============================================================================
 
+# --- Homebrew (Linux) ---
+if [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+fi
+
 # --- Homebrew (macOS) ---
 if [ -f /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
