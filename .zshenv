@@ -12,3 +12,8 @@ export LANG=ja_JP.UTF-8
 
 # ~/.local/bin をPATHに追加
 export PATH="$HOME/.local/bin:$PATH"
+
+# Load local secrets (not tracked by git)
+if [ -f "$HOME/.zshenv.local" ]; then
+  source "$HOME/.zshenv.local"
+fi

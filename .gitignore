@@ -11,6 +11,7 @@
 .env.*
 .turso/
 **/secrets.*
+.zshenv.local
 **/*.pem
 **/*.key
 **/*.p12
