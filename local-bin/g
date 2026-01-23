@@ -1,6 +1,0 @@
-#!/bin/sh
-# ghq リポジトリ検索 - 選択したリポジトリのパスを出力
-repo=$(ghq list | fzf --reverse +m)
-if [ -n "$repo" ]; then
-    echo "$(ghq root)/$repo"
-fi

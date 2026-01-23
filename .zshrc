@@ -203,6 +203,56 @@ function fzf-select-history() {
 }
 zle -N fzf-select-history
 
+# ghq リポジトリ検索・移動
+# fzf で ghq 管理下のリポジトリを選択し、そのディレクトリに移動
+function g() {
+  local repo=$(ghq list | fzf --reverse +m)
+  if [ -n "$repo" ]; then
+    cd "$(ghq root)/$repo"
+  fi
+}
+
+# git ブランチ検索・切り替え
+# fzf でローカルブランチを選択し、git switch で切り替え
+function b() {
+  local branch=$(git branch --sort=-committerdate | fzf --reverse)
+  if [ -n "$branch" ]; then
+    git switch "$(echo "$branch" | sed 's/^[ *]*//')"
+  fi
+}
+
+# git ブランチ作成
+# 引数またはプロンプトでブランチ名を入力し、新しいブランチを作成して切り替え
+function c() {
+  local branch_name
+  if [ $# -eq 0 ]; then
+    printf "branch name: "
+    read branch_name
+  else
+    branch_name="$1"
+  fi
+
+  if [ -n "$branch_name" ]; then
+    git switch -c "$branch_name"
+  else
+    echo "Branch name is required."
+    return 1
+  fi
+}
+
+# yazi ファイルマネージャー
+# 終了後に選択したディレクトリに cd
+function y() {
+  local tmp=$(mktemp -t "yazi-cwd.XXXXXX")
+  local target="${1:-.}"
+  yazi "$target" --cwd-file="$tmp"
+  local cwd=$(cat "$tmp")
+  rm -f "$tmp"
+  if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    cd "$cwd"
+  fi
+}
+
 
 # ==============================================================================
 # 8. キーバインド

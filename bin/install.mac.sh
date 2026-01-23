@@ -49,6 +49,7 @@ fi
 echo "✅ DOWNLOAD dotfiles" "\n"
 
 echo "#️⃣ CREATE symbolic link"
+cd "$DOTPATH" || exit
 for file in .??*; do
 	for ign in "${IGNORE_FILES[@]}"; do
 		[[ "$ign" = "$file" ]] && continue 2
