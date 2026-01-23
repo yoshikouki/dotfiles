@@ -4,7 +4,12 @@
   home.homeDirectory = "/Users/yoshikouki";
   home.stateVersion = "24.11";
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      source ${config.home.homeDirectory}/dotfiles/config.fish
+    '';
+  };
 
   programs.zoxide = {
     enable = true;
@@ -42,8 +47,6 @@
     neovim
     gh
   ];
-
-  home.file.".config/fish/config.fish".source = ../config.fish;
 
   home.file.".config/nvim" = {
     source = ../nvim;
