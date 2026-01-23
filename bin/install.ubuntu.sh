@@ -11,9 +11,9 @@ sudo apt install -y \
   wget \
   git \
   unzip \
-  fzf \
   zsh \
-  neovim
+  neovim \
+  build-essential  # treesitter パーサー構築用
 
 # dotfiles
 if [ ! -d "$DOTPATH" ]; then
@@ -51,20 +51,35 @@ if ! grep -q "$(which zsh)" /etc/shells; then
 fi
 chsh -s "$(which zsh)"
 
-# fzf key bindings
-if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
-  mkdir -p "$HOME/.zsh"
-  ln -sfnv /usr/share/doc/fzf/examples/key-bindings.zsh "$HOME/.zsh/fzf-key-bindings.zsh"
-fi
-
 # mise https://mise.jdx.dev/getting-started.html
 if ! command -v mise &> /dev/null; then
   curl https://mise.run | sh
 fi
 eval "$(~/.local/bin/mise activate bash)"
 
-# ghq https://github.com/x-motemen/ghq
-mise use -g ghq@latest
+# mise config
+mkdir -p "$HOME/.config/mise"
+ln -sfnv "$DOTPATH/mise.toml" "$HOME/.config/mise/config.toml"
+mise trust "$DOTPATH/mise.toml"
+mise install
+
+# Nerd Font (JetBrainsMono)
+mkdir -p "$HOME/.local/share/fonts"
+cd "$HOME/.local/share/fonts"
+curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/JetBrainsMono.zip
+unzip -o JetBrainsMono.zip
+rm JetBrainsMono.zip
+fc-cache -fv
+cd "$DOTPATH"
+
+# fzf key bindings (apt版 or mise版)
+if [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+  mkdir -p "$HOME/.zsh"
+  ln -sfnv /usr/share/doc/fzf/examples/key-bindings.zsh "$HOME/.zsh/fzf-key-bindings.zsh"
+elif [ -f "$HOME/.local/share/mise/installs/fzf/latest/shell/key-bindings.zsh" ]; then
+  mkdir -p "$HOME/.zsh"
+  ln -sfnv "$HOME/.local/share/mise/installs/fzf/latest/shell/key-bindings.zsh" "$HOME/.zsh/fzf-key-bindings.zsh"
+fi
 
 # Cleanup
 sudo apt autoremove -y

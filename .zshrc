@@ -38,6 +38,18 @@ autoload -Uz compinit && compinit -u
 # プロンプトなどで色を使用可能にする
 autoload -Uz colors && colors
 
+# プロンプト設定（tide スタイル 2行）
+# 1行目: ユーザー@ホスト パス (gitブランチ)
+# 2行目: プロンプト記号
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '(%b)'
+setopt PROMPT_SUBST
+
+PROMPT='
+%F{cyan}%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f
+%F{magenta}$%f '
+
 # 単語区切りスタイルの設定
 # select-word-style: Ctrl+W などで単語単位の操作を行う際の区切り方を制御
 autoload -Uz select-word-style && select-word-style default
@@ -251,4 +263,6 @@ fi
 
 # --- zoxide (スマート cd) ---
 # cd コマンドを zoxide で置き換え、よく使うディレクトリに素早く移動
-eval "$(zoxide init zsh --cmd cd)"
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi

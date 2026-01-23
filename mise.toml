@@ -1,7 +1,12 @@
 [tools]
+fd = "latest"
+fzf = "latest"
 ghq = "latest"
 go = "1.24.4"
 lazygit = "latest"
 node = "24"
+ripgrep = "latest"
 ruby = "3.4.4"
+tmux = "latest"
 yazi = "latest"
+zoxide = "latest"
