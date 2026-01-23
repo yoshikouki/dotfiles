@@ -59,6 +59,14 @@ done
 # OS-specific git config
 mkdir -p "$HOME/.config/git"
 ln -sfnv "$DOTPATH/.gitconfig.macos" "$HOME/.config/git/local.gitconfig"
+
+# local-bin
+mkdir -p "$HOME/.local/bin"
+for script in "$DOTPATH/local-bin"/*; do
+	if [ -f "$script" ] && [ -x "$script" ]; then
+		ln -sfnv "$script" "$HOME/.local/bin/$(basename "$script")"
+	fi
+done
 echo "✅ CREATE symbolic link" "\n"
 
 echo "#️⃣ APPLY nix-darwin"
