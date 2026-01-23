@@ -1,0 +1,17 @@
+#!/bin/sh
+# Raspberry Pi SSH接続スクリプト
+# 自宅ネットワーク (raspi.local) → VPS経由 (raspi) の順で接続を試みる
+# 引数がない場合は "t" コマンドを実行
+
+# 引数がなければ "t" をデフォルトコマンドとして設定
+if [ $# -eq 0 ]; then
+    set -- "t"
+fi
+
+# まず raspi.local を試す（タイムアウト5秒）
+ssh -o ConnectTimeout=5 -o ConnectionAttempts=1 raspi.local "$@" 2>/dev/null
+
+# 失敗した場合は raspi (VPS経由) を試す
+if [ $? -ne 0 ]; then
+    ssh raspi "$@"
+fi
