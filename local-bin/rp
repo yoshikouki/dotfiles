@@ -9,9 +9,9 @@ if [ $# -eq 0 ]; then
 fi
 
 # まず raspi.local を試す（タイムアウト5秒）
-ssh -o ConnectTimeout=5 -o ConnectionAttempts=1 raspi.local "$@" 2>/dev/null
+ssh -t -o ConnectTimeout=5 -o ConnectionAttempts=1 raspi.local "$@" 2>/dev/null
 
 # 失敗した場合は raspi (VPS経由) を試す
 if [ $? -ne 0 ]; then
-    ssh raspi "$@"
+    ssh -t raspi "$@"
 fi
