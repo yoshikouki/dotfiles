@@ -35,4 +35,8 @@ in
     neovim
     gh
   ];
+
+  home.sessionPath = [
+    "$HOME/.npm-global/bin"
+  ];
 }
