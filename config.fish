@@ -38,17 +38,14 @@ if test -f ~/.local/bin/wrappers/local-bin.fish
     source ~/.local/bin/wrappers/local-bin.fish
 end
 
-# mise (自動でactivateされる)
-set -gx PATH ~/.local/bin $PATH
-if type -q mise
-    mise activate fish | source
-else if test -x /opt/homebrew/bin/mise
-    /opt/homebrew/bin/mise activate fish | source
-else if test -x ~/.local/bin/mise
-    ~/.local/bin/mise activate fish | source
+# Local binaries
+if functions -q fish_add_path
+    fish_add_path --prepend ~/.local/bin
+else
+    if not contains -- ~/.local/bin $PATH
+        set -gx PATH ~/.local/bin $PATH
+    end
 end
-
-set -gx PATH "/Users/yoshikouki/.local/bin" $PATH
 
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
@@ -66,7 +63,4 @@ fish_add_path /Users/yoshikouki/.antigravity/antigravity/bin
 # Chromium Developer Tools
 set -gx PATH ~/src/chromium.googlesource.com/chromium/tools/depot_tools $PATH
 
-# zoxide: cd を置き換えつつ、z と zi も使えるようにする
-zoxide init fish --cmd cd | source
-alias z='__zoxide_z'
-alias zi='__zoxide_zi'
+# zoxide は home-manager で初期化する（nix）
