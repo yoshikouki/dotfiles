@@ -1,17 +1,17 @@
-#!/bin/zsh
+#!/bin/bash
 
 IGNORE_FILES=(.git .gitignore .DS_Store .idea)
 GITHUB_REPO=yoshikouki/dotfiles
 DOTPATH=~/dotfiles
 
-if [ "$(uname)" != "Darwin" ]; then
-	echo "Not macOS"
+if [ "$(uname)" != "Linux" ]; then
+	echo "Not Linux"
 	exit 1
 fi
 
 echo "#️⃣ INSTALL Nix"
 if ! command -v nix > /dev/null 2>&1 && [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then
-	# Official installer (multi-user on macOS)
+	# Official installer (multi-user on Linux)
 	bash <(curl -L https://nixos.org/nix/install) --daemon
 fi
 
@@ -49,6 +49,7 @@ fi
 echo "✅ DOWNLOAD dotfiles" "\n"
 
 echo "#️⃣ CREATE symbolic link"
+cd "$DOTPATH" || exit
 for file in .??*; do
 	for ign in "${IGNORE_FILES[@]}"; do
 		[[ "$ign" = "$file" ]] && continue 2
@@ -58,17 +59,17 @@ done
 
 # OS-specific git config
 mkdir -p "$HOME/.config/git"
-ln -sfnv "$DOTPATH/.gitconfig.macos" "$HOME/.config/git/local.gitconfig"
+ln -sfnv "$DOTPATH/.gitconfig.linux" "$HOME/.config/git/local.gitconfig"
 echo "✅ CREATE symbolic link" "\n"
 
-echo "#️⃣ APPLY nix-darwin"
+echo "#️⃣ APPLY home-manager"
 NIX_BIN="$(command -v nix || true)"
 if [ -z "$NIX_BIN" ]; then
 	NIX_BIN="/nix/var/nix/profiles/default/bin/nix"
 fi
-sudo "$NIX_BIN" --extra-experimental-features "nix-command flakes" \
-	run nix-darwin -- switch --flake "$DOTPATH#mac"
-echo "✅ APPLY nix-darwin" "\n"
+"$NIX_BIN" --extra-experimental-features "nix-command flakes" \
+	run home-manager -- switch --flake "$DOTPATH#yoshikouki"
+echo "✅ APPLY home-manager" "\n"
 
 echo "#️⃣ REBOOT shell"
 exec "$SHELL" -l

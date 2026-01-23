@@ -1,28 +1,16 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  isDarwin = pkgs.stdenv.isDarwin;
+  homeDirectory = if isDarwin then "/Users/yoshikouki" else "/home/yoshikouki";
+in
 {
   home.username = "yoshikouki";
-  home.homeDirectory = "/Users/yoshikouki";
+  home.homeDirectory = homeDirectory;
   home.stateVersion = "24.11";
 
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      source ${config.home.homeDirectory}/dotfiles/config.fish
-    '';
-  };
-
-  programs.zoxide = {
-    enable = true;
-    enableFishIntegration = true;
-    options = [ "--cmd" "cd" ];
-  };
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    defaultEditor = true;
-  };
+  # zsh configuration is managed via dotfiles/.zshrc symlink
+  # zoxide is initialized in .zshrc manually
+  # nvim and local-bin are symlinked by install scripts
 
   home.packages = with pkgs; [
     fd
@@ -47,14 +35,4 @@
     neovim
     gh
   ];
-
-  home.file.".config/nvim" = {
-    source = ../nvim;
-    recursive = true;
-  };
-
-  home.file.".local/bin" = {
-    source = ../local-bin;
-    recursive = true;
-  };
 }

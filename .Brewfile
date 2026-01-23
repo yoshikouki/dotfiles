@@ -35,7 +35,7 @@ brew "curl"
 brew "jq"
 brew "tree"
 brew "git"
-# brew "ghq" # Managed by mise
+# brew "ghq" # Managed by Nix
 # brew "peco"
 
 ## Language

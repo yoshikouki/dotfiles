@@ -160,6 +160,12 @@ alias rm_docker_compose_containers='docker-compose rm -fv'
 # クラスタ誤操作防止ラッパー
 alias kc='kubectl-cluster-caution'
 
+# --- Nix ---
+# macOS: nix-darwin の設定を更新
+alias nix-update='sudo darwin-rebuild switch --flake /Users/yoshikouki/dotfiles\#mac'
+# Linux: home-manager の設定を更新
+alias nix-update-linux='home-manager switch --flake /home/yoshikouki/dotfiles\#yoshikouki'
+
 # --- その他 ---
 alias be='bundle exec'
 
@@ -211,30 +217,25 @@ bindkey '^r' fzf-select-history
 # 9. 外部ツール - バージョン管理
 # ==============================================================================
 
-# --- mise (多言語バージョンマネージャー) ---
-eval "$(mise activate zsh)"
+# Version management is now handled by Nix (nix-darwin + home-manager)
 
 
 # ==============================================================================
 # 10. 外部ツール - パッケージマネージャー
 # ==============================================================================
 
-# --- Homebrew (Linux) ---
-if [ -f /home/linuxbrew/.linuxbrew/bin/brew ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
-fi
+# --- Nix (macOS: nix-darwin, Linux: home-manager) ---
+# パッケージ管理は Nix で行う（宣言的・再現可能）
+# macOS: /run/current-system/sw/bin (nix-darwin)
+# Linux: ~/.nix-profile/bin (home-manager)
 
-# --- Homebrew (macOS) ---
+# --- Homebrew (macOS のみ - GUI アプリと Nix 未対応パッケージ用) ---
+# Nix で管理できないもののみ Homebrew を使用（例: eza の macOS arm64 版）
 if [ -f /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
   # MacPorts との共存
   export PATH="/opt/local/bin:$PATH"
-
-  # zsh-completions（Homebrew 経由でインストール）
-  if [ -e "$(brew --prefix)/share/zsh-completions" ]; then
-    FPATH="$(brew --prefix)/share/zsh-completions:$FPATH"
-  fi
 fi
 
 # --- fzf キーバインド (Ubuntu) ---

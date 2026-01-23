@@ -10,14 +10,24 @@
   };
 
   outputs = { self, nixpkgs, darwin, home-manager, ... }:
-    let
-      system = "aarch64-darwin";
-    in {
+    {
+      # macOS (nix-darwin)
       darwinConfigurations.mac = darwin.lib.darwinSystem {
-        inherit system;
+        system = "aarch64-darwin";
         modules = [
           ./nix/darwin.nix
           home-manager.darwinModules.home-manager
+        ];
+      };
+
+      # Linux (home-manager standalone)
+      homeConfigurations.yoshikouki = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+        modules = [
+          ./nix/home.nix
         ];
       };
     };
