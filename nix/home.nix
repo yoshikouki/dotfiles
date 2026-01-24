@@ -1,10 +1,11 @@
 { config, pkgs, lib, ... }:
 let
   isDarwin = pkgs.stdenv.isDarwin;
-  homeDirectory = if isDarwin then "/Users/yoshikouki" else "/home/yoshikouki";
+  username = "yoshikouki";
+  homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
 in
 {
-  home.username = "yoshikouki";
+  home.username = username;
   home.homeDirectory = homeDirectory;
   home.stateVersion = "24.11";
 
