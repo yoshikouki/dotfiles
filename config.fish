@@ -27,7 +27,7 @@ end
 bind \cb fzf_git_recent_branch
 
 # pnpm
-set -gx PNPM_HOME "/Users/yoshikouki/Library/pnpm"
+set -gx PNPM_HOME "$HOME/Library/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
   set -gx PATH "$PNPM_HOME" $PATH
 end
@@ -50,15 +50,15 @@ end
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 # The next line updates PATH for the Google Cloud SDK.
-if test -f '/Users/yoshikouki/google-cloud-sdk/path.fish.inc'
-    source '/Users/yoshikouki/google-cloud-sdk/path.fish.inc'
+if test -f "$HOME/google-cloud-sdk/path.fish.inc"
+    source "$HOME/google-cloud-sdk/path.fish.inc"
 end
 
 
 source ~/.safe-chain/scripts/init-fish.fish # Safe-chain Fish initialization script
 
 # Added by Antigravity
-fish_add_path /Users/yoshikouki/.antigravity/antigravity/bin
+fish_add_path "$HOME/.antigravity/antigravity/bin"
 
 # Chromium Developer Tools
 set -gx PATH ~/src/chromium.googlesource.com/chromium/tools/depot_tools $PATH

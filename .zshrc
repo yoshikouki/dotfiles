@@ -157,9 +157,9 @@ alias kc='kubectl-cluster-caution'
 
 # --- Nix ---
 # macOS: nix-darwin の設定を更新
-alias nix-update='sudo darwin-rebuild switch --flake /Users/yoshikouki/dotfiles\#mac'
+alias nix-update='sudo darwin-rebuild switch --flake $HOME/dotfiles\#mac'
 # Linux: home-manager の設定を更新
-alias nix-update-linux='home-manager switch --flake /home/yoshikouki/dotfiles\#yoshikouki'
+alias nix-update-linux='home-manager switch --flake $HOME/dotfiles\#yoshikouki'
 
 # --- その他 ---
 alias be='bundle exec'
@@ -274,13 +274,21 @@ bindkey '^r' fzf-select-history
 # macOS: /run/current-system/sw/bin (nix-darwin)
 # Linux: ~/.nix-profile/bin (home-manager)
 
-# --- Homebrew (macOS のみ - GUI アプリと Nix 未対応パッケージ用) ---
-# Nix で管理できないもののみ Homebrew を使用（例: eza の macOS arm64 版）
-if [ -f /opt/homebrew/bin/brew ]; then
+# --- Homebrew (基本は Nix 優先。Nix で管理できないものだけ使う) ---
+# macOS: /opt/homebrew
+# Linux: /home/linuxbrew/.linuxbrew
+
+# macOS (Apple Silicon)
+if [ -x /opt/homebrew/bin/brew ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
   # MacPorts との共存
   export PATH="/opt/local/bin:$PATH"
+fi
+
+# Linuxbrew
+if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # --- fzf キーバインド (Ubuntu) ---
