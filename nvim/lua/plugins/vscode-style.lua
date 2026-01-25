@@ -89,7 +89,7 @@ return {
         lualine_y = {},
         lualine_z = {},
       },
-      extensions = { "neo-tree", "lazy", "trouble", "mason", "nvim-dap-ui" },
+      extensions = { "neo-tree", "lazy", "trouble", "mason" },
     },
   },
 

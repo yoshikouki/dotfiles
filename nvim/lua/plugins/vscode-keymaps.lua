@@ -147,20 +147,14 @@ return {
       keymap("n", "<F8>", "<cmd>lua vim.diagnostic.goto_next()<cr>", { desc = "Next Error" })
       keymap("n", "<S-F8>", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { desc = "Previous Error" })
       
-      -- ブレークポイントの切り替え（VSCode: F9）
-      keymap("n", "<F9>", "<cmd>lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle Breakpoint" })
-      
-      -- デバッグの開始（VSCode: F5）
-      keymap("n", "<F5>", "<cmd>lua require('dap').continue()<cr>", { desc = "Start Debug" })
-      
-      -- ステップオーバー（VSCode: F10）
-      keymap("n", "<F10>", "<cmd>lua require('dap').step_over()<cr>", { desc = "Step Over" })
-      
-      -- ステップイン（VSCode: F11）
-      keymap("n", "<F11>", "<cmd>lua require('dap').step_into()<cr>", { desc = "Step Into" })
-      
-      -- ステップアウト（VSCode: Shift+F11）
-      keymap("n", "<S-F11>", "<cmd>lua require('dap').step_out()<cr>", { desc = "Step Out" })
+      -- デバッグ関連のキーマップ (nvim-dap が必要)
+      if pcall(require, 'dap') then
+        keymap("n", "<F9>", "<cmd>lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle Breakpoint" })
+        keymap("n", "<F5>", "<cmd>lua require('dap').continue()<cr>", { desc = "Start Debug" })
+        keymap("n", "<F10>", "<cmd>lua require('dap').step_over()<cr>", { desc = "Step Over" })
+        keymap("n", "<F11>", "<cmd>lua require('dap').step_into()<cr>", { desc = "Step Into" })
+        keymap("n", "<S-F11>", "<cmd>lua require('dap').step_out()<cr>", { desc = "Step Out" })
+      end
       
       -- 折りたたみ（VSCode: Ctrl+Shift+[/]）
       keymap("n", "<C-S-[>", "<cmd>foldclose<cr>", { desc = "Fold" })
@@ -173,13 +167,13 @@ return {
       -- 現在の行を中央に（VSCode: Ctrl+L）
       keymap("n", "<C-l>", "zz", { desc = "Center Line" })
       
-      -- 選択を拡張（VSCode: Shift+Alt+→）
-      keymap("n", "<S-A-Right>", "<cmd>lua require('syntax-tree-surfer').select()<cr>", { desc = "Expand Selection" })
-      keymap("v", "<S-A-Right>", "<cmd>lua require('syntax-tree-surfer').select()<cr>", { desc = "Expand Selection" })
-      
-      -- 選択を縮小（VSCode: Shift+Alt+←）
-      keymap("n", "<S-A-Left>", "<cmd>lua require('syntax-tree-surfer').select_current_node()<cr>", { desc = "Shrink Selection" })
-      keymap("v", "<S-A-Left>", "<cmd>lua require('syntax-tree-surfer').select_current_node()<cr>", { desc = "Shrink Selection" })
+      -- 選択拡張機能 (syntax-tree-surfer が必要)
+      if pcall(require, 'syntax-tree-surfer') then
+        keymap("n", "<S-A-Right>", "<cmd>lua require('syntax-tree-surfer').select()<cr>", { desc = "Expand Selection" })
+        keymap("v", "<S-A-Right>", "<cmd>lua require('syntax-tree-surfer').select()<cr>", { desc = "Expand Selection" })
+        keymap("n", "<S-A-Left>", "<cmd>lua require('syntax-tree-surfer').select_current_node()<cr>", { desc = "Shrink Selection" })
+        keymap("v", "<S-A-Left>", "<cmd>lua require('syntax-tree-surfer').select_current_node()<cr>", { desc = "Shrink Selection" })
+      end
       
       -- ウィンドウの分割（VSCode: Ctrl+\）
       keymap("n", "<C-\\>", "<cmd>vsplit<cr>", { desc = "Split Window" })
