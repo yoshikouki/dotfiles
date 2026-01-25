@@ -169,6 +169,7 @@ case ${OSTYPE} in
   darwin*)
     # macOS
     export CLICOLOR=1
+    alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
     ;;
   linux*)
     # Linux (no additional settings needed with eza)
