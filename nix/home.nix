@@ -35,6 +35,7 @@ in
     zoxide
     neovim
     gh
+    tree-sitter
   ];
 
   home.sessionPath = [
