@@ -18,6 +18,9 @@ fi
 # ~/.local/bin をPATHに追加
 export PATH="$HOME/.local/bin:$PATH"
 
+# npm global packages
+export PATH="$HOME/.npm-global/bin:$PATH"
+
 # Load local secrets (not tracked by git)
 if [ -f "$HOME/.zshenv.local" ]; then
   source "$HOME/.zshenv.local"
