@@ -14,6 +14,7 @@ in
   # nvim and local-bin are symlinked by install scripts
 
   home.packages = with pkgs; [
+    ansible
     fd
     fzf
     ghq
