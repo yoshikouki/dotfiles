@@ -9,6 +9,18 @@ if [ "$(uname)" != "Linux" ]; then
 	exit 1
 fi
 
+echo "#️⃣ INSTALL zsh"
+if ! command -v zsh > /dev/null 2>&1; then
+	sudo apt update && sudo apt install -y zsh
+fi
+echo "✅ INSTALL zsh"
+
+echo "#️⃣ SET default shell to zsh"
+if [ "$SHELL" != "/usr/bin/zsh" ]; then
+	chsh -s /usr/bin/zsh
+fi
+echo "✅ SET default shell to zsh"
+
 echo "#️⃣ INSTALL Nix"
 if ! command -v nix > /dev/null 2>&1 && [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then
 	# Official installer (multi-user on Linux)
