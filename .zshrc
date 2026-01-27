@@ -155,11 +155,8 @@ alias rm_docker_compose_containers='docker-compose rm -fv'
 # クラスタ誤操作防止ラッパー
 alias kc='kubectl-cluster-caution'
 
-# --- Nix ---
-# macOS: nix-darwin の設定を更新
-alias nix-update='sudo darwin-rebuild switch --flake $HOME/dotfiles\#mac'
-# Linux: home-manager の設定を更新
-alias nix-update-linux='home-manager switch --flake $HOME/dotfiles\#yoshikouki'
+# --- Package Management ---
+alias pkg-update='brew update && brew upgrade && mise upgrade'
 
 # --- その他 ---
 alias be='bundle exec'
@@ -263,7 +260,10 @@ bindkey '^r' fzf-select-history
 # 9. 外部ツール - バージョン管理
 # ==============================================================================
 
-# Version management is now handled by Nix (nix-darwin + home-manager)
+# --- mise (runtime version manager) ---
+if command -v mise &> /dev/null; then
+    eval "$(mise activate zsh)"
+fi
 
 
 # ==============================================================================
@@ -280,12 +280,8 @@ fi
 # 10. 外部ツール - パッケージマネージャー
 # ==============================================================================
 
-# --- Nix (macOS: nix-darwin, Linux: home-manager) ---
-# パッケージ管理は Nix で行う（宣言的・再現可能）
-# macOS: /run/current-system/sw/bin (nix-darwin)
-# Linux: ~/.nix-profile/bin (home-manager)
-
-# --- Homebrew (基本は Nix 優先。Nix で管理できないものだけ使う) ---
+# --- Homebrew ---
+# CLI tools and GUI applications are managed by Homebrew
 # macOS: /opt/homebrew
 # Linux: /home/linuxbrew/.linuxbrew
 

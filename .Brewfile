@@ -35,8 +35,23 @@ brew "curl"
 brew "jq"
 brew "tree"
 brew "git"
-# brew "ghq" # Managed by Nix
-# brew "peco"
+
+## CLI Tools (previously managed by Nix)
+brew "fd"
+brew "fzf"
+brew "ripgrep"
+brew "zoxide"
+brew "bat"
+brew "eza"
+brew "neovim"
+brew "yazi"
+brew "gh"
+brew "ghq"
+brew "delta"
+brew "difftastic"
+brew "lazygit"
+brew "tmux"
+brew "tree-sitter"
 
 ## Language
 brew "coreutils"

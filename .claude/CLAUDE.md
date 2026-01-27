@@ -9,24 +9,34 @@ This dotfiles project supports **macOS** and **Ubuntu**. When writing scripts or
 
 ## Package Management
 
-This project uses **Nix** for declarative package management:
-- **macOS**: nix-darwin + home-manager
-- **Ubuntu/Linux**: home-manager standalone
+This project uses **Homebrew** and **mise** for package management:
+- **Homebrew**: CLI tools and GUI applications (both macOS and Linux via Linuxbrew)
+- **mise**: Runtime version management (Node.js, Python, Ruby, Go, Rust, Bun)
 
-When adding new packages:
-1. Add to `nix/home.nix` for user-level packages (both macOS and Linux)
-2. Add to `nix/darwin.nix` for macOS system-level packages only
-3. Rebuild:
-   - macOS: `darwin-rebuild switch --flake ~/dotfiles#mac`
-   - Linux: `home-manager switch --flake ~/dotfiles#yoshikouki`
+### Adding CLI tools
+Add to `.Brewfile` and run:
+```bash
+brew bundle --global
+```
+
+### Adding runtimes
+Edit `.mise.toml` to specify versions, then run:
+```bash
+mise install
+```
+
+### Update all packages
+```bash
+pkg-update  # alias for: brew update && brew upgrade && mise upgrade
+```
 
 ## Local Bin Scripts
 
 When creating or modifying scripts in `local-bin/`:
-1. Create or edit the script in `/Users/yoshikouki/dotfiles/local-bin/`
+1. Create or edit the script in `~/dotfiles/local-bin/`
 2. Set executable permissions with `chmod +x`
 3. **MUST** create a symbolic link in `~/.local/bin/` pointing to the script
-   - Example: `ln -s /Users/yoshikouki/dotfiles/local-bin/scriptname ~/.local/bin/scriptname`
+   - Example: `ln -s ~/dotfiles/local-bin/scriptname ~/.local/bin/scriptname`
 4. Verify the symbolic link was created successfully
 
 This ensures scripts are immediately available in the PATH without manual setup.

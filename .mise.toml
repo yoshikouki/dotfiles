@@ -1,0 +1,11 @@
+[settings]
+legacy_version_file = true
+trusted_config_paths = ["~/dotfiles"]
+
+[tools]
+go = "latest"
+node = "lts"
+ruby = "latest"
+python = "latest"
+bun = "latest"
+rust = "latest"
