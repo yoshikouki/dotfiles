@@ -21,6 +21,7 @@ in
     jq
     bat
     delta
+    difftastic
     eza
     git
     go

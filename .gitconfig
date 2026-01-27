@@ -22,6 +22,12 @@
 	required = true
 [init]
 	defaultBranch = main
+[alias]
+	dft = -c diff.external=difft diff
+	dshow = -c diff.external=difft show --ext-diff
+	dlog = -c diff.external=difft log -p --ext-diff
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
 # OS-specific settings are loaded from local.gitconfig
 [include]
 	path = ~/.config/git/local.gitconfig
