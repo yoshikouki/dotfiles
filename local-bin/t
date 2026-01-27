@@ -1,6 +1,26 @@
 #!/bin/sh
 # tmux: "default" セッションに attach、なければ作成
 
+# 1. tmux コマンド存在チェック
+if ! command -v tmux >/dev/null 2>&1; then
+    echo "Error: tmux is not installed" >&2
+    echo "Install with: brew install tmux" >&2
+    exit 1
+fi
+
+# 2. PTY/TTY 可用性チェック
+if ! test -t 0; then
+    echo "Error: No terminal (TTY) available" >&2
+    echo "tmux requires an interactive terminal to run." >&2
+    echo "" >&2
+    echo "Common causes:" >&2
+    echo "  - Running from a non-interactive script" >&2
+    echo "  - Input/output is redirected" >&2
+    echo "  - SSH connection without PTY allocation (use: ssh -tt)" >&2
+    exit 1
+fi
+
+# 3. tmux セッション操作
 session_name="default"
 
 if tmux has-session -t "$session_name" 2>/dev/null; then
