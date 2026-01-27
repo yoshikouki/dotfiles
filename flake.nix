@@ -10,6 +10,17 @@
   };
 
   outputs = { self, nixpkgs, darwin, home-manager, ... }:
+    let
+      mkHomeConfig = system: home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        modules = [
+          ./nix/home.nix
+        ];
+      };
+    in
     {
       # macOS (nix-darwin)
       darwinConfigurations.mac = darwin.lib.darwinSystem {
@@ -21,14 +32,9 @@
       };
 
       # Linux (home-manager standalone)
-      homeConfigurations.yoshikouki = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "aarch64-linux";
-          config.allowUnfree = true;
-        };
-        modules = [
-          ./nix/home.nix
-        ];
+      homeConfigurations = {
+        "yoshikouki@aarch64-linux" = mkHomeConfig "aarch64-linux";
+        "yoshikouki@x86_64-linux" = mkHomeConfig "x86_64-linux";
       };
     };
 }

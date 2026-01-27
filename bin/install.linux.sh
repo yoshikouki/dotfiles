@@ -87,8 +87,15 @@ NIX_BIN="$(command -v nix || true)"
 if [ -z "$NIX_BIN" ]; then
 	NIX_BIN="/nix/var/nix/profiles/default/bin/nix"
 fi
+# Detect architecture
+ARCH="$(uname -m)"
+case "$ARCH" in
+	x86_64) FLAKE_TARGET="yoshikouki@x86_64-linux" ;;
+	aarch64) FLAKE_TARGET="yoshikouki@aarch64-linux" ;;
+	*) echo "Unsupported architecture: $ARCH"; exit 1 ;;
+esac
 "$NIX_BIN" --extra-experimental-features "nix-command flakes" \
-	run home-manager -- switch --flake "$DOTPATH#yoshikouki"
+	run home-manager -- switch --flake "$DOTPATH#$FLAKE_TARGET"
 echo "✅ APPLY home-manager" "\n"
 
 echo "#️⃣ REBOOT shell"
