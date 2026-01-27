@@ -3,8 +3,8 @@
 # 自宅ネットワーク (raspi.local) → VPS経由 (raspi) の順で接続を試みる
 
 if [ $# -eq 0 ]; then
-    # 引数なしの場合は SSH 接続のみ（ログイン後に手動で t を実行）
-    ssh -o ConnectTimeout=5 -o ConnectionAttempts=1 raspi.local 2>/dev/null || ssh raspi
+    # 引数なしの場合は SSH 接続（ログイン後に手動で t を実行）
+    ssh -tt -o ConnectTimeout=5 -o ConnectionAttempts=1 raspi.local 2>/dev/null || ssh -tt raspi
 else
     # 引数ありの場合はリモートでコマンドを実行
     ssh -tt -o ConnectTimeout=5 -o ConnectionAttempts=1 raspi.local "$@" 2>/dev/null
