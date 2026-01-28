@@ -353,7 +353,9 @@ esac
 # pnpm end
 
 # git-wt
-eval "$(git wt --init zsh)"
+if command -v git-wt &> /dev/null; then
+  eval "$(git wt --init zsh)"
+fi
 
 
 # ==============================================================================
