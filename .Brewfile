@@ -70,9 +70,13 @@ tap "stripe/stripe-cli" # for brew "stripe/stripe-cli/stripe"
 brew "stripe/stripe-cli/stripe"
 # cask "gitify"
 
+## Zsh Plugins
+brew "zsh-autosuggestions"
+brew "zsh-completions"
+brew "zsh-syntax-highlighting"
+brew "zsh-history-substring-search"
+
 ## Other
-# brew "zsh-autosuggestions"
-# brew "zsh-completions"
 # tap "sanemat/font" # for brew "sanemat/font/ricty"
 # brew "sanemat/font/ricty"
 # cask "google-japanese-ime"

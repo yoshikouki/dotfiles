@@ -27,6 +27,16 @@
 # ==============================================================================
 # Zsh の基本機能を有効化
 
+# --- Homebrew prefix の取得 ---
+if command -v brew &> /dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+fi
+
+# --- zsh-completions の fpath 追加（compinit より前に必要）---
+if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh-completions" ]]; then
+  fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+fi
+
 # 補完システムの初期化（-u: 安全でないディレクトリの警告を抑制）
 autoload -Uz compinit && compinit -u
 
@@ -341,3 +351,42 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# git-wt
+eval "$(git wt --init zsh)"
+
+
+# ==============================================================================
+# 10. Zsh プラグイン
+# ==============================================================================
+# 読み込み順序: autosuggestions → history-substring-search → syntax-highlighting (最後)
+
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+  # --- zsh-autosuggestions ---
+  # 入力中にコマンド候補をグレー表示
+  if [[ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+    source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+  fi
+
+  # --- zsh-history-substring-search ---
+  # 入力中の文字列で履歴を部分一致検索
+  if [[ -f "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]]; then
+    source "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+    bindkey '^P' history-substring-search-up
+    bindkey '^N' history-substring-search-down
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=magenta,fg=white,bold'
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=white,bold'
+  fi
+
+  # --- zsh-syntax-highlighting （必ず最後）---
+  # コマンドラインのシンタックスハイライト
+  if [[ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+    source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+  fi
+fi
