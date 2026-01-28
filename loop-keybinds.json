@@ -213,34 +213,34 @@
       "name" : "左部繰り返し"
     },
     {
-      "direction" : "LeftScreen",
-      "keybind" : [
-        123
-      ]
-    },
-    {
-      "direction" : "LeftScreen",
-      "keybind" : [
-        4,
-        56
-      ]
-    },
-    {
       "direction" : "Maximize",
       "keybind" : [
         36
       ]
     },
     {
-      "direction" : "RightScreen",
+      "direction" : "NextScreen",
       "keybind" : [
         124
       ]
     },
     {
-      "direction" : "RightScreen",
+      "direction" : "NextScreen",
       "keybind" : [
         37,
+        56
+      ]
+    },
+    {
+      "direction" : "PreviousScreen",
+      "keybind" : [
+        123
+      ]
+    },
+    {
+      "direction" : "PreviousScreen",
+      "keybind" : [
+        4,
         56
       ]
     },
@@ -271,5 +271,5 @@
     58,
     59
   ],
-  "version" : "1.4.1"
+  "version" : "1.4.2"
 }
