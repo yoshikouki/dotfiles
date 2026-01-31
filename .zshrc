@@ -132,9 +132,6 @@ alias la='eza -la'        # 隠しファイル含む詳細表示
 alias lt='eza -T'         # ツリー表示
 alias mkdir='mkdir -p'    # 親ディレクトリも作成
 
-# --- ファイル表示 ---
-alias cat='bat --paging=never'  # シンタックスハイライト付き cat
-
 # --- 安全対策（確認プロンプト） ---
 alias rm='rm -i'
 alias cp='cp -i'
@@ -143,15 +140,6 @@ alias mv='mv -i'
 # --- sudo でエイリアスを有効化 ---
 # sudo の後にスペースを入れることで、続くコマンドもエイリアス展開される
 alias sudo='sudo '
-
-# --- Git ---
-alias gc='git checkout'
-alias gcb='git checkout -b'
-alias gpl='git pull origin HEAD'
-alias gpl-r='git pull --rebase origin main'
-alias gp='git push origin HEAD'
-alias gcm='git commit -m'
-alias gcm-e='git commit --allow-empty -m'
 
 # --- Docker ---
 alias d='docker'
@@ -167,9 +155,6 @@ alias kc='kubectl-cluster-caution'
 
 # --- Package Management ---
 alias pkg-update='brew update && brew upgrade && mise upgrade'
-
-# --- その他 ---
-alias be='bundle exec'
 
 # --- OS 別設定 ---
 case ${OSTYPE} in
@@ -216,11 +201,45 @@ function g() {
 }
 
 # git ブランチ検索・切り替え
-# fzf でローカルブランチを選択し、git switch で切り替え
+# fzf でローカルブランチを選択
+# git-wt があれば worktree 対応、なければ git switch
+# main/master は worktree を作らず git switch を使用
 function b() {
-  local branch=$(git branch --sort=-committerdate | fzf --reverse)
-  if [ -n "$branch" ]; then
-    git switch "$(echo "$branch" | sed 's/^[ *]*//')"
+  local branch selected
+
+  if command -v git-wt &> /dev/null; then
+    # git-wt がある場合: worktree 情報付きで表示
+    local -A worktrees
+    while IFS= read -r line; do
+      local wt_path=$(echo "$line" | awk '{print $1}')
+      local wt_branch=$(echo "$line" | awk '{print $2}')
+      [[ -n "$wt_branch" ]] && worktrees[$wt_branch]="$wt_path"
+    done < <(git-wt 2>/dev/null | tail -n +2)
+
+    selected=$(git branch --sort=-committerdate | while read -r line; do
+      branch=$(echo "$line" | sed 's/^[ *]*//')
+      if [[ -n "${worktrees[$branch]}" ]]; then
+        printf "%-30s [wt: %s]\n" "$branch" "${worktrees[$branch]}"
+      else
+        echo "$branch"
+      fi
+    done | fzf --reverse)
+
+    if [[ -n "$selected" ]]; then
+      branch=$(echo "$selected" | awk '{print $1}')
+      # main/master は worktree を作らず git switch を使用
+      if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+        git switch "$branch"
+      else
+        git wt "$branch"
+      fi
+    fi
+  else
+    # git-wt がない場合: 従来の動作
+    selected=$(git branch --sort=-committerdate | fzf --reverse)
+    if [[ -n "$selected" ]]; then
+      git switch "$(echo "$selected" | sed 's/^[ *]*//')"
+    fi
   fi
 }
 
