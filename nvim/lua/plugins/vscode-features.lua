@@ -239,6 +239,7 @@ return {
   -- VSCode風のブレッドクラム
   {
     "LunarVim/breadcrumbs.nvim",
+    enabled = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       icons = {
