@@ -7,6 +7,8 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
+pcall(vim.api.nvim_del_augroup_by_name, "lazyvim_wrap_spell")
+
 local function enable_wrap()
   if vim.bo.buftype ~= "" then
     return
@@ -21,3 +23,12 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 vim.schedule(enable_wrap)
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("MarkdownNoDiagnostics", { clear = true }),
+  pattern = { "markdown" },
+  callback = function()
+    vim.bo.spell = false
+    vim.diagnostic.disable(0)
+  end,
+})
