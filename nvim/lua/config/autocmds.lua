@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("MarkdownNoDiagnostics", { clear = true }),
   pattern = { "markdown" },
   callback = function()
-    vim.bo.spell = false
+    vim.wo.spell = false
     vim.diagnostic.disable(0)
   end,
 })
