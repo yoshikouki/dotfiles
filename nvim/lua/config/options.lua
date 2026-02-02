@@ -59,6 +59,7 @@ vim.opt.concealcursor = "niv"
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.splitkeep = "screen"
+vim.opt.whichwrap:append({ "<", ">", "h", "l" })
 
 -- タイムアウト設定
 vim.opt.timeout = true
