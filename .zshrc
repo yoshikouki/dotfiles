@@ -142,8 +142,6 @@ alias mv='mv -i'
 alias sudo='sudo '
 
 # --- Docker ---
-alias d='docker'
-alias dc='docker compose'
 alias rm_docker_images='docker images -qf dangling=true | xargs docker rmi'
 alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v'
 alias rm_docker_volumes='docker volume ls -qf dangling=true | xargs docker volume rm'
