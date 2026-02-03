@@ -409,3 +409,5 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
   fi
 fi
+
+
