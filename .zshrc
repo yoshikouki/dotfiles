@@ -410,4 +410,7 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
   fi
 fi
 
-
+# Local overrides (machine-specific, not tracked)
+if [ -f "$HOME/.zshrc.local" ]; then
+  source "$HOME/.zshrc.local"
+fi
