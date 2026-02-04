@@ -126,6 +126,10 @@ return {
       -- プロジェクトの切り替え
       keymap("n", "<leader>fp", "<cmd>Telescope project<cr>", { desc = "Find Project" })
       keymap("n", "<C-S-r>", "<cmd>Telescope project<cr>", { desc = "Switch Project" })
+
+      -- パスをクリップボードへコピー
+      keymap("n", "<leader>yr", "<cmd>lua vim.fn.setreg('+', vim.fn.expand('%'))<cr>", { desc = "Copy Relative Path" })
+      keymap("n", "<leader>yR", "<cmd>lua vim.fn.setreg('+', vim.fn.expand('%:p'))<cr>", { desc = "Copy Absolute Path" })
       
       -- 頻繁に使用するファイル
       keymap("n", "<leader>fF", "<cmd>Telescope frecency<cr>", { desc = "Frequent Files" })
