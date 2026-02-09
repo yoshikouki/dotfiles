@@ -218,6 +218,21 @@ return {
         --   enabled = false,                 -- カレントファイルを追従
         leave_dirs_open = false, -- ディレクトリを開いたままにする
       },
+
+      window = {
+        mappings = {
+          ["J"] = function(state)
+            local renderer = require("neo-tree.ui.renderer")
+            renderer.focus_node(state, nil, "down")
+            require("neo-tree.sources.filesystem.commands").open(state)
+          end,
+          ["K"] = function(state)
+            local renderer = require("neo-tree.ui.renderer")
+            renderer.focus_node(state, nil, "up")
+            require("neo-tree.sources.filesystem.commands").open(state)
+          end,
+        },
+      },
       -- group_empty_dirs = false,          -- 空ディレクトリをグループ化
       -- hijack_netrw_behavior = "open_default",  -- "open_default", "open_current", "disabled"
       -- use_libuv_file_watcher = false,    -- ファイル変更を自動検知
