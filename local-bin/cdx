@@ -14,7 +14,13 @@ case "$subcommand" in
             -c 'mcp_servers.xcode={ command="xcrun", args=["mcpbridge"] }' \
             --search "$@"
         ;;
-    ""|help|-h|--help)
+    "")
+        codex \
+            --dangerously-bypass-approvals-and-sandbox \
+            -c model_reasoning_summary_format=experimental \
+            --search
+        ;;
+    help|-h|--help)
         echo "Usage: cdx [update|xcode] [codex args...]" >&2
         echo "  cdx update        Update Codex CLI" >&2
         echo "  cdx xcode         Run Codex with Xcode MCP enabled" >&2
