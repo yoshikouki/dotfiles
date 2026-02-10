@@ -1,10 +1,30 @@
 #!/bin/sh
 # codex ラッパー
-if [ "$1" = "update" ]; then
-    npm install -g @openai/codex@latest
-else
-    codex \
-        --dangerously-bypass-approvals-and-sandbox \
-        -c model_reasoning_summary_format=experimental \
-        --search "$@"
-fi
+subcommand="$1"
+shift || true
+
+case "$subcommand" in
+    update)
+        npm install -g @openai/codex@latest
+        ;;
+    xcode)
+        codex \
+            --dangerously-bypass-approvals-and-sandbox \
+            -c model_reasoning_summary_format=experimental \
+            -c 'mcp_servers.xcode={ command="xcrun", args=["mcpbridge"] }' \
+            --search "$@"
+        ;;
+    ""|help|-h|--help)
+        echo "Usage: cdx [update|xcode] [codex args...]" >&2
+        echo "  cdx update        Update Codex CLI" >&2
+        echo "  cdx xcode         Run Codex with Xcode MCP enabled" >&2
+        echo "  cdx [args...]     Run Codex (default)" >&2
+        exit 2
+        ;;
+    *)
+        codex \
+            --dangerously-bypass-approvals-and-sandbox \
+            -c model_reasoning_summary_format=experimental \
+            --search "$subcommand" "$@"
+        ;;
+esac
