@@ -84,6 +84,23 @@ return {
           save_state(state)
         end,
       },
+      {
+        event = "neo_tree_window_after_open",
+        handler = function()
+          vim.schedule(function()
+            local Preview = require("neo-tree.sources.common.preview")
+            if Preview.is_active() then
+              return
+            end
+            local manager = require("neo-tree.sources.manager")
+            local state = manager.get_state("filesystem")
+            if state and state.tree then
+              state.config = { use_float = true, use_image_nvim = true }
+              Preview.toggle(state)
+            end
+          end)
+        end,
+      },
     },
 
     -- ========================================
@@ -137,50 +154,49 @@ return {
       --       error = "X",
       --     },
       --   },
-      --   -- ファイル情報カラム
-      --   file_size = { enabled = true, width = 12, required_width = 64 },
-      --   type = { enabled = true, width = 10, required_width = 122 },
-      --   last_modified = { enabled = true, width = 20, required_width = 88 },
-      --   created = { enabled = true, width = 20, required_width = 110 },
-      --   symlink_target = { enabled = false },
+      -- ファイル情報カラム
+      file_size = { enabled = true, width = 12, required_width = 64 },
+      last_modified = { enabled = true, width = 20, required_width = 88 },
     },
 
     -- ========================================
     -- ウィンドウ設定
     -- ========================================
-    -- window = {
-    --   position = "left",                  -- "left", "right", "top", "bottom", "float", "current"
-    --   width = 40,                         -- サイドバーの幅
-    --   mappings = {
-    --     ["<space>"] = { "toggle_node", nowait = false },
-    --     ["<2-LeftMouse>"] = "open",
-    --     ["<cr>"] = "open",
-    --     ["<esc>"] = "cancel",
-    --     ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
-    --     ["S"] = "open_split",
-    --     ["s"] = "open_vsplit",
-    --     ["t"] = "open_tabnew",
-    --     ["w"] = "open_with_window_picker",
-    --     ["C"] = "close_node",
-    --     ["z"] = "close_all_nodes",
-    --     ["Z"] = "expand_all_nodes",
-    --     ["a"] = { "add", config = { show_path = "none" } },  -- "none", "relative", "absolute"
-    --     ["A"] = "add_directory",
-    --     ["d"] = "delete",
-    --     ["r"] = "rename",
-    --     ["y"] = "copy_to_clipboard",
-    --     ["x"] = "cut_to_clipboard",
-    --     ["p"] = "paste_from_clipboard",
-    --     ["c"] = "copy",
-    --     ["m"] = "move",
-    --     ["q"] = "close_window",
-    --     ["R"] = "refresh",
-    --     ["?"] = "show_help",
-    --     ["<"] = "prev_source",
-    --     [">"] = "next_source",
-    --     ["i"] = "show_file_details",
-    --   },
-    -- },
+    window = {
+      position = "left",
+      width = 40,
+      mappings = {
+        ["<space>"] = { "toggle_node", nowait = false },
+        ["<2-LeftMouse>"] = "open",
+        ["<cr>"] = "open",
+        ["l"] = "open",
+        ["h"] = "close_node",
+        ["<esc>"] = "cancel",
+        ["P"] = { "toggle_preview", config = { use_float = true, use_image_nvim = true } },
+        ["<tab>"] = { "preview", config = { focus_preview = false } },
+        ["S"] = "open_split",
+        ["s"] = "open_vsplit",
+        ["t"] = "open_tabnew",
+        ["w"] = "open_with_window_picker",
+        ["z"] = "close_all_nodes",
+        ["Z"] = "expand_all_nodes",
+        ["a"] = { "add", config = { show_path = "relative" } },
+        ["A"] = "add_directory",
+        ["d"] = "delete",
+        ["r"] = "rename",
+        ["y"] = "copy_to_clipboard",
+        ["x"] = "cut_to_clipboard",
+        ["p"] = "paste_from_clipboard",
+        ["c"] = "copy",
+        ["m"] = "move",
+        ["q"] = "close_window",
+        ["R"] = "refresh",
+        ["?"] = "show_help",
+        ["<"] = "prev_source",
+        [">"] = "next_source",
+        ["i"] = "show_file_details",
+      },
+    },
 
     -- ========================================
     -- ファイルシステム設定
@@ -215,9 +231,10 @@ return {
         -- },
       },
       follow_current_file = {
-        --   enabled = false,                 -- カレントファイルを追従
+        enabled = true, -- カレントファイルを追従
         leave_dirs_open = false, -- ディレクトリを開いたままにする
       },
+      use_libuv_file_watcher = true, -- ファイル変更を自動検知
 
       window = {
         mappings = {
@@ -241,9 +258,6 @@ return {
           ["l"] = "open",
         },
       },
-      -- group_empty_dirs = false,          -- 空ディレクトリをグループ化
-      -- hijack_netrw_behavior = "open_default",  -- "open_default", "open_current", "disabled"
-      -- use_libuv_file_watcher = false,    -- ファイル変更を自動検知
       -- window = {
       --   mappings = {
       --     ["<bs>"] = "navigate_up",
