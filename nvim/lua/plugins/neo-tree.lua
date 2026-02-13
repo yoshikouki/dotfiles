@@ -224,13 +224,21 @@ return {
           ["J"] = function(state)
             local renderer = require("neo-tree.ui.renderer")
             renderer.focus_node(state, nil, "down")
-            require("neo-tree.sources.filesystem.commands").open(state)
+            local Preview = require("neo-tree.sources.common.preview")
+            if not Preview.is_active() then
+              Preview.show(state)
+            end
           end,
           ["K"] = function(state)
             local renderer = require("neo-tree.ui.renderer")
             renderer.focus_node(state, nil, "up")
-            require("neo-tree.sources.filesystem.commands").open(state)
+            local Preview = require("neo-tree.sources.common.preview")
+            if not Preview.is_active() then
+              Preview.show(state)
+            end
           end,
+          ["h"] = "close_node",
+          ["l"] = "open",
         },
       },
       -- group_empty_dirs = false,          -- 空ディレクトリをグループ化

@@ -7,23 +7,23 @@ return {
       local keymap = vim.keymap.set
       
       -- コマンドパレット（VSCode: Ctrl+Shift+P）
-      keymap("n", "<C-S-p>", "<cmd>Telescope commands<cr>", { desc = "Command Palette" })
+      keymap("n", "<C-S-p>", function() Snacks.picker.commands() end, { desc = "Command Palette" })
       keymap("n", "<leader><leader>", "<cmd>Telescope commands<cr>", { desc = "Command Palette" })
       
       -- ファイル検索（VSCode: Ctrl+P）
-      keymap("n", "<C-p>", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
+      keymap("n", "<C-p>", function() Snacks.picker.files() end, { desc = "Find Files" })
       keymap("n", "<leader>p", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
       
       -- プロジェクト内検索（VSCode: Ctrl+Shift+F）
-      keymap("n", "<C-S-f>", "<cmd>Telescope live_grep<cr>", { desc = "Search in Files" })
+      keymap("n", "<C-S-f>", function() Snacks.picker.grep() end, { desc = "Search in Files" })
       keymap("n", "<leader>sg", "<cmd>Telescope live_grep<cr>", { desc = "Search in Files" })
       
       -- ファイル内検索（VSCode: Ctrl+F）
-      keymap("n", "<C-f>", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search in Buffer" })
+      keymap("n", "<C-f>", function() Snacks.picker.lines() end, { desc = "Search in Buffer" })
       keymap("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Search in Buffer" })
       
       -- クイックオープン（VSCode: Ctrl+Q）
-      keymap("n", "<C-q>", "<cmd>Telescope buffers<cr>", { desc = "Open Buffers" })
+      keymap("n", "<C-q>", function() Snacks.picker.buffers() end, { desc = "Open Buffers" })
       keymap("n", "<leader>bb", "<cmd>Telescope buffers<cr>", { desc = "Open Buffers" })
       
       -- ファイルエクスプローラー（VSCode: Ctrl+Shift+E）
@@ -99,7 +99,7 @@ return {
       keymap("n", "<leader>xx", "<cmd>Trouble diagnostics<cr>", { desc = "Show Problems" })
       
       -- シンボル検索（VSCode: Ctrl+Shift+O）
-      keymap("n", "<C-S-o>", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Document Symbols" })
+      keymap("n", "<C-S-o>", function() Snacks.picker.lsp_symbols() end, { desc = "Document Symbols" })
       keymap("n", "<leader>ss", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Document Symbols" })
       
       -- ワークスペース内のシンボル（VSCode: Ctrl+T）
@@ -120,7 +120,7 @@ return {
       keymap("n", "<C-S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous Tab" })
       
       -- 最近使用したファイル（VSCode: Ctrl+R）
-      keymap("n", "<C-r>", "<cmd>Telescope oldfiles<cr>", { desc = "Recent Files" })
+      keymap("n", "<C-r>", function() Snacks.picker.recent() end, { desc = "Recent Files" })
       keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent Files" })
       
       -- プロジェクトの切り替え
