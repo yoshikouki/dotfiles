@@ -60,6 +60,10 @@ echo "#️⃣ INSTALL Homebrew packages"
 brew bundle --global
 echo "✅ INSTALL Homebrew packages"
 
+echo "#️⃣ INSTALL yazi plugins"
+ya pkg install
+echo "✅ INSTALL yazi plugins"
+
 echo "#️⃣ INSTALL mise"
 if ! command -v mise >/dev/null 2>&1; then
 	curl https://mise.run | sh
