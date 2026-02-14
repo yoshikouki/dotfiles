@@ -6,6 +6,7 @@
 .vscode
 
 yazi/plugins/
+!yazi/plugins/folder-rules.yazi/
 
 # secrets
 .env
