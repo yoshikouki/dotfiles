@@ -415,3 +415,8 @@ if [ -f "$HOME/.zshrc.local" ]; then
   source "$HOME/.zshrc.local"
 fi
 
+
+# Added by flyctl installer
+export FLYCTL_INSTALL="/home/yoshikouki/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+export PATH="$HOME/.bun/bin:$PATH"
