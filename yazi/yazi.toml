@@ -4,6 +4,9 @@
 [mgr]
 show_hidden = true
 
+[preview]
+wrap = "yes"
+
 [[plugin.prepend_previewers]]
 name = "*"
 run = 'piper -- bat --color=always --number "$1"'
