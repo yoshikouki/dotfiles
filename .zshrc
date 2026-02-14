@@ -357,7 +357,9 @@ fi
 
 # --- zoxide (スマート cd) ---
 # cd コマンドを zoxide で置き換え、よく使うディレクトリに素早く移動
-if command -v zoxide &> /dev/null; then
+# NOTE: Claude Code の Bash ツールは非インタラクティブシェルで実行されるため、
+#   スナップショットに __zoxide_z が含まれず cd が壊れる (anthropics/claude-code#2632)
+if [[ -o interactive ]] && command -v zoxide &> /dev/null; then
   eval "$(zoxide init zsh --cmd cd)"
 fi
 
