@@ -13,19 +13,14 @@ cask "github"
 cask "1password"
 cask "notion"
 cask "notion-calendar"
-cask "tradingview"
 cask "arc"
-cask "deepl"
 cask "chatgpt"
 cask "kindle"
 # cask "xnapper"
 
 ## Utils
 cask "karabiner-elements"
-cask "monitorcontrol"
-cask "rectangle"
 cask "raycast"
-cask "tabby"
 
 ## Editor
 cask "visual-studio-code"
@@ -55,7 +50,6 @@ brew "tree-sitter"
 
 ## Language
 brew "coreutils"
-# brew "asdf" # https://asdf-vm.com/guide/getting-started.html
 
 ## DB
 brew "mysql"
@@ -64,11 +58,6 @@ cask "tableplus"
 
 ## Service
 cask "docker"
-tap "heroku/brew" # for brew "heroku/brew/heroku"
-brew "heroku/brew/heroku"
-tap "stripe/stripe-cli" # for brew "stripe/stripe-cli/stripe"
-brew "stripe/stripe-cli/stripe"
-# cask "gitify"
 
 ## Zsh Plugins
 brew "zsh-autosuggestions"
@@ -84,3 +73,4 @@ brew "zsh-history-substring-search"
 # cask "spark"
 # cask "iterm2"
 # cask "warp"
+
