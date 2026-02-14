@@ -1,0 +1,5 @@
+[[mgr.prepend_keymap]]
+on   = [ "g", "g" ]
+run  = "plugin vcs-files"
+desc = "Show Git file changes"
+

@@ -48,6 +48,8 @@ for file in .??*; do
 done
 mkdir -p "$HOME/.config/git"
 ln -sfnv "$DOTPATH/.gitconfig.linux" "$HOME/.config/git/local.gitconfig"
+ln -sfnv "$DOTPATH/nvim" "$HOME/.config/nvim"
+ln -sfnv "$DOTPATH/yazi" "$HOME/.config/yazi"
 mkdir -p "$HOME/.local/bin"
 for script in "$DOTPATH/local-bin"/*; do
 	[ -f "$script" ] && [ -x "$script" ] && ln -sfnv "$script" "$HOME/.local/bin/$(basename "$script")"

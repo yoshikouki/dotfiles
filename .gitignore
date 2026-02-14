@@ -5,6 +5,8 @@
 .tmux/*
 .vscode
 
+yazi/plugins/
+
 # secrets
 .env
 .env.*
