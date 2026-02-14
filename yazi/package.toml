@@ -1,17 +1,17 @@
 [[plugin.deps]]
 use = "yazi-rs/plugins:piper"
 rev = "03cdd4b"
-hash = "c43a03c39a04b81bc9a80188d25bbc38"
+hash = "2dd68af59418b631b9703a03f606b31f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
 rev = "03cdd4b"
-hash = "3ab7e7541d5947e478e415daf0cd905c"
+hash = "36a484acf6a0a0219c543ccb4cee218f"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:vcs-files"
 rev = "03cdd4b"
-hash = "63b2995a3c3be0e943a6467a09836bd"
+hash = "4ee57085277d616acfa0ef1fef37dc00"
 
 [flavor]
 deps = []
