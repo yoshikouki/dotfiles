@@ -76,5 +76,13 @@ mise trust "$DOTPATH/.mise.toml"
 mise install
 echo "✅ INSTALL runtimes via mise"
 
+echo "#️⃣ INSTALL Playwright CLI"
+if command -v mise > /dev/null 2>&1; then
+	mise exec -- npm install -g @playwright/cli@latest
+elif command -v npm > /dev/null 2>&1; then
+	npm install -g @playwright/cli@latest
+fi
+echo "✅ INSTALL Playwright CLI"
+
 echo "#️⃣ REBOOT shell"
 exec "$SHELL" -l
