@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# ブランチ切り替えコマンド
+# main/master は worktree を作らず、git switch で直接切り替える
+
+select_branch() {
+  git branch --sort=-committerdate | fzf --reverse
+}
+
+sanitize_branch() {
+  sed 's/^[ *]*//'
+}
+
+if [ $# -gt 0 ]; then
+  branch="$1"
+else
+  branch=$(select_branch | sanitize_branch)
+fi
+
+if [ -z "$branch" ]; then
+  exit 0
+fi
+
+case "$branch" in
+  main|master)
+    git switch "$branch"
+    ;;
+  origin/main|origin/master)
+    git switch "${branch#origin/}"
+    ;;
+  *)
+    if command -v git-wt >/dev/null 2>&1; then
+      git wt "$branch"
+    else
+      git switch "$branch"
+    fi
+    ;;
+esac

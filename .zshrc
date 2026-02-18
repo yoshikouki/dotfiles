@@ -225,12 +225,17 @@ function b() {
 
     if [[ -n "$selected" ]]; then
       branch=$(echo "$selected" | awk '{print $1}')
-      # main/master は worktree を作らず git switch を使用
-      if [[ "$branch" == "main" || "$branch" == "master" ]]; then
-        git switch "$branch"
-      else
-        git wt "$branch"
-      fi
+      case "$branch" in
+        main|master)
+          git switch "$branch"
+          ;;
+        origin/main|origin/master)
+          git switch "${branch#origin/}"
+          ;;
+        *)
+          git wt "$branch"
+          ;;
+      esac
     fi
   else
     # git-wt がない場合: 従来の動作
