@@ -31,3 +31,12 @@
 # OS-specific settings are loaded from local.gitconfig
 [include]
 	path = ~/.config/git/local.gitconfig
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://git.pepabo.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
