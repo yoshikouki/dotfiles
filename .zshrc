@@ -427,3 +427,6 @@ fi
 export FLYCTL_INSTALL="/home/yoshikouki/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 export PATH="$HOME/.bun/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/home/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
