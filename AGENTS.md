@@ -47,5 +47,4 @@ This repository is **public**. Before every commit, verify staged changes contai
 ### Known Accepted Exceptions
 
 These exist intentionally and are not security issues:
-- `.gitconfig`: `git.pepabo.com` credential helper entry
 - `.gitconfig`: `user.email = yoshikouki@gmail.com`
