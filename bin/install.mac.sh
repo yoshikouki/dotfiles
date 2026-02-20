@@ -34,6 +34,10 @@ for file in .??*; do
 done
 mkdir -p "$HOME/.config/git"
 ln -sfnv "$DOTPATH/.gitconfig.macos" "$HOME/.config/git/local.gitconfig"
+if [ ! -f "$HOME/.config/git/private.gitconfig" ]; then
+    echo "# Private / machine-specific git configuration (not tracked by git)" > "$HOME/.config/git/private.gitconfig"
+    echo "Created ~/.config/git/private.gitconfig — add machine-specific credentials here."
+fi
 ln -sfnv "$DOTPATH/nvim" "$HOME/.config/nvim"
 ln -sfnv "$DOTPATH/yazi" "$HOME/.config/yazi"
 mkdir -p "$HOME/.local/bin"
