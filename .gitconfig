@@ -28,12 +28,10 @@
 	dlog = -c diff.external=difft log -p --ext-diff
 [difftool "difftastic"]
 	cmd = difft "$LOCAL" "$REMOTE"
-# OS-specific settings are loaded from local.gitconfig
+# Machine-specific settings (not tracked by git)
+# Template: ~/dotfiles/.gitconfig.{macos,linux}
 [include]
 	path = ~/.config/git/local.gitconfig
-# Private / machine-specific settings (not tracked by git)
-[include]
-	path = ~/.config/git/private.gitconfig
 [credential "https://github.com"]
 	helper =
 	helper = !gh auth git-credential
