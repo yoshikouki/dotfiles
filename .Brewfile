@@ -2,6 +2,9 @@
 # cask install to /Applications
 cask_args appdir: "/Applications"
 
+## Tap
+tap "steipete/tap"
+
 ## Core
 cask "google-chrome"
 cask "google-drive"
@@ -47,6 +50,7 @@ brew "difftastic"
 brew "lazygit"
 brew "tmux"
 brew "tree-sitter"
+brew "steipete/tap/summarize"
 
 ## Language
 brew "coreutils"

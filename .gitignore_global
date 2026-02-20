@@ -4,3 +4,6 @@
 # memory file
 .swp
 .vscode
+
+# Claude Code skills
+.playwright-cli
