@@ -28,3 +28,24 @@ There is no unit test suite. Validate changes by running the relevant install sc
 
 ## Configuration & Safety Notes
 Install scripts modify shell defaults, install packages, and create symlinks for dotfiles. Review scripts before running on a primary machine.
+
+## Public Repo Safety Checklist
+
+This repository is **public**. Before every commit, verify staged changes contain none of the following:
+
+1. **Secrets** — API keys, tokens, passwords, private credentials
+   ```bash
+   git diff --staged | grep -iE "(api[_-]?key|token|password|secret|credential)\s*[=:]\s*\S"
+   ```
+2. **Hardcoded home paths** — `/home/<user>/` or `/Users/<user>/` embedded in config files
+   ```bash
+   git diff --staged | grep -E "/(home|Users)/[a-zA-Z0-9_-]+"
+   ```
+3. **Company-internal info** — internal hostnames, domains, or project names not meant to be public
+4. **Unintended files** — logs, screenshots, or editor artifacts not covered by `.gitignore`
+
+### Known Accepted Exceptions
+
+These exist intentionally and are not security issues:
+- `.gitconfig`: `git.pepabo.com` credential helper entry
+- `.gitconfig`: `user.email = yoshikouki@gmail.com`
