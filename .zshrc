@@ -350,11 +350,6 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
   . "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
 
-# --- Turso (SQLite エッジデータベース) ---
-if [ -f "$HOME/.turso/env" ]; then
-  . "$HOME/.turso/env"
-fi
-
 # --- Safe-chain ---
 if [ -f "$HOME/.safe-chain/scripts/init-posix.sh" ]; then
   source "$HOME/.safe-chain/scripts/init-posix.sh"
