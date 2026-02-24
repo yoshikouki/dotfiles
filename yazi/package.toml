@@ -13,5 +13,10 @@ use = "yazi-rs/plugins:vcs-files"
 rev = "03cdd4b"
 hash = "4ee57085277d616acfa0ef1fef37dc00"
 
+[[plugin.deps]]
+use = "yazi-rs/plugins:toggle-pane"
+rev = "b224ddf"
+hash = "4c0260feb50ea2437380690ffc241da7"
+
 [flavor]
 deps = []
