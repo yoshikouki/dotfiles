@@ -350,11 +350,6 @@ if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then
   . "$HOME/google-cloud-sdk/completion.zsh.inc"
 fi
 
-# --- Safe-chain ---
-if [ -f "$HOME/.safe-chain/scripts/init-posix.sh" ]; then
-  source "$HOME/.safe-chain/scripts/init-posix.sh"
-fi
-
 # --- zoxide (スマート cd) ---
 # cd コマンドを zoxide で置き換え、よく使うディレクトリに素早く移動
 # NOTE: Claude Code の Bash ツールは非インタラクティブシェルで実行されるため、
