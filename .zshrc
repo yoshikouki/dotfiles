@@ -284,6 +284,10 @@ function y() {
 # ==============================================================================
 # カスタムキーバインドの設定
 
+# Ctrl+S/Ctrl+Q の XOFF/XON フロー制御を無効化
+# ターミナルアプリ（Claude Code 等）が Ctrl+S を使えるようにする
+stty -ixon
+
 # Ctrl+R: fzf による履歴検索
 bindkey '^r' fzf-select-history
 

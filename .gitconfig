@@ -28,13 +28,14 @@
 	dlog = -c diff.external=difft log -p --ext-diff
 [difftool "difftastic"]
 	cmd = difft "$LOCAL" "$REMOTE"
-# Machine-specific settings (not tracked by git)
-# Template: ~/dotfiles/.gitconfig.{macos,linux}
-[include]
-	path = ~/.config/git/local.gitconfig
 [credential "https://github.com"]
 	helper =
 	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
+# Machine-specific settings (not tracked by git)
+# Template: ~/dotfiles/.gitconfig.{macos,linux}
+# NOTE: include は末尾に置くこと（local 設定が credential 等を上書きできるように）
+[include]
+	path = ~/.config/git/local.gitconfig
