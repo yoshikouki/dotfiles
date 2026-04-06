@@ -424,3 +424,6 @@ export PATH="$HOME/.bun/bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/home/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
+
+# bun completions
+[ -s "/Users/yoshikouki/.bun/_bun" ] && source "/Users/yoshikouki/.bun/_bun"
