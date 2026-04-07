@@ -2,5 +2,4 @@
 
 claude \
 	--dangerously-skip-permissions \
-	--chrome \
 	"$@"
