@@ -226,11 +226,15 @@ function b() {
     if [[ -n "$selected" ]]; then
       branch=$(echo "$selected" | awk '{print $1}')
       case "$branch" in
-        main|master)
-          git switch "$branch"
+        main|master|development)
+          local main_root
+          main_root=$(git worktree list | head -1 | awk '{print $1}')
+          cd "$main_root" && git switch "$branch"
           ;;
-        origin/main|origin/master)
-          git switch "${branch#origin/}"
+        origin/main|origin/master|origin/development)
+          local main_root
+          main_root=$(git worktree list | head -1 | awk '{print $1}')
+          cd "$main_root" && git switch "${branch#origin/}"
           ;;
         *)
           git wt "$branch"
@@ -299,6 +303,7 @@ bindkey '^r' fzf-select-history
 # --- mise (runtime version manager) ---
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
+    export PIPX_DEFAULT_PYTHON="$(mise where python)/bin/python3"
 fi
 
 
