@@ -9,16 +9,11 @@ case "$subcommand" in
         ;;
     xcode)
         codex \
-            --dangerously-bypass-approvals-and-sandbox \
-            -c model_reasoning_summary_format=experimental \
             -c 'mcp_servers.xcode={ command="xcrun", args=["mcpbridge"] }' \
-            --search "$@"
+            "$@"
         ;;
     "")
-        codex \
-            --dangerously-bypass-approvals-and-sandbox \
-            -c model_reasoning_summary_format=experimental \
-            --search
+        codex
         ;;
     help|-h|--help)
         echo "Usage: cdx [update|xcode] [codex args...]" >&2
@@ -28,9 +23,6 @@ case "$subcommand" in
         exit 2
         ;;
     *)
-        codex \
-            --dangerously-bypass-approvals-and-sandbox \
-            -c model_reasoning_summary_format=experimental \
-            --search "$subcommand" "$@"
+        codex "$subcommand" "$@"
         ;;
 esac
