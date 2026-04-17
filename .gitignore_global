@@ -7,3 +7,7 @@
 
 # Claude Code skills
 .playwright-cli
+
+# Git worktree helpers
+.wt/
+.worktrees/
