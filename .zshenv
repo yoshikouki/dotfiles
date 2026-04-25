@@ -19,8 +19,15 @@ export PATH="$HOME/.local/bin:$PATH"
 # npm global packages
 export PATH="$HOME/.npm-global/bin:$PATH"
 
+# Bun global packages
+if [ -d "$HOME/.bun/bin" ]; then
+  case ":$PATH:" in
+    *":$HOME/.bun/bin:"*) ;;
+    *) export PATH="$PATH:$HOME/.bun/bin" ;;
+  esac
+fi
+
 # Load local secrets (not tracked by git)
 if [ -f "$HOME/.zshenv.local" ]; then
   source "$HOME/.zshenv.local"
 fi
-
