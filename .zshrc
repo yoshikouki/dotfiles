@@ -270,16 +270,8 @@ function c() {
 }
 
 # yazi ファイルマネージャー
-# 終了後に選択したディレクトリに cd
 function y() {
-  local tmp=$(mktemp -t "yazi-cwd.XXXXXX")
-  local target="${1:-.}"
-  yazi "$target" --cwd-file="$tmp"
-  local cwd=$(cat "$tmp")
-  rm -f "$tmp"
-  if [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-    cd "$cwd"
-  fi
+  yazi "${1:-.}"
 }
 
 
