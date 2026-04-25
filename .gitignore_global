@@ -11,3 +11,6 @@
 # Git worktree helpers
 .wt/
 .worktrees/
+
+.claude/worktrees/
+
