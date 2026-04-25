@@ -14,13 +14,11 @@
 #   9. サービス連携・その他
 # ==============================================================================
 
-
 # ==============================================================================
 # 1. 環境変数・基本設定
 # ==============================================================================
 # システム全体で使用される基本的な環境変数を設定
 # 注: 環境変数の設定は .zshenv で行われます
-
 
 # ==============================================================================
 # 2. Zsh コア設定
@@ -31,6 +29,9 @@
 if command -v brew &> /dev/null; then
   HOMEBREW_PREFIX="$(brew --prefix)"
 fi
+
+# PATH は先頭優先のまま重複だけ除去する
+typeset -U path PATH
 
 # --- zsh-completions の fpath 追加（compinit より前に必要）---
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh-completions" ]]; then
@@ -62,7 +63,6 @@ autoload -Uz select-word-style && select-word-style default
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
 
-
 # ==============================================================================
 # 3. 補完設定
 # ==============================================================================
@@ -81,7 +81,6 @@ zstyle ':completion:*:sudo:*' command-path \
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-
 # ==============================================================================
 # 4. ヒストリ設定
 # ==============================================================================
@@ -90,7 +89,6 @@ zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000          # メモリ上に保持する履歴数
 SAVEHIST=1000000          # ファイルに保存する履歴数
-
 
 # ==============================================================================
 # 5. オプション設定 (setopt)
@@ -115,7 +113,6 @@ setopt pushd_ignore_dups  # pushd で重複を追加しない
 setopt hist_ignore_dups       # 直前と同じコマンドは履歴に追加しない
 setopt hist_ignore_all_dups   # 重複するコマンドは古い方を削除
 setopt hist_reduce_blanks     # 余分な空白を削除して保存
-
 
 # ==============================================================================
 # 6. エイリアス
@@ -165,7 +162,6 @@ case ${OSTYPE} in
     # Linux (no additional settings needed with eza)
     ;;
 esac
-
 
 # ==============================================================================
 # 7. 関数
@@ -274,7 +270,6 @@ function y() {
   yazi "${1:-.}"
 }
 
-
 # ==============================================================================
 # 8. キーバインド
 # ==============================================================================
@@ -287,7 +282,6 @@ stty -ixon
 # Ctrl+R: fzf による履歴検索
 bindkey '^r' fzf-select-history
 
-
 # ==============================================================================
 # 9. 外部ツール - バージョン管理
 # ==============================================================================
@@ -298,7 +292,6 @@ if command -v mise &> /dev/null; then
     export PIPX_DEFAULT_PYTHON="$(mise where python)/bin/python3"
 fi
 
-
 # ==============================================================================
 # 9.5. WSL2 NVIDIA GPU
 # ==============================================================================
@@ -307,7 +300,6 @@ fi
 if grep -qi microsoft /proc/version 2>/dev/null; then
   export PATH="/usr/lib/wsl/lib:$PATH"
 fi
-
 
 # ==============================================================================
 # 10. 外部ツール - パッケージマネージャー
@@ -318,17 +310,21 @@ fi
 # macOS: /opt/homebrew
 # Linux: /home/linuxbrew/.linuxbrew
 
-# macOS (Apple Silicon)
-if [ -x /opt/homebrew/bin/brew ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+if ! command -v brew &> /dev/null; then
+  # macOS (Apple Silicon)
+  if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 
-  # MacPorts との共存
-  export PATH="/opt/local/bin:$PATH"
+  # Linuxbrew
+  if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
 fi
 
-# Linuxbrew
-if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# MacPorts との共存
+if [ -x /opt/local/bin ]; then
+  export PATH="/opt/local/bin:$PATH"
 fi
 
 # --- fzf キーバインド (Ubuntu) ---
@@ -336,7 +332,6 @@ fi
 if [ -f "$HOME/.zsh/fzf-key-bindings.zsh" ]; then
   source "$HOME/.zsh/fzf-key-bindings.zsh"
 fi
-
 
 # ==============================================================================
 # 11. サービス連携・その他
@@ -371,7 +366,6 @@ esac
 if command -v git-wt &> /dev/null; then
   eval "$(git wt --init zsh)"
 fi
-
 
 # ==============================================================================
 # 10. Zsh プラグイン
@@ -413,14 +407,9 @@ if [ -f "$HOME/.zshrc.local" ]; then
   source "$HOME/.zshrc.local"
 fi
 
-
 # Added by flyctl installer
 export FLYCTL_INSTALL="/home/yoshikouki/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
-export PATH="$HOME/.bun/bin:$PATH"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/yoshikouki/google-cloud-sdk/path.zsh.inc' ]; then . '/home/yoshikouki/google-cloud-sdk/path.zsh.inc'; fi
 
 # bun completions
-[ -s "/Users/yoshikouki/.bun/_bun" ] && source "/Users/yoshikouki/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
