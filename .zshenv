@@ -9,6 +9,9 @@ fi
 
 # 文字コードを UTF-8 に指定
 export LANG=ja_JP.UTF-8
+if [[ "$LC_CTYPE" == "UTF-8" ]]; then
+  export LC_CTYPE="$LANG"
+fi
 
 # mise shims (for non-interactive shells like editors/IDEs)
 export PATH="$HOME/.local/share/mise/shims:$PATH"
