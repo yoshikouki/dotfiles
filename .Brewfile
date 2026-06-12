@@ -2,72 +2,90 @@
 # cask install to /Applications
 cask_args appdir: "/Applications"
 
+# ==============================================================================
+# CLI (brew)
+# ==============================================================================
+
 ## Core
-cask "google-chrome"
-cask "google-drive"
-
-## Default
-cask "slack"
-cask "discord"
-cask "1password"
-cask "notion"
-
-## Utils
-cask "karabiner-elements"
-cask "raycast"
-
-## Command
 brew "curl"
+brew "git"
 brew "jq"
 brew "tree"
-brew "git"
+brew "coreutils"
 
-## CLI Tools (previously managed by Nix)
+## Dev environment
+brew "mise"
+brew "direnv"
+
+## Modern CLI tools
+brew "bat"
+brew "eza"
 brew "fd"
 brew "fzf"
 brew "ripgrep"
 brew "zoxide"
-brew "bat"
-brew "eza"
-brew "neovim"
-brew "yazi"
+
+## Git tools
 brew "gh"
 brew "ghq"
 brew "delta"
 brew "difftastic"
 brew "lazygit"
-brew "tmux"
+
+## Editor / TUI
+brew "neovim"
 brew "tree-sitter"
+brew "tmux"
+brew "yazi"
+
+## Service CLI
+brew "googleworkspace-cli"
 tap "steipete/tap"
 brew "steipete/tap/summarize"
-
-## Language
-brew "coreutils"
 
 ## DB
 brew "mysql"
 brew "postgresql"
-cask "tableplus"
 
-## Zsh Plugins
+## Zsh plugins
 brew "zsh-autosuggestions"
 brew "zsh-completions"
-brew "zsh-syntax-highlighting"
 brew "zsh-history-substring-search"
+brew "zsh-syntax-highlighting"
 
-cask "warp"
-brew "mise"
-brew "direnv"
-brew "googleworkspace-cli"
-## Other
-# tap "sanemat/font" # for brew "sanemat/font/ricty"
-# brew "sanemat/font/ricty"
-# cask "google-japanese-ime"
-cask "pixelsnap"
-# cask "spark"
+# ==============================================================================
+# Applications (cask)
+# ==============================================================================
 
-## Apps (cask)
-cask "zed"
+## Browser
+cask "google-chrome"
+
+## Communication
+cask "slack"
+cask "discord"
+
+## Productivity
+cask "1password"
+cask "notion"
+cask "google-drive"
+cask "raycast"
+
+## macOS utils
+cask "karabiner-elements"
 cask "loop"               # window manager (loop-keybinds.json が設定)
 cask "jordanbaird-ice"    # menu bar manager
 cask "azookey"            # 日本語 IME
+cask "pixelsnap"
+
+## Terminal / Editor
+cask "warp"
+cask "zed"
+
+## Dev tools
+cask "tableplus"
+
+## Unused (kept for reference)
+# tap "sanemat/font" # for brew "sanemat/font/ricty"
+# brew "sanemat/font/ricty"
+# cask "google-japanese-ime"
+# cask "spark"
