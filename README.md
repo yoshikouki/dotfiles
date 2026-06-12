@@ -1,13 +1,11 @@
 # dotfiles
 
-Declarative dotfiles management using Nix (nix-darwin + home-manager).
+Dotfiles managed with symbolic links, Homebrew, and mise.
 
-## Requirements
+## Supported platforms
 
-- Nix (installed automatically by install scripts)
-- Supported platforms:
-  - macOS (Apple Silicon)
-  - Ubuntu/Linux (aarch64)
+- macOS (Apple Silicon)
+- Ubuntu/Linux
 
 ## Installation
 
@@ -37,36 +35,34 @@ git clone https://github.com/yoshikouki/dotfiles.git ~/dotfiles
 sh ~/dotfiles/bin/install.linux.sh
 ```
 
+## What the install scripts do
+
+1. Install Homebrew (macOS) / apt prerequisites + Linuxbrew (Linux)
+2. Symlink dotfiles into `$HOME` (`.zshrc`, `.gitconfig`, `nvim/`, `yazi/`, `local-bin/` scripts, etc.)
+3. Create `~/.config/git/local.gitconfig` from the OS template (machine-specific git settings, not tracked)
+4. Install packages from `.Brewfile` (`brew bundle --global`)
+5. Install language runtimes via [mise](https://mise.jdx.dev/) (`.mise.toml`: Go, Node.js, Ruby, Python, Bun, Rust)
+
 ## What's included
 
-### System Configuration (macOS only)
-- **Package manager**: nix-darwin
-- **Shell**: Zsh (system default)
+- **Shell**: Zsh (`.zshrc`, `.zshenv`, `.zprofile`) with Homebrew-installed plugins
+- **Git**: `.gitconfig` (+ delta, difftastic), `.gitignore_global`
+- **Editors**: Neovim (LazyVim), `.vimrc`
+- **TUI / CLI**: yazi, lazygit, tmux, fzf, ripgrep, etc. (see `.Brewfile`)
+- **Scripts**: `local-bin/` → symlinked into `~/.local/bin`
 
-### User Environment (macOS & Linux)
-Managed by home-manager:
+## Maintenance
 
-- **CLI Tools**: fd, fzf, ghq, ripgrep, jq, bat, delta, eza
-- **Languages**: Go, Node.js, Ruby, Python, Bun, Rust
-- **TUI Apps**: lazygit, tmux, yazi, zoxide
-- **Editors**: Neovim
-- **Service CLIs**: GitHub CLI (gh)
-- **Config files**: .zshrc, .gitconfig, nvim, local-bin
-
-## Updating
-
-### macOS
 ```bash
-darwin-rebuild switch --flake ~/dotfiles#mac
+# Re-apply symlinks / packages / runtimes
+make install
+
+# Install GUI applications only
+make applications
+
+# Apply macOS system defaults
+make macos
+
+# Update Homebrew packages to match .Brewfile
+brew bundle --global
 ```
-
-### Ubuntu / Linux
-```bash
-home-manager switch --flake ~/dotfiles#yoshikouki
-```
-
-## Notes
-
-- Apple Silicon (aarch64) is the default architecture. For Intel Mac, change `system` in `flake.nix` to `x86_64-darwin`.
-- Initial run generates `flake.lock` file.
-- Dotfiles symlinks are created automatically by install scripts.

@@ -1,5 +1,5 @@
 install:
-	@bin/install.sh
+	@bin/install.mac.sh
 
 applications:
 	@bin/install_applications.sh
