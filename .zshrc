@@ -277,7 +277,9 @@ function y() {
 
 # Ctrl+S/Ctrl+Q の XOFF/XON フロー制御を無効化
 # ターミナルアプリ（Claude Code 等）が Ctrl+S を使えるようにする
-stty -ixon
+if [[ -t 0 ]]; then
+  stty -ixon
+fi
 
 # Ctrl+R: fzf による履歴検索
 bindkey '^r' fzf-select-history
