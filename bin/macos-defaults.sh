@@ -1,140 +1,131 @@
 #!/bin/zsh
+set -euo pipefail
 
-if [ "$(uname)" != "Darwin" ] ; then
+if [ "$(uname)" != "Darwin" ]; then
 	echo "Not macOS!"
 	exit 1
 fi
+
+# Keyboard ===================================================
 
 # キーリピートの高速化
 defaults write NSGlobalDomain KeyRepeat -int 1
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
 
-# マウスの速度を速める
-defaults write -g com.apple.trackpad.scaling 3
-defaults write -g com.apple.mouse.scaling 5
+# Caps Lock を Control として扱う
+hidutil property --set '{
+  "UserKeyMapping": [
+    {
+      "HIDKeyboardModifierMappingSrc": 0x700000039,
+      "HIDKeyboardModifierMappingDst": 0x7000000E0
+    }
+  ]
+}'
 
-## 三本指でドラッグ
+# Spotlight / Raycast ========================================
+
+# Keyboard shortcuts =========================================
+
+hotkeys_plist="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
+/usr/libexec/PlistBuddy -c "Delete :AppleSymbolicHotKeys:nabled" "$hotkeys_plist" 2>/dev/null || true
+
+disable_symbolic_hotkey() {
+	local key_id="$1"
+	local value
+
+	value="$(defaults read com.apple.symbolichotkeys AppleSymbolicHotKeys 2>/dev/null | awk -v id="$key_id" '
+		$1 == id {
+			in_key = 1
+		}
+		in_key && /value =/ {
+			in_value = 1
+		}
+		in_value {
+			print
+		}
+		in_value && /^[[:space:]]*};/ {
+			exit
+		}
+	')"
+
+	if [ -n "$value" ]; then
+		defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$key_id" "{ enabled = 0; $value }"
+	else
+		defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$key_id" "{ enabled = 0; }"
+	fi
+}
+
+# 以下のキーボードショートカットをオフにする
+# 52: Dockを自動的に表示/非表示のオン・オフ
+# 32, 34: Mission Control
+# 33, 35: アプリケーションウィンドウ
+# 79-82: コンテクストメニュー
+# 60: 前の入力ソースを選択
+# 61: 入力メニューの次ソースを選択
+# 64: Spotlight検索を表示
+# 65: Finderの検索ウィンドウを表示
+for key_id in 52 32 34 33 35 79 80 81 82 60 61 64 65; do
+	disable_symbolic_hotkey "$key_id"
+done
+
+# F1, F2などのキーを標準ファンクションキーとして使用
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
+
+# Trackpad / Mouse ===========================================
+
+# トラックパッド速度、マウス速度
+defaults write -g com.apple.trackpad.scaling -float 3
+defaults write -g com.apple.mouse.scaling -float 5
+
+# 三本指ドラッグ
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
 
-# スクロールバーの常時表示
-# defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
-# デザインが崩れることもあるので無効化
+# ナチュラルスクロール、タップでクリック、右クリック
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool true
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
+defaults write com.apple.AppleMultitouchTrackpad TrackpadCornerSecondaryClick -int 2
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
+defaults write NSGlobalDomain ContextMenuGesture -int 1
 
-# 自動大文字の無効化
-defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+# Dock =======================================================
 
-# クラッシュレポートの無効化
-defaults write com.apple.CrashReporter DialogType -string "none"
-
-# 時計アイコンクリック時にOSやホスト名ipを表示する
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
-
-## ウィンドウサイズを調整する際の加速再生
-defaults write -g NSWindowResizeTime -float 0.001
-
-# ターミナルでUTF-8のみを使用する
-defaults write com.apple.terminal StringEncodings -array 4
-
-# ターミナル終了時のプロンプトを非表示にする
-defaults write com.googlecode.iterm2 PromptOnQuit -bool false
-
-## DNSを指定してネットが早くなってほしい。IPv4とIPv6
-networksetup -setdnsservers Wi-Fi 8.8.4.4 8.8.8.8 2001:4860:4860::8844 2001:4860:4860::8888
-
-# Dock ======================================================
-
-# すべての（デフォルトの）アプリアイコンをDockから消去する
+# Dock の中身を全消し
 defaults write com.apple.dock persistent-apps -array
 
-# Finder ======================================================
+# Dock を自動的に隠す、サイズ調整、最近使ったアプリ非表示
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock tilesize -int 42
+defaults write com.apple.dock show-recents -bool false
 
-# デフォルトで隠しファイルを表示する
+# Finder =====================================================
+
+# 隠しファイル表示、拡張子表示、パスバー/ステータスバー表示
 defaults write com.apple.finder AppleShowAllFiles -bool true
-
-# 全ての拡張子のファイルを表示
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
-# ステータスバーを表示
+defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
 
-# パスバーを表示
-defaults write com.apple.finder ShowPathbar -bool true
-
-## Finder のタイトルバーにフルパスを表示する
-defaults write com.apple.finder _FXShowPosixPathInTitle -bool true    
-
-# 名前で並べ替えを選択時にディレクトリを前に置くようにする
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
-
-# 検索時にデフォルトでカレントディレクトリを検索
+# Finder の検索をカレントディレクトリ優先にする
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-# USBやネットワークストレージに.DS_Storeファイルを作成しない
+# USB やネットワークストレージに .DS_Store を作成しない
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# ボリュームマウント時に自動的にFinderを表示
-defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
-defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true
-defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
-
-# Show the ~/Library folder
-chflags nohidden ~/Library
-
-# Show the /Volumes folder
-sudo chflags nohidden /Volumes
-
-# Safari ======================================================
-
-# Enable the `Develop`, `Debug` menu and the `Web Inspector`
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
-
-# アドレスバーに表示されるURLを全表示
-defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
-
-# AppStore ======================================================
-
-# WebKitデベロッパーツールを有効にする
-defaults write com.apple.appstore WebKitDeveloperExtras -bool true
-
-# デバッグメニューを有効にする
-defaults write com.apple.appstore ShowDebugMenu -bool true
-
-# 自動更新チェックを有効にする
-defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
-
-# 毎日アプリケーションのアップデートを確認する
-defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
-
-# アプリケーションのアップデートをバックグラウンドでダウンロードする
-defaults write com.apple.SoftwareUpdate AutomaticDownload -int 1
-
-# システムデータファイルとセキュリティ更新プログラムをインストールする
-defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
-
-# 他のMacで購入したアプリを自動的にダウンロードする
-defaults write com.apple.SoftwareUpdate ConfigDataInstall -int 1
-
-# アプリケーションの自動更新を有効化
-defaults write com.apple.commerce AutoUpdate -bool true
-
-# 再起動が必要なアプリケーションの場合自動で再起動を有効化する
-defaults write com.apple.commerce AutoUpdateRestartRequired -bool true
-
-# 再起動
+# Apply ======================================================
 
 for app in \
-    "Dock" \
+	"Dock" \
 	"Finder" \
-	"Google Chrome" \
-	"Safari" \
-	"SystemUIServer" \
-	"Terminal" \
-    ; do
-	killall "${app}" &> /dev/null
+	"SystemUIServer"; do
+	killall "${app}" &>/dev/null || true
 done
+
+killall cfprefsd &>/dev/null || true
+
+echo "macOS defaults applied. Some keyboard and trackpad settings may require logout or reboot."

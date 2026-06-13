@@ -327,6 +327,10 @@ if [ -x /opt/local/bin ]; then
   export PATH="/opt/local/bin:$PATH"
 fi
 
+# Keep mise-managed runtimes ahead of Homebrew/MacPorts/system runtimes.
+path=("$HOME/.local/share/mise/shims" ${path:#"$HOME/.local/share/mise/shims"})
+export PATH
+
 # --- fzf キーバインド (Ubuntu) ---
 # Ubuntu では fzf のキーバインドを別ファイルから読み込む
 if [ -f "$HOME/.zsh/fzf-key-bindings.zsh" ]; then
@@ -408,8 +412,13 @@ if [ -f "$HOME/.zshrc.local" ]; then
 fi
 
 # Added by flyctl installer
-export FLYCTL_INSTALL="/home/yoshikouki/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
+if [ -d "$HOME/.fly/bin" ]; then
+  export FLYCTL_INSTALL="$HOME/.fly"
+  export PATH="$FLYCTL_INSTALL/bin:$PATH"
+fi
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# CF CLI completions
+[[ -f "$HOME/.config/cf/completions/_cf.zsh" ]] && source "$HOME/.config/cf/completions/_cf.zsh"

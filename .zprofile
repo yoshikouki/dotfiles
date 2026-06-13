@@ -18,5 +18,9 @@ if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
+# Keep mise-managed runtimes ahead of Homebrew/system runtimes in login shells.
+path=("$HOME/.local/share/mise/shims" ${path:#"$HOME/.local/share/mise/shims"})
+export PATH
+
 # Fig post block. Keep at the bottom of this file.
 # [[ -f "$HOME/.fig/shell/zprofile.post.zsh" ]] && builtin source "$HOME/.fig/shell/zprofile.post.zsh"
