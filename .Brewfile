@@ -87,5 +87,3 @@ cask "tableplus"
 ## Unused (kept for reference)
 # tap "sanemat/font" # for brew "sanemat/font/ricty"
 # brew "sanemat/font/ricty"
-# cask "google-japanese-ime"
-# cask "spark"
