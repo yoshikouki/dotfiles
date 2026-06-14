@@ -83,6 +83,14 @@ cask "cmux"
 cask "zed"
 
 ## Dev tools
+brew "mas"                 # Mac App Store CLI (for Xcode install/update)
+brew "xcbeautify"          # readable xcodebuild output
+brew "swiftformat"
+brew "swiftlint"
+brew "xcode-build-server"  # SourceKit-LSP support for Xcode projects
+brew "ios-deploy"          # install/debug iOS apps on physical devices
+brew "fastlane"
+brew "cocoapods"
 cask "tableplus"
 
 ## Unused (kept for reference)
