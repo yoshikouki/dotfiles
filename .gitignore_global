@@ -8,6 +8,9 @@
 # Claude Code skills
 .playwright-cli
 
+# Codex local state
+.codex/
+
 # Git worktree helpers
 .wt/
 .worktrees/
