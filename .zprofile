@@ -18,8 +18,14 @@ if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# Keep mise-managed runtimes ahead of Homebrew/system runtimes in login shells.
-path=("$HOME/.local/share/mise/shims" ${path:#"$HOME/.local/share/mise/shims"})
+# Keep local wrappers and mise-managed runtimes ahead of Homebrew/system tools
+# in login shells. Homebrew's shellenv prepends its own bin directories.
+path=(
+  "$HOME/.local/bin"
+  "$HOME/.local/share/mise/shims"
+  ${path:#"$HOME/.local/bin"}
+  ${path:#"$HOME/.local/share/mise/shims"}
+)
 export PATH
 
 # Fig post block. Keep at the bottom of this file.

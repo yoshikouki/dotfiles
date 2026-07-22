@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# Use the GitHub CLI account that owns the target repository in both
+# interactive shells and non-interactive callers such as Codex.
+
+find_real_gh() {
+    old_ifs=$IFS
+    IFS=:
+    for directory in $PATH; do
+        [ -n "$directory" ] || directory=.
+        candidate=$directory/gh
+
+        if [ -x "$candidate" ] && ! [ "$candidate" -ef "$0" ]; then
+            IFS=$old_ifs
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done
+    IFS=$old_ifs
+
+    printf '%s\n' "gh: GitHub CLI executable not found" >&2
+    return 127
+}
+
+select_config_dir() {
+    args=$*
+
+    case "$args" in
+        *[-_]pepabo/*)
+            printf '%s\n' "${GH_CONFIG_DIR_PEPABO:-$HOME/.config/gh-yoshikouki-pepabo}"
+            return
+            ;;
+        *github.com:*|*github.com/*)
+            printf '%s\n' "${GH_CONFIG_DIR_DEFAULT:-$HOME/.config/gh-yoshikouki}"
+            return
+            ;;
+        *" --hostname "*|*" -h "*)
+            printf '%s\n' "${GH_CONFIG_DIR_ENTERPRISE:-$HOME/.config/gh}"
+            return
+            ;;
+    esac
+
+    remote_url=$(git remote get-url origin 2>/dev/null || true)
+    case "$remote_url" in
+        *[-_]pepabo/*)
+            printf '%s\n' "${GH_CONFIG_DIR_PEPABO:-$HOME/.config/gh-yoshikouki-pepabo}"
+            ;;
+        *github.com:*|*github.com/*)
+            printf '%s\n' "${GH_CONFIG_DIR_DEFAULT:-$HOME/.config/gh-yoshikouki}"
+            ;;
+        ?*)
+            printf '%s\n' "${GH_CONFIG_DIR_ENTERPRISE:-$HOME/.config/gh}"
+            ;;
+        *)
+            printf '%s\n' "${GH_CONFIG_DIR_DEFAULT:-$HOME/.config/gh-yoshikouki}"
+            ;;
+    esac
+}
+
+real_gh=$(find_real_gh) || exit $?
+
+if [ -n "${GH_CONFIG_DIR:-}" ]; then
+    exec "$real_gh" "$@"
+fi
+
+GH_CONFIG_DIR=$(select_config_dir "$@")
+export GH_CONFIG_DIR
+exec "$real_gh" "$@"
