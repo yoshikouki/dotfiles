@@ -149,7 +149,7 @@ alias rm_docker_compose_containers='docker-compose rm -fv'
 alias kc='kubectl-cluster-caution'
 
 # --- Package Management ---
-alias pkg-update='brew update && brew upgrade && mise upgrade'
+alias pkg-update='brew update && brew upgrade && mise self-update --yes --no-plugins && mise upgrade'
 
 # --- OS 別設定 ---
 case ${OSTYPE} in

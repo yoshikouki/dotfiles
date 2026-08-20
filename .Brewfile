@@ -14,7 +14,6 @@ brew "tree"
 brew "coreutils"
 
 ## Dev environment
-brew "mise"
 brew "direnv"
 
 ## Modern CLI tools

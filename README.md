@@ -41,7 +41,7 @@ sh ~/dotfiles/bin/install.linux.sh
 2. Symlink dotfiles into `$HOME` (`.zshrc`, `.gitconfig`, `nvim/`, `yazi/`, `local-bin/` scripts, etc.)
 3. Create `~/.config/git/local.gitconfig` from the OS template (machine-specific git settings, not tracked)
 4. Install packages from `.Brewfile` (`brew bundle --global`)
-5. Install language runtimes via [mise](https://mise.jdx.dev/) (`.mise.toml`: Go, Node.js, Ruby, Python, Bun, Rust)
+5. Install the standalone [mise](https://mise.jdx.dev/) binary and language runtimes (`~/.config/mise/config.toml`: Go, Node.js, npm, Ruby, Python, Bun, Rust)
 
 ## What's included
 
@@ -65,4 +65,8 @@ make macos
 
 # Update Homebrew packages to match .Brewfile
 brew bundle --global
+
+# Update mise itself and all runtimes within their configured release series
+mise self-update --yes --no-plugins
+mise upgrade
 ```

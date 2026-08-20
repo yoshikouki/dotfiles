@@ -4,7 +4,8 @@
 - `bin/`: bootstrap scripts for macOS/Linux, app installs, and macOS defaults.
 - `local-bin/`: small CLI helpers that are symlinked into `~/.local/bin`.
 - `nvim/`: Neovim config in Lua. Core config lives in `nvim/lua/config`, plugins in `nvim/lua/plugins`.
-- Root dotfiles: `.zshrc`, `.gitconfig*`, `.Brewfile`, `.mise.toml`, `.vimrc`, `loop-keybinds.json`.
+- Root dotfiles: `.zshrc`, `.gitconfig*`, `.Brewfile`, `.vimrc`, `loop-keybinds.json`.
+- `mise/`: global runtime configuration and lockfile, symlinked into `~/.config/mise/`.
 
 ## Build, Test, and Development Commands
 - `bin/install.mac.sh`: bootstrap macOS (packages, symlinks, runtimes).

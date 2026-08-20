@@ -53,6 +53,12 @@ if [ ! -f "$HOME/.config/git/local.gitconfig" ]; then
 fi
 ln -sfnv "$DOTPATH/nvim" "$HOME/.config/nvim"
 ln -sfnv "$DOTPATH/yazi" "$HOME/.config/yazi"
+mkdir -p "$HOME/.config/mise"
+ln -sfnv "$DOTPATH/mise/config.toml" "$HOME/.config/mise/config.toml"
+ln -sfnv "$DOTPATH/mise/mise.lock" "$HOME/.config/mise/mise.lock"
+if [ -L "$HOME/.mise.toml" ] && [ "$(readlink "$HOME/.mise.toml")" = "$DOTPATH/.mise.toml" ]; then
+	rm "$HOME/.mise.toml"
+fi
 mkdir -p "$HOME/.local/bin"
 for script in "$DOTPATH/local-bin"/*; do
 	[ -f "$script" ] && [ -x "$script" ] && ln -sfnv "$script" "$HOME/.local/bin/$(basename "$script")"
@@ -68,14 +74,14 @@ ya pkg install
 echo "✅ INSTALL yazi plugins"
 
 echo "#️⃣ INSTALL mise"
-if ! command -v mise >/dev/null 2>&1; then
+if [ ! -x "$HOME/.local/bin/mise" ]; then
 	curl https://mise.run | sh
 fi
+export PATH="$HOME/.local/bin:$PATH"
+mise self-update --yes --no-plugins
 echo "✅ INSTALL mise"
 
 echo "#️⃣ INSTALL runtimes via mise"
-export PATH="$HOME/.local/bin:$PATH"
-mise trust "$DOTPATH/.mise.toml"
 mise install
 echo "✅ INSTALL runtimes via mise"
 
