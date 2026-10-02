@@ -1,11 +1,19 @@
 # dotfiles
 
-Dotfiles managed with symbolic links, Homebrew, and mise.
+Dotfiles managed with Nix on macOS, with a legacy Homebrew bootstrap and mise runtimes.
 
 ## Supported platforms
 
 - macOS (Apple Silicon)
 - Ubuntu/Linux
+
+## Nix on macOS
+
+The new Mac configuration uses Lix, nix-darwin for macOS preferences, and
+Home Manager for common CLI tools, Git and shell configuration. See
+[nix/README.md](nix/README.md) for build, apply and update commands.
+
+The Homebrew bootstrap below remains the legacy installation path.
 
 ## Installation
 

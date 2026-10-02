@@ -4,7 +4,7 @@ legacy_version_file = false
 lockfile = true
 lockfile_platforms = ["linux-arm64", "macos-arm64"]
 not_found_auto_install = false
-not_found_system_fallback = false
+ruby.compile = false
 
 [tools]
 go = "1.27"
