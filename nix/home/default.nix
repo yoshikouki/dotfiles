@@ -4,7 +4,7 @@ let
   miseDirectory = "${config.home.homeDirectory}/src/github.com/yoshikouki/dotfiles/mise";
 in
 {
-  imports = [ ./packages.nix ./git.nix ./zsh.nix ];
+  imports = [ ./packages.nix ./git.nix ./zsh.nix ./macos-shortcuts.nix ];
   home.stateVersion = "26.05";
   xdg.enable = true;
 

@@ -22,7 +22,7 @@ let
 function pkg-update() {
   local repo="''${DOTFILES_REPO_DIR:-$HOME/src/github.com/yoshikouki/dotfiles}"
   nix flake update "path:$repo" &&
-    sudo darwin-rebuild switch --flake "path:$repo#K2-MacBook-Pro"
+    sudo darwin-rebuild switch --flake "path:$repo#mbp"
 }
 ''
       ''

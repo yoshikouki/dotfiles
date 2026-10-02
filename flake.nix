@@ -10,7 +10,7 @@
   };
 
   outputs = { nix-darwin, home-manager, ... }: {
-    darwinConfigurations."K2-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."mbp" = nix-darwin.lib.darwinSystem {
       modules = [
         ./nix/darwin.nix
         home-manager.darwinModules.home-manager

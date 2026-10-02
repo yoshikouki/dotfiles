@@ -13,13 +13,13 @@ language runtimes remain managed by mise. GUI apps are not managed yet.
 From the repository root, build without applying:
 
 ```sh
-nix build "path:$PWD#darwinConfigurations.K2-MacBook-Pro.system" --out-link /tmp/macbook-darwin-result
+nix build "path:$PWD#darwinConfigurations.mbp.system" --out-link /tmp/macbook-darwin-result
 ```
 
 Apply the built configuration:
 
 ```sh
-sudo /tmp/macbook-darwin-result/sw/bin/darwin-rebuild switch --flake "path:$PWD#K2-MacBook-Pro"
+sudo /tmp/macbook-darwin-result/sw/bin/darwin-rebuild switch --flake "path:$PWD#mbp"
 ```
 
 The explicit `path:` reference includes new files before they are tracked by Git.
