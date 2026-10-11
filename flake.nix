@@ -15,6 +15,12 @@
         ./nix/darwin.nix
         home-manager.darwinModules.home-manager
         {
+          networking = {
+            computerName = "mbp";
+            hostName = "mbp";
+            localHostName = "mbp";
+          };
+
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.yoshikouki = import ./nix/home;
