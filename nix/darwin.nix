@@ -21,6 +21,7 @@
       InitialKeyRepeat = 15;
       "com.apple.keyboard.fnState" = true;
       "com.apple.trackpad.scaling" = 3.0;
+      "com.apple.trackpad.enableSecondaryClick" = true;
       "com.apple.swipescrolldirection" = true;
       "com.apple.mouse.tapBehavior" = 1;
       AppleShowAllExtensions = true;
@@ -29,7 +30,8 @@
       Clicking = true;
       TrackpadThreeFingerDrag = true;
       TrackpadRightClick = true;
-      TrackpadCornerSecondaryClick = 2;
+      # Use two-finger tap/click without assigning a corner gesture.
+      TrackpadCornerSecondaryClick = 0;
     };
     dock = {
       autohide = true;
