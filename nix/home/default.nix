@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   scripts = builtins.readDir ../../local-bin;
-  miseDirectory = "${config.home.homeDirectory}/src/github.com/yoshikouki/dotfiles/mise";
+  repositoryDirectory = "${config.home.homeDirectory}/src/github.com/yoshikouki/dotfiles";
 in
 {
   imports = [ ./packages.nix ./git.nix ./zsh.nix ./macos-shortcuts.nix ];
@@ -17,8 +17,11 @@ in
   }) (lib.filterAttrs (_: kind: kind == "regular") scripts);
 
   xdg.configFile = {
-    "mise/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${miseDirectory}/config.toml";
-    "mise/mise.lock".source = config.lib.file.mkOutOfStoreSymlink "${miseDirectory}/mise.lock";
+    "mise/config.toml".source = config.lib.file.mkOutOfStoreSymlink "${repositoryDirectory}/mise/config.toml";
+    "mise/mise.lock".source = config.lib.file.mkOutOfStoreSymlink "${repositoryDirectory}/mise/mise.lock";
+    # Plugin managers update lockfiles and download plugins into these directories.
+    "nvim".source = config.lib.file.mkOutOfStoreSymlink "${repositoryDirectory}/nvim";
+    "yazi".source = config.lib.file.mkOutOfStoreSymlink "${repositoryDirectory}/yazi";
   };
 
   # This editable, machine-specific include must never enter the Nix store.

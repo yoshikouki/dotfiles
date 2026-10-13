@@ -7,31 +7,11 @@ let
       zsh-history-substring-search zsh-syntax-highlighting
     ];
   };
-  legacy = lib.readFile ../../.zshrc;
-  nixShell = lib.replaceStrings
-    [
-      "if command -v brew &> /dev/null; then\n  HOMEBREW_PREFIX=\"$(brew --prefix)\"\nfi"
-      "HOMEBREW_PREFIX"
-      "alias pkg-update='brew update && brew upgrade && mise self-update --yes --no-plugins && mise upgrade'"
-      "export PIPX_DEFAULT_PYTHON=\"$(mise where python)/bin/python3\""
-    ]
-    [
-      ''DOTFILES_ZSH_PREFIX="${plugins}"''
-      "DOTFILES_ZSH_PREFIX"
-      ''
-function pkg-update() {
-  local repo="''${DOTFILES_REPO_DIR:-$HOME/src/github.com/yoshikouki/dotfiles}"
-  nix flake update "path:$repo" &&
-    sudo darwin-rebuild switch --flake "path:$repo#mbp"
-}
-''
-      ''
-if mise_python=$(mise where python 2>/dev/null); then
-      export PIPX_DEFAULT_PYTHON="$mise_python/bin/python3"
-    fi
-''
-    ] legacy;
+  nixShell = ''
+    DOTFILES_ZSH_PREFIX="${plugins}"
+  '' + lib.readFile ../../.zshrc;
   session = ''
+    export DOTFILES_PACKAGE_MANAGER=nix
     # Keep CLI discovery reliable even when an app passes inherited shell guards.
     path=("${config.home.profileDirectory}/bin" /run/current-system/sw/bin /nix/var/nix/profiles/default/bin $path)
     export PATH

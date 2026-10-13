@@ -26,16 +26,16 @@
 # Zsh の基本機能を有効化
 
 # --- Homebrew prefix の取得 ---
-if command -v brew &> /dev/null; then
-  HOMEBREW_PREFIX="$(brew --prefix)"
+if [[ -z "$DOTFILES_ZSH_PREFIX" ]] && command -v brew &> /dev/null; then
+  DOTFILES_ZSH_PREFIX="$(brew --prefix)"
 fi
 
 # PATH は先頭優先のまま重複だけ除去する
 typeset -U path PATH
 
 # --- zsh-completions の fpath 追加（compinit より前に必要）---
-if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/share/zsh-completions" ]]; then
-  fpath=("$HOMEBREW_PREFIX/share/zsh-completions" $fpath)
+if [[ -n "$DOTFILES_ZSH_PREFIX" && -d "$DOTFILES_ZSH_PREFIX/share/zsh-completions" ]]; then
+  fpath=("$DOTFILES_ZSH_PREFIX/share/zsh-completions" $fpath)
 fi
 
 # 補完システムの初期化（-u: 安全でないディレクトリの警告を抑制）
@@ -149,7 +149,15 @@ alias rm_docker_compose_containers='docker-compose rm -fv'
 alias kc='kubectl-cluster-caution'
 
 # --- Package Management ---
-alias pkg-update='brew update && brew upgrade && mise self-update --yes --no-plugins && mise upgrade'
+if [[ "$DOTFILES_PACKAGE_MANAGER" == nix ]]; then
+  function pkg-update() {
+    local repo="${DOTFILES_REPO_DIR:-$HOME/src/github.com/yoshikouki/dotfiles}"
+    nix flake update "path:$repo" &&
+      sudo darwin-rebuild switch --flake "path:$repo#mbp"
+  }
+else
+  alias pkg-update='brew update && brew upgrade && mise self-update --yes --no-plugins && mise upgrade'
+fi
 
 # --- OS 別設定 ---
 case ${OSTYPE} in
@@ -291,7 +299,9 @@ bindkey '^r' fzf-select-history
 # --- mise (runtime version manager) ---
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
-    export PIPX_DEFAULT_PYTHON="$(mise where python)/bin/python3"
+    if mise_python=$(mise where python 2>/dev/null); then
+      export PIPX_DEFAULT_PYTHON="$mise_python/bin/python3"
+    fi
 fi
 
 # ==============================================================================
@@ -312,7 +322,7 @@ fi
 # macOS: /opt/homebrew
 # Linux: /home/linuxbrew/.linuxbrew
 
-if ! command -v brew &> /dev/null; then
+if [[ "$DOTFILES_PACKAGE_MANAGER" != nix ]] && ! command -v brew &> /dev/null; then
   # macOS (Apple Silicon)
   if [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -325,7 +335,7 @@ if ! command -v brew &> /dev/null; then
 fi
 
 # MacPorts との共存
-if [ -x /opt/local/bin ]; then
+if [[ "$DOTFILES_PACKAGE_MANAGER" != nix && -d /opt/local/bin ]]; then
   export PATH="/opt/local/bin:$PATH"
 fi
 
@@ -378,11 +388,11 @@ fi
 # ==============================================================================
 # 読み込み順序: autosuggestions → history-substring-search → syntax-highlighting (最後)
 
-if [[ -n "$HOMEBREW_PREFIX" ]]; then
+if [[ -n "$DOTFILES_ZSH_PREFIX" ]]; then
   # --- zsh-autosuggestions ---
   # 入力中にコマンド候補をグレー表示
-  if [[ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
-    source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  if [[ -f "$DOTFILES_ZSH_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+    source "$DOTFILES_ZSH_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
     ZSH_AUTOSUGGEST_STRATEGY=(history completion)
     ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
@@ -390,8 +400,8 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 
   # --- zsh-history-substring-search ---
   # 入力中の文字列で履歴を部分一致検索
-  if [[ -f "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]]; then
-    source "$HOMEBREW_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  if [[ -f "$DOTFILES_ZSH_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]]; then
+    source "$DOTFILES_ZSH_PREFIX/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
     bindkey '^P' history-substring-search-up
@@ -402,8 +412,8 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 
   # --- zsh-syntax-highlighting （必ず最後）---
   # コマンドラインのシンタックスハイライト
-  if [[ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
-    source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  if [[ -f "$DOTFILES_ZSH_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+    source "$DOTFILES_ZSH_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
     ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
   fi
 fi

@@ -9,12 +9,12 @@
 
 # --- Homebrew shellenv ---
 # macOS (Apple Silicon)
-if [ -x /opt/homebrew/bin/brew ]; then
+if [[ "$DOTFILES_PACKAGE_MANAGER" != nix && -x /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Linuxbrew
-if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+if [[ "$DOTFILES_PACKAGE_MANAGER" != nix && -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
