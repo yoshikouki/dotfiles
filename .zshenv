@@ -23,12 +23,15 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Bun global packages
-if [ -d "$HOME/.bun/bin" ]; then
-  case ":$PATH:" in
-    *":$HOME/.bun/bin:"*) ;;
-    *) export PATH="$PATH:$HOME/.bun/bin" ;;
-  esac
-fi
+for bun_bin in "${BUN_INSTALL:-${XDG_CACHE_HOME:-$HOME/.cache}/.bun}/bin" "$HOME/.bun/bin"; do
+  if [ -d "$bun_bin" ]; then
+    case ":$PATH:" in
+      *":$bun_bin:"*) ;;
+      *) export PATH="$PATH:$bun_bin" ;;
+    esac
+  fi
+done
+unset bun_bin
 
 # Load local secrets (not tracked by git)
 if [ -f "$HOME/.zshenv.local" ]; then
