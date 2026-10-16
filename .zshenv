@@ -13,6 +13,8 @@ if [[ "$LC_CTYPE" == "UTF-8" ]]; then
   export LC_CTYPE="$LANG"
 fi
 
+export DISABLE_TELEMETRY=1
+
 # mise shims (for non-interactive shells like editors/IDEs)
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 
