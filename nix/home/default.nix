@@ -8,6 +8,9 @@ in
   home.stateVersion = "26.05";
   xdg.enable = true;
 
+  # Use the maintained Nix trust store for OpenSSL clients, including mise Python.
+  home.sessionVariables.SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
+
   home.file = {
     ".vimrc".source = ../../.vimrc;
     ".gitignore_global".source = ../../.gitignore_global;

@@ -93,6 +93,9 @@ the compromised eMudhra intermediate chains. Nix manages
 `/etc/ssl/certs/ca-certificates.crt`; macOS's separate `/etc/ssl/cert.pem` and
 runtime-bundled roots require their own verification and updates. Back up the
 macOS file before changing it, and recheck it after OS updates.
+Home Manager sets `SSL_CERT_FILE` to the Nix bundle so OpenSSL clients such as
+mise Python have current replacement trust paths when old roots are removed.
+Open a fresh terminal after activation to load this environment setting.
 
 `home/packages.nix` temporarily pins the CLI curl to the official 8.23.0 source
 archive because the pinned release channel still has vulnerable 8.22.0.
