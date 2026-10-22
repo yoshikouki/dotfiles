@@ -8,6 +8,13 @@
   # Keep the existing Lix installer responsible for the daemon and nix.conf.
   nix.enable = false;
 
+  # Block both trust paths for the compromised eMudhra intermediates.
+  # https://emudhra.we-have-a-problem.com/
+  security.pki.caCertificateBlacklist = [
+    "Comodo AAA Services root"
+    "emSign ECC Root CA - G3"
+  ];
+
   system.keyboard = {
     enableKeyMapping = true;
     remapCapsLockToControl = true;

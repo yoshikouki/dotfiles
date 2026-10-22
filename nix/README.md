@@ -85,3 +85,23 @@ bootstrap alongside Home Manager. The shared zsh files select package-manager
 behavior using `DOTFILES_PACKAGE_MANAGER`, supplied by Home Manager, rather than
 rewriting shell code during Nix evaluation. GUI casks, Xcode itself and the
 optional GUI installation script remain outside this migration.
+
+## TLS trust stores
+
+`darwin.nix` excludes the Comodo AAA Services and emSign ECC G3 roots to block
+the compromised eMudhra intermediate chains. Nix manages
+`/etc/ssl/certs/ca-certificates.crt`; macOS's separate `/etc/ssl/cert.pem` and
+runtime-bundled roots require their own verification and updates. Back up the
+macOS file before changing it, and recheck it after OS updates.
+
+`home/packages.nix` temporarily pins the CLI curl to the official 8.23.0 source
+archive because the pinned release channel still has vulnerable 8.22.0.
+Remove the override when the release channel includes 8.23.0 or later. This
+updates the user's curl command, not libcurl dependencies in other packages.
+The mise lock records the Node.js 26.12.1 and Go 1.27.3 security updates;
+existing processes must restart and existing Go programs must be rebuilt.
+
+Verify both Nix and `/usr/bin/curl` with the twelve test chains from
+<https://emudhra.we-have-a-problem.com/> and a normal HTTPS site. Expect a
+certificate error (curl exit 60), not DNS failure or timeout. Test the default
+configuration after activation as well as explicit CA bundles before it.
