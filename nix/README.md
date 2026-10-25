@@ -104,13 +104,48 @@ updates the user's curl command, not libcurl dependencies in other packages.
 The mise lock records the Node.js 26.12.1 and Go 1.27.3 security updates;
 existing processes must restart and existing Go programs must be rebuilt.
 
-`home/packages.nix` also builds the user curl against Brotli 1.2.1 to fix
-CVE-2026-111497. Other Nix packages retain their channel dependencies; this
-is not a package-set-wide fix. Remove this override when the release channel
-includes a fixed Brotli. The mise configuration selects Bun
+`darwin.nix` overrides Brotli throughout the package set to the official 1.2.1
+release to fix CVE-2026-111497. It retains the upstream Nix build recipe, patches
+and tests. Dependencies are rebuilt normally; this does not rewrite installed
+binaries. Remove the overlay when the release channel includes a fixed Brotli.
+The rebuild includes libraries and build tools, so it can be substantial.
+The installer-managed Nix/Lix executable (`nix.enable = false`) and application
+bundles have separate dependencies and update paths.
+The flake's `lix` package builds the pinned official Lix release with the same
+fixed Brotli. It does not transfer daemon management to nix-darwin.
+Keep the previous system generation until the new commands and decoder paths
+have been verified. `darwin-rebuild --switch-generation <number>` can reactivate
+a retained generation without rebuilding it.
+
+On macOS 27.2, CoreText shapes the intentionally malformed HarfBust puzzle font
+like DirectWrite. This differs from the HarfBuzz test's expected output even
+with the existing cached package. The overlay changes only that test's shaper
+group so it checks the observed output; it does not change HarfBuzz runtime code
+or disable tests. Remove this adjustment when upstream accounts for the
+CoreText behavior. See [the upstream puzzle discussion](https://github.com/harfbuzz/harfbuzz/issues/5535).
+
+Build and verify the standalone Lix package before upgrading its existing root
+profile. On this Mac, the installer's default profile points to the root profile:
+
+```sh
+nix build '.#lix' --out-link result-lix
+sudo "$(realpath result-lix)/bin/nix" --store local upgrade-nix \
+  --profile /nix/var/nix/profiles/per-user/root/profile \
+  --store-path "$(realpath result-lix)"
+sudo launchctl kickstart -k system/org.nixos.nix-daemon
+nix --version
+nix store ping --json
+```
+
+Wait for active builds to finish before restarting the daemon. Keep the previous
+root profile generation for recovery, and verify both the CLI and daemon after
+the upgrade. Use the upstream binary upgrade again only after checking that its
+Brotli dependency includes the fix.
+
+The mise configuration selects Bun
 1.4, with 1.4.4 locked for macOS and Linux; restart Bun services after updating.
 
-Verify both Nix and `/usr/bin/curl` with the twelve test chains from
+Verify both Nix and `/usr/bin/curl` with all test chains listed at
 <https://emudhra.we-have-a-problem.com/> and a normal HTTPS site. Expect a
 certificate error (curl exit 60), not DNS failure or timeout. Test the default
 configuration after activation as well as explicit CA bundles before it.

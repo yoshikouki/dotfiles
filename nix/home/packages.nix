@@ -2,14 +2,7 @@
 let
   xcodeBuildServer = pkgs.callPackage ../packages/xcode-build-server.nix { };
   # The pinned release channel still has 8.22.0. Remove this override once it catches up.
-  brotli = pkgs.brotli.overrideAttrs (finalAttrs: _: {
-    version = "1.2.1";
-    src = pkgs.fetchurl {
-      url = "https://github.com/google/brotli/archive/refs/tags/v${finalAttrs.version}.tar.gz";
-      sha256 = "98d35d11a78dc453aebb7d10c3748f3f73ff78c8267c0dc697b8631f67bf7e8f";
-    };
-  });
-  curl = (pkgs.curl.override { inherit brotli; }).overrideAttrs (finalAttrs: _: {
+  curl = pkgs.curl.overrideAttrs (finalAttrs: _: {
     version = "8.23.0";
     src = pkgs.fetchurl {
       url = "https://curl.se/download/curl-${finalAttrs.version}.tar.xz";
