@@ -104,6 +104,12 @@ updates the user's curl command, not libcurl dependencies in other packages.
 The mise lock records the Node.js 26.12.1 and Go 1.27.3 security updates;
 existing processes must restart and existing Go programs must be rebuilt.
 
+`home/packages.nix` also builds the user curl against Brotli 1.2.1 to fix
+CVE-2026-111497. Other Nix packages retain their channel dependencies; this
+is not a package-set-wide fix. Remove this override when the release channel
+includes a fixed Brotli. The mise configuration selects Bun
+1.4, with 1.4.4 locked for macOS and Linux; restart Bun services after updating.
+
 Verify both Nix and `/usr/bin/curl` with the twelve test chains from
 <https://emudhra.we-have-a-problem.com/> and a normal HTTPS site. Expect a
 certificate error (curl exit 60), not DNS failure or timeout. Test the default
