@@ -52,9 +52,17 @@ url = "https://registry.npmjs.org/npm/-/npm-12.2.1.tgz"
 checksum = "sha256:228bd64aaef23270dbdbd2cf3d5ef5c467602ef38c4066246cef1984adab9a67"
 url = "https://registry.npmjs.org/npm/-/npm-12.2.1.tgz"
 
+[[tools."npm:@agentclientprotocol/codex-acp"]]
+version = "1.13.0"
+backend = "npm:@agentclientprotocol/codex-acp"
+
 [[tools."npm:@googleworkspace/cli"]]
 version = "0.22.5"
 backend = "npm:@googleworkspace/cli"
+
+[[tools."npm:@karakeep/cli"]]
+version = "0.34.0"
+backend = "npm:@karakeep/cli"
 
 [[tools."npm:@playwright/cli"]]
 version = "0.1.22"
