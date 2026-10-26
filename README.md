@@ -61,6 +61,11 @@ sh ~/dotfiles/bin/install.linux.sh
 
 ## Maintenance
 
+Node.js follows the current LTS release. Other language runtimes use supported
+stable series; review series changes explicitly. The mise lockfile records the
+resolved versions for both Linux arm64 and macOS arm64. Nix-managed macOS installs
+update mise through Home Manager, rather than `mise self-update`.
+
 ```bash
 # Re-apply symlinks / packages / runtimes
 make install

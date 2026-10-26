@@ -101,7 +101,7 @@ Open a fresh terminal after activation to load this environment setting.
 archive because the pinned release channel still has vulnerable 8.22.0.
 Remove the override when the release channel includes 8.23.0 or later. This
 updates the user's curl command, not libcurl dependencies in other packages.
-The mise lock records the Node.js 26.12.1 and Go 1.27.3 security updates;
+The mise lock records the Node.js 24.22.1 LTS and Go 1.27.3 security updates;
 existing processes must restart and existing Go programs must be rebuilt.
 
 `darwin.nix` overrides Brotli throughout the package set to the official 1.2.1
