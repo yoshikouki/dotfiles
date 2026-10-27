@@ -19,7 +19,7 @@ in
     # Install DB tools without creating databases or enabling background services.
     mysql84 postgresql_17
     # Xcode itself remains installed and updated through Apple's tools.
-    mas xcbeautify swiftformat swiftlint ios-deploy fastlane cocoapods
+    mas xcodegen xcbeautify swiftformat swiftlint ios-deploy fastlane cocoapods
     xcodeBuildServer
     curl
   ];
