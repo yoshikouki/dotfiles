@@ -21,4 +21,8 @@ if [ -f "$CONFIG" ]; then
   fi
 fi
 
+if [ ! -x "$REAL_BIRD" ]; then
+  printf '%s\n' 'Install the bird CLI or set BIRD_REAL_BIN to its executable.' >&2
+  exit 127
+fi
 exec "$REAL_BIRD" "$@"

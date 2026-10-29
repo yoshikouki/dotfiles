@@ -40,7 +40,7 @@ or
 
 ```bash
 git clone https://github.com/yoshikouki/dotfiles.git ~/dotfiles
-sh ~/dotfiles/bin/install.linux.sh
+bash ~/dotfiles/bin/install.linux.sh
 ```
 
 ## What the install scripts do
@@ -83,3 +83,40 @@ brew bundle --global
 mise self-update --yes --no-plugins
 mise upgrade
 ```
+
+## Restore Linux user configuration
+
+Use one checkout as the source, normally `~/dotfiles`. The Linux installer uses
+its own checkout; it does not pull or switch another checkout during installation.
+Host services and OS upgrades belong to `personal-infra`. The installer installs
+only its apt prerequisites, without `upgrade`, `autoremove` or `autoclean`.
+
+```bash
+git -C ~/dotfiles pull --ff-only origin main
+bash ~/dotfiles/bin/install.linux.sh --dry-run
+bash ~/dotfiles/bin/install.linux.sh --config-only
+# Install packages and runtimes as well, on the new host:
+bash ~/dotfiles/bin/install.linux.sh
+```
+
+Configuration-only mode needs Bash and standard Linux tools, and performs no
+package installation or service operation. It links an explicit list of public
+configuration and helpers. Existing independent files, directories and different
+symlinks are moved to `~/.local/state/dotfiles/before-link.*` before replacement.
+Repeated runs leave matching links alone. `DOTFILES_TARGET_HOME` selects an
+alternate configuration destination for staging and tests.
+
+Keep `.zshenv.local`, `.zshrc.local`, local Git credentials, SSH keys and application
+authentication outside this repository. They are not copied into Git or overwritten.
+If local overrides duplicate managed configuration, reconcile them separately.
+Optional Grok, Turso and OpenClaw integrations load only when installed;
+this does not install or start those applications.
+
+Run `bash bin/link.linux.test.sh` for preservation and idempotence checks in a
+temporary destination. `make install` selects Linux or macOS from `uname`.
+Homebrew casks and Xcode tools are restricted to macOS; service CLIs use mise.
+
+The `bird` helper reads credentials from an external `BIRD_CONFIG` file (default
+`~/.config/bird/config.json5`) or existing environment variables. Its underlying
+CLI is selected by `BIRD_REAL_BIN`; credentials and that configuration file are
+never installed from this repository.

@@ -12,7 +12,7 @@ case "$mode" in
 esac
 
 # A checkout is the installation source. A downloaded bootstrap uses ~/dotfiles.
-script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-}")" && pwd)"
 if [[ -f "$script_dir/link.linux.sh" ]]; then
 	dotfiles_dir="$(cd "$script_dir/.." && pwd)"
 else

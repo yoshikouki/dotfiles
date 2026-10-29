@@ -38,6 +38,11 @@ if [[ -n "$DOTFILES_ZSH_PREFIX" && -d "$DOTFILES_ZSH_PREFIX/share/zsh-completion
   fpath=("$DOTFILES_ZSH_PREFIX/share/zsh-completions" $fpath)
 fi
 
+# Optional Grok completions must be on fpath before compinit.
+if [[ -d "$HOME/.grok/completions/zsh" ]]; then
+  fpath=("$HOME/.grok/completions/zsh" $fpath)
+fi
+
 # 補完システムの初期化（-u: 安全でないディレクトリの警告を抑制）
 autoload -Uz compinit && compinit -u
 
@@ -434,3 +439,21 @@ fi
 
 # CF CLI completions
 [[ -f "$HOME/.config/cf/completions/_cf.zsh" ]] && source "$HOME/.config/cf/completions/_cf.zsh"
+
+# Optional CLI integrations from the Linux user environment.
+if [[ -f "$HOME/.turso/env" ]]; then
+  source "$HOME/.turso/env"
+elif [[ -d "$HOME/.turso" ]]; then
+  path=("$HOME/.turso" $path)
+fi
+if [[ -d "$HOME/.grok/bin" ]]; then
+  path=("$HOME/.grok/bin" $path)
+fi
+if [[ -f "$HOME/.openclaw/completions/openclaw.zsh" ]]; then
+  source "$HOME/.openclaw/completions/openclaw.zsh"
+fi
+path=("$HOME/.local/bin" ${path:#"$HOME/.local/bin"})
+export PATH
+if [[ -x "$HOME/.local/bin/bird" ]]; then
+  bird() { "$HOME/.local/bin/bird" "$@"; }
+fi
