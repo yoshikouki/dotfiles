@@ -82,7 +82,8 @@ GitHub and other services is completed through each tool's normal login flow.
 - `home/macos.nix`: Apple development tools, MySQL 8.4, PostgreSQL 17 and keyboard
   shortcuts. Installing DB packages does not enable DB services.
 - `home/raspi.nix`: the standalone Linux ARM64 user environment.
-- `overlays.nix`: shared package fixes; platform-specific fixes stay in `darwin.nix`.
+- Linux uses the pinned `nixos-26.05` package channel; macOS retains its Darwin
+  channel and platform-specific fixes in `darwin.nix`.
 - `packages/xcode-build-server.nix`: upstream source pinned by commit and hash,
   using its own Nix Python interpreter.
 - `home/git.nix`: shared Git settings; ghq repositories live in `~/src`.
