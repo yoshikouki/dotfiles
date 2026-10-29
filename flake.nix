@@ -1,5 +1,5 @@
 {
-  description = "Personal macOS configuration";
+  description = "Personal macOS and Raspberry Pi configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
@@ -11,9 +11,17 @@
     lix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nix-darwin, home-manager, lix, ... }: {
+  outputs = { self, nixpkgs, nix-darwin, home-manager, lix, ... }: {
     packages.aarch64-darwin.lix =
       (self.darwinConfigurations.mbp.pkgs.extend lix.overlays.default).nix;
+
+    homeConfigurations.raspi = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        system = "aarch64-linux";
+        overlays = import ./nix/overlays.nix;
+      };
+      modules = [ ./nix/home/raspi.nix ];
+    };
 
     darwinConfigurations."mbp" = nix-darwin.lib.darwinSystem {
       modules = [
@@ -28,7 +36,7 @@
 
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.yoshikouki = import ./nix/home;
+          home-manager.users.yoshikouki.imports = [ ./nix/home ./nix/home/macos.nix ];
         }
       ];
     };

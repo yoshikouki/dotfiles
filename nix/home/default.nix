@@ -4,7 +4,7 @@ let
   repositoryDirectory = "${config.home.homeDirectory}/src/github.com/yoshikouki/dotfiles";
 in
 {
-  imports = [ ./packages.nix ./git.nix ./zsh.nix ./macos-shortcuts.nix ];
+  imports = [ ./packages.nix ./git.nix ./zsh.nix ];
   home.stateVersion = "26.05";
   xdg.enable = true;
 
@@ -32,7 +32,7 @@ in
     localConfig="$HOME/.config/git/local.gitconfig"
     if [ ! -e "$localConfig" ]; then
       run mkdir -p "$HOME/.config/git"
-      run cp ${../../.gitconfig.macos} "$localConfig"
+      run cp ${if pkgs.stdenv.isDarwin then ../../.gitconfig.macos else ../../.gitconfig.linux} "$localConfig"
       run chmod 600 "$localConfig"
     fi
   '';

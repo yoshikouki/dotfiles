@@ -157,8 +157,11 @@ alias kc='kubectl-cluster-caution'
 if [[ "$DOTFILES_PACKAGE_MANAGER" == nix ]]; then
   function pkg-update() {
     local repo="${DOTFILES_REPO_DIR:-$HOME/src/github.com/yoshikouki/dotfiles}"
-    nix flake update "path:$repo" &&
-      sudo darwin-rebuild switch --flake "path:$repo#mbp"
+    nix flake update "path:$repo" || return
+    case "$OSTYPE" in
+      darwin*) sudo darwin-rebuild switch --flake "path:$repo#mbp" ;;
+      linux*) home-manager switch --flake "path:$repo#raspi" ;;
+    esac
   }
 else
   alias pkg-update='brew update && brew upgrade && mise self-update --yes --no-plugins && mise upgrade'

@@ -1,4 +1,10 @@
-# macOS settings with nix-darwin
+# Nix configuration for macOS and Raspberry Pi OS
+
+Common CLI tools, Git, shell configuration and editable config links live in
+`home/default.nix`. The `mbp` configuration adds `home/macos.nix` and nix-darwin;
+`homeConfigurations.raspi` adds `home/raspi.nix` for Raspberry Pi OS.
+
+## macOS
 
 This configuration migrates keyboard, trackpad, Dock and Finder preferences from
 `bin/macos-defaults.sh`. The old script remains available for the legacy setup;
@@ -35,10 +41,48 @@ If the initial activation reports an existing `/etc` file conflict, inspect
 that file and the diagnostic before changing anything; do not delete it blindly.
 
 
+
+## Raspberry Pi OS
+
+Use the official Lix installer on Raspberry Pi OS Lite 64-bit. OS packages,
+Docker and Tailscale remain managed by personal-infra; Home Manager only manages
+the user's development tools and configuration. The legacy Linuxbrew installer
+is a separate setup and is not used for this configuration.
+
+```sh
+sudo apt-get install git curl zsh build-essential locales
+curl -sSfL https://install.lix.systems/lix | sh -s -- install
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+git clone https://github.com/yoshikouki/dotfiles.git "$HOME/src/github.com/yoshikouki/dotfiles"
+cd "$HOME/src/github.com/yoshikouki/dotfiles"
+nix build "path:$PWD#homeConfigurations.raspi.activationPackage"
+./result/activate
+sudo chsh -s /usr/bin/zsh "$USER"
+```
+
+Open a new SSH login, then install the locked runtimes and Yazi plugins:
+
+```sh
+mise trust "$HOME/src/github.com/yoshikouki/dotfiles/mise/config.toml"
+mise install --locked
+ya pkg install
+```
+
+Enable `ja_JP.UTF-8` in the OS before using the shared shell locale. The checkout
+is at the shared ghq root (`~/src`); `ghq list` discovers it immediately.
+Use `home-manager switch --flake "path:$HOME/src/github.com/yoshikouki/dotfiles#raspi"`
+to reapply, or `pkg-update` to update the flake lock and apply. Authentication for
+GitHub and other services is completed through each tool's normal login flow.
+
+
 ## User environment
 
-- `home/packages.nix`: common CLI tools, MySQL 8.4, PostgreSQL 17 and Apple
-  development tools. Installing DB packages does not enable DB services.
+- `home/packages.nix`: common CLI tools.
+- `home/macos.nix`: Apple development tools, MySQL 8.4, PostgreSQL 17 and keyboard
+  shortcuts. Installing DB packages does not enable DB services.
+- `home/raspi.nix`: the standalone Linux ARM64 user environment.
+- `overlays.nix`: shared package fixes; platform-specific fixes stay in `darwin.nix`.
 - `packages/xcode-build-server.nix`: upstream source pinned by commit and hash,
   using its own Nix Python interpreter.
 - `home/git.nix`: shared Git settings; ghq repositories live in `~/src`.
@@ -47,8 +91,8 @@ that file and the diagnostic before changing anything; do not delete it blindly.
   the repository and rebuild, rather than editing files in the home directory.
 - `home/default.nix`: shared files, local CLI wrappers and configuration links.
 
-Machine-specific `~/.config/git/local.gitconfig` is created once from the macOS
-source template and remains editable. Local zsh overrides and authentication
+Machine-specific `~/.config/git/local.gitconfig` is created once from the matching
+macOS or Linux source template and remains editable. Local zsh overrides and authentication
 files are not imported into the flake.
 
 This first step retains the legacy root Git and zsh files for the old bootstrap

@@ -1,16 +1,19 @@
 # dotfiles
 
-Dotfiles managed with Nix on macOS, with a legacy Homebrew bootstrap and mise runtimes.
+Dotfiles managed with Nix on macOS and Raspberry Pi OS, with mise-managed runtimes.
 
 ## Supported platforms
 
 - macOS (Apple Silicon)
-- Ubuntu/Linux
+- Raspberry Pi OS Lite 64-bit (Trixie, ARM64)
+- Ubuntu/Linux (legacy bootstrap)
 
-## Nix on macOS
+## Nix on macOS and Raspberry Pi
 
 The new Mac configuration uses Lix, nix-darwin for macOS preferences, and
-Home Manager for common CLI tools, Git and shell configuration. See
+Home Manager for common CLI tools, Git and shell configuration. Raspberry Pi OS
+uses standalone Home Manager from the same flake. Repositories live under
+`~/src/github.com/` for ghq. See
 [nix/README.md](nix/README.md) for build, apply and update commands.
 
 The Homebrew bootstrap below remains the legacy installation path.
@@ -27,10 +30,12 @@ or
 
 ```bash
 git clone https://github.com/yoshikouki/dotfiles.git ~/dotfiles
-sh ~/dotfiles/bin/install.mac.sh
+bash ~/dotfiles/bin/install.mac.sh
 ```
 
-### Ubuntu / Linux
+### Ubuntu / Linux (legacy)
+
+For Raspberry Pi OS with Nix, use [the standalone setup](nix/README.md#raspberry-pi-os).
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/yoshikouki/dotfiles/main/bin/install.linux.sh)"
@@ -40,7 +45,7 @@ or
 
 ```bash
 git clone https://github.com/yoshikouki/dotfiles.git ~/dotfiles
-bash ~/dotfiles/bin/install.linux.sh
+babash ~/dotfiles/bin/install.linux.sh
 ```
 
 ## What the install scripts do
@@ -67,7 +72,7 @@ resolved versions for both Linux arm64 and macOS arm64. Nix-managed macOS instal
 update mise through Home Manager, rather than `mise self-update`.
 
 ```bash
-# Re-apply symlinks / packages / runtimes
+# Legacy macOS bootstrap: re-apply symlinks / packages / runtimes
 make install
 
 # Install GUI applications only
@@ -93,10 +98,10 @@ only its apt prerequisites, without `upgrade`, `autoremove` or `autoclean`.
 
 ```bash
 git -C ~/dotfiles pull --ff-only origin main
-bash ~/dotfiles/bin/install.linux.sh --dry-run
-bash ~/dotfiles/bin/install.linux.sh --config-only
+babash ~/dotfiles/bin/install.linux.sh --dry-run
+babash ~/dotfiles/bin/install.linux.sh --config-only
 # Install packages and runtimes as well, on the new host:
-bash ~/dotfiles/bin/install.linux.sh
+babash ~/dotfiles/bin/install.linux.sh
 ```
 
 Configuration-only mode needs Bash and standard Linux tools, and performs no
