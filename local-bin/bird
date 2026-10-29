@@ -1,0 +1,24 @@
+#!/bin/sh
+
+REAL_BIRD="${BIRD_REAL_BIN:-$HOME/.local/share/mise/shims/bird}"
+CONFIG="${BIRD_CONFIG:-$HOME/.config/bird/config.json5}"
+
+read_config_value() {
+  key="$1"
+  file="$2"
+  sed -nE "s/^[[:space:]]*${key}[[:space:]]*:[[:space:]]*\"([^\"]+)\".*/\\1/p" "$file" | head -n 1
+}
+
+if [ -f "$CONFIG" ]; then
+  if [ -z "${AUTH_TOKEN:-}" ]; then
+    AUTH_TOKEN="$(read_config_value authToken "$CONFIG" || true)"
+    export AUTH_TOKEN
+  fi
+
+  if [ -z "${CT0:-}" ]; then
+    CT0="$(read_config_value ct0 "$CONFIG" || true)"
+    export CT0
+  fi
+fi
+
+exec "$REAL_BIRD" "$@"
