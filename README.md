@@ -45,7 +45,7 @@ or
 
 ```bash
 git clone https://github.com/yoshikouki/dotfiles.git ~/dotfiles
-babash ~/dotfiles/bin/install.linux.sh
+bash ~/dotfiles/bin/install.linux.sh
 ```
 
 ## What the install scripts do
@@ -98,10 +98,10 @@ only its apt prerequisites, without `upgrade`, `autoremove` or `autoclean`.
 
 ```bash
 git -C ~/dotfiles pull --ff-only origin main
-babash ~/dotfiles/bin/install.linux.sh --dry-run
-babash ~/dotfiles/bin/install.linux.sh --config-only
+bash ~/dotfiles/bin/install.linux.sh --dry-run
+bash ~/dotfiles/bin/install.linux.sh --config-only
 # Install packages and runtimes as well, on the new host:
-babash ~/dotfiles/bin/install.linux.sh
+bash ~/dotfiles/bin/install.linux.sh
 ```
 
 Configuration-only mode needs Bash and standard Linux tools, and performs no

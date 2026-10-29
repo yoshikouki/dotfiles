@@ -15,6 +15,8 @@
   outputs = { self, nixpkgs-linux, nix-darwin, home-manager, lix, ... }: {
     packages.aarch64-darwin.lix =
       (self.darwinConfigurations.mbp.pkgs.extend lix.overlays.default).nix;
+    packages.aarch64-linux.lix =
+      (import nixpkgs-linux { system = "aarch64-linux"; }).lixPackageSets.latest.lix;
 
     homeConfigurations.raspi = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs-linux { system = "aarch64-linux"; };

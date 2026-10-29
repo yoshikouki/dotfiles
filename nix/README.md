@@ -198,6 +198,38 @@ root profile generation for recovery, and verify both the CLI and daemon after
 the upgrade. Use the upstream binary upgrade again only after checking that its
 Brotli dependency includes the fix.
 
+On Raspberry Pi OS, `nix build '.#lix'` uses the Linux release channel's latest
+Lix package (2.95.4 at this lock), including its fixed Brotli. Upgrade the same
+installer-managed root profile:
+
+```sh
+nix build '.#lix' --out-link /tmp/raspi-lix-result
+sudo /tmp/raspi-lix-result/bin/nix --store local upgrade-nix \
+  --profile /nix/var/nix/profiles/per-user/root/profile \
+  --store-path "$(realpath /tmp/raspi-lix-result)"
+```
+
+The Lix installer units may contain fixed store paths. Inspect
+`systemctl cat nix-daemon.service nix-daemon@.service` before updating them.
+This Pi uses per-connection socket activation. Its
+`/etc/systemd/system/nix-daemon@.service.d/profile.conf` selects the current root
+profile:
+
+```ini
+[Service]
+ExecStart=
+ExecStart=@/nix/var/nix/profiles/default/bin/nix-daemon nix-daemon --for-socket-activation
+```
+
+The inactive fallback `nix-daemon.service` has the same drop-in under its own
+`.service.d` directory, with `--daemon` instead of `--for-socket-activation`.
+After all builds and active daemon instances finish, run
+`sudo systemctl daemon-reload`. New socket connections then use the updated
+profile. Verify the daemon version reported by `nix store ping --json`.
+For recovery, switch the root profile back to its retained generation; new
+connections use that generation. Do not start the fallback service alongside
+the socket.
+
 The mise configuration selects Bun
 1.4, with 1.4.4 locked for macOS and Linux; restart Bun services after updating.
 
