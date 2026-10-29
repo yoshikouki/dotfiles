@@ -35,7 +35,7 @@ fi
 # Host-wide upgrades and removals belong to personal-infra maintenance.
 sudo apt-get update
 sudo apt-get install -y build-essential curl git zsh
-if [[ "$SHELL" != "$(command -v zsh)" ]]; then
+if [[ "${SHELL:-}" != "$(command -v zsh)" ]]; then
 	chsh -s "$(command -v zsh)"
 fi
 if ! command -v brew >/dev/null 2>&1; then
@@ -49,5 +49,6 @@ if [[ ! -x "$HOME/.local/bin/mise" ]]; then
 	curl -fsSL https://mise.run | sh
 fi
 export PATH="$HOME/.local/bin:$PATH"
-mise install
+mise trust "$dotfiles_dir/mise/config.toml"
+(cd "$HOME" && mise install)
 printf 'Configuration installed from %s. Start a new login shell.\n' "$dotfiles_dir"
