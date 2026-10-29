@@ -65,10 +65,15 @@ sudo chsh -s /usr/bin/zsh "$USER"
 Open a new SSH login, then install the locked runtimes and Yazi plugins:
 
 ```sh
+cd "$HOME"
 mise trust "$HOME/src/github.com/yoshikouki/dotfiles/mise/config.toml"
 mise install --locked
 ya pkg install
 ```
+
+Run the global runtime install outside the dotfiles checkout. Inside that
+checkout, mise also discovers `mise/config.toml` as a project config, which can
+make locked artifact lookup fail even though the global lockfile has its URL.
 
 Enable `ja_JP.UTF-8` in the OS before using the shared shell locale. The checkout
 is at the shared ghq root (`~/src`); `ghq list` discovers it immediately.
@@ -152,6 +157,8 @@ Remove the override when the release channel includes 8.23.0 or later. This
 updates the user's curl command, not libcurl dependencies in other packages.
 The mise lock records the Node.js 24.22.1 LTS and Go 1.27.3 security updates;
 existing processes must restart and existing Go programs must be rebuilt.
+The Node request stays on the 24 series so a new LTS major does not invalidate
+the shared lockfile during a fresh install.
 
 `darwin.nix` overrides Brotli throughout the package set to the official 1.2.1
 release to fix CVE-2026-111497. It retains the upstream Nix build recipe, patches
