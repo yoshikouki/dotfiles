@@ -1,5 +1,9 @@
 { pkgs, ... }:
 let
+  # The Linux release package predates the options recorded in mise.lock.
+  mise = if pkgs.stdenv.hostPlatform.system == "aarch64-linux"
+    then pkgs.callPackage ../packages/mise-linux.nix { }
+    else pkgs.mise;
   # The pinned release channel still has 8.22.0. Remove this override once it catches up.
   curl = if pkgs.lib.versionAtLeast pkgs.curl.version "8.23.0" then pkgs.curl else pkgs.curl.overrideAttrs (finalAttrs: _: {
     version = "8.23.0";

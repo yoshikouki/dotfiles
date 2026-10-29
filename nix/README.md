@@ -87,6 +87,9 @@ GitHub and other services is completed through each tool's normal login flow.
   channel and platform-specific fixes in `darwin.nix`.
 - `packages/xcode-build-server.nix`: upstream source pinned by commit and hash,
   using its own Nix Python interpreter.
+- `packages/mise-linux.nix`: pinned official ARM64 musl binary. The Linux release
+  package is too old to read the Ruby options in the shared lockfile. Remove this
+  override when the release channel supports the lockfile format.
 - `home/git.nix`: shared Git settings; ghq repositories live in `~/src`.
 - `home/zsh.nix`: existing zsh functions and bindings, with Nix plugin paths and
   a Nix-based `pkg-update` function. Shell files are generated snapshots; edit

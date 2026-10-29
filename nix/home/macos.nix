@@ -5,7 +5,7 @@
     # Installing DB tools does not enable database services.
     mysql84 postgresql_17
     # Xcode itself is managed by Apple's tools.
-    mas xcbeautify swiftformat swiftlint ios-deploy fastlane cocoapods
+    mas xcodegen xcbeautify swiftformat swiftlint ios-deploy fastlane cocoapods
     (pkgs.callPackage ../packages/xcode-build-server.nix { })
   ];
 }
