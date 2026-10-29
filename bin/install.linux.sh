@@ -1,97 +1,58 @@
 #!/bin/bash
+set -euo pipefail
 
-IGNORE_FILES=(.git .gitignore .DS_Store .idea)
-GITHUB_REPO=yoshikouki/dotfiles
-DOTPATH=~/dotfiles
-
-if [ "$(uname)" != "Linux" ]; then
-	echo "Not Linux"
+if [[ "$(uname)" != Linux ]]; then
+	echo 'Not Linux' >&2
 	exit 1
 fi
+mode="${1:-install}"
+case "$mode" in
+	install|--config-only|--dry-run) ;;
+	*) echo "Usage: $0 [--config-only|--dry-run]" >&2; exit 2 ;;
+esac
 
-echo "#️⃣ UPDATE system packages"
-sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt autoclean
-echo "✅ UPDATE system packages"
-
-echo "#️⃣ INSTALL prerequisites"
-sudo apt install -y build-essential curl git zsh
-echo "✅ INSTALL prerequisites"
-
-echo "#️⃣ SET default shell to zsh"
-if [ "$SHELL" != "$(which zsh)" ]; then
-	chsh -s "$(which zsh)"
+# A downloaded bootstrap may run before Git is installed.
+if [[ "$mode" == install ]]; then
+	sudo apt-get update
+	sudo apt-get install -y build-essential curl git zsh
 fi
-echo "✅ SET default shell to zsh"
 
-echo "#️⃣ INSTALL Homebrew (Linuxbrew)"
+# A checkout is the installation source. A downloaded bootstrap uses ~/dotfiles.
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-/dev/null}")" && pwd)"
+if [[ -f "$script_dir/link.linux.sh" ]]; then
+	dotfiles_dir="$(cd "$script_dir/.." && pwd)"
+else
+	dotfiles_dir="$HOME/dotfiles"
+	if [[ ! -d "$dotfiles_dir/.git" ]]; then
+		if [[ "$mode" != install ]]; then
+			echo 'Clone dotfiles before a configuration-only or dry run.' >&2
+			exit 1
+		fi
+		git clone --recursive https://github.com/yoshikouki/dotfiles.git "$dotfiles_dir"
+	fi
+fi
+if [[ "$mode" == --dry-run ]]; then
+	exec bash "$dotfiles_dir/bin/link.linux.sh" --dry-run
+fi
+if [[ "$mode" == --config-only ]]; then
+	exec bash "$dotfiles_dir/bin/link.linux.sh"
+fi
+
+# Host-wide upgrades and removals belong to personal-infra maintenance.
+if [[ "${SHELL:-}" != "$(command -v zsh)" ]]; then
+	chsh -s "$(command -v zsh)"
+fi
 if ! command -v brew >/dev/null 2>&1; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-echo "✅ INSTALL Homebrew (Linuxbrew)"
-
-echo "#️⃣ DOWNLOAD dotfiles"
-if [ -d "$DOTPATH" ]; then
-	cd "$DOTPATH" && git pull --rebase
-else
-	git clone --recursive "https://github.com/$GITHUB_REPO.git" "$DOTPATH"
-fi
-echo "✅ DOWNLOAD dotfiles"
-
-echo "#️⃣ CREATE symbolic link"
-cd "$DOTPATH" || exit
-for file in .??*; do
-	for ign in "${IGNORE_FILES[@]}"; do
-		[[ "$ign" = "$file" ]] && continue 2
-	done
-	ln -sfnv "$DOTPATH/$file" "$HOME/$file"
-done
-mkdir -p "$HOME/.config/git"
-if [ ! -f "$HOME/.config/git/local.gitconfig" ]; then
-	cp "$DOTPATH/.gitconfig.linux" "$HOME/.config/git/local.gitconfig"
-	echo "Created ~/.config/git/local.gitconfig from template — add machine-specific credentials here."
-fi
-ln -sfnv "$DOTPATH/nvim" "$HOME/.config/nvim"
-ln -sfnv "$DOTPATH/yazi" "$HOME/.config/yazi"
-mkdir -p "$HOME/.config/mise"
-ln -sfnv "$DOTPATH/mise/config.toml" "$HOME/.config/mise/config.toml"
-ln -sfnv "$DOTPATH/mise/mise.lock" "$HOME/.config/mise/mise.lock"
-if [ -L "$HOME/.mise.toml" ] && [ "$(readlink "$HOME/.mise.toml")" = "$DOTPATH/.mise.toml" ]; then
-	rm "$HOME/.mise.toml"
-fi
-mkdir -p "$HOME/.local/bin"
-for script in "$DOTPATH/local-bin"/*; do
-	[ -f "$script" ] && [ -x "$script" ] && ln -sfnv "$script" "$HOME/.local/bin/$(basename "$script")"
-done
-echo "✅ CREATE symbolic link"
-
-echo "#️⃣ INSTALL Homebrew packages"
-brew bundle --global
-echo "✅ INSTALL Homebrew packages"
-
-echo "#️⃣ INSTALL yazi plugins"
+bash "$dotfiles_dir/bin/link.linux.sh"
+brew bundle --file="$dotfiles_dir/.Brewfile"
 ya pkg install
-echo "✅ INSTALL yazi plugins"
-
-echo "#️⃣ INSTALL mise"
-if [ ! -x "$HOME/.local/bin/mise" ]; then
-	curl https://mise.run | sh
+if [[ ! -x "$HOME/.local/bin/mise" ]]; then
+	curl -fsSL https://mise.run | sh
 fi
 export PATH="$HOME/.local/bin:$PATH"
-mise self-update --yes --no-plugins
-echo "✅ INSTALL mise"
-
-echo "#️⃣ INSTALL runtimes via mise"
-mise install
-echo "✅ INSTALL runtimes via mise"
-
-echo "#️⃣ INSTALL Playwright CLI"
-if command -v mise > /dev/null 2>&1; then
-	mise exec -- npm install -g @playwright/cli@latest
-elif command -v npm > /dev/null 2>&1; then
-	npm install -g @playwright/cli@latest
-fi
-echo "✅ INSTALL Playwright CLI"
-
-echo "#️⃣ REBOOT shell"
-exec "$SHELL" -l
+mise trust "$dotfiles_dir/mise/config.toml"
+(cd "$HOME" && mise install)
+printf 'Configuration installed from %s. Start a new login shell.\n' "$dotfiles_dir"

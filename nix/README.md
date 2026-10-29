@@ -1,4 +1,10 @@
-# macOS settings with nix-darwin
+# Nix configuration for macOS and Raspberry Pi OS
+
+Common CLI tools, Git, shell configuration and editable config links live in
+`home/default.nix`. The `mbp` configuration adds `home/macos.nix` and nix-darwin;
+`homeConfigurations.raspi` adds `home/raspi.nix` for Raspberry Pi OS.
+
+## macOS
 
 This configuration migrates keyboard, trackpad, Dock and Finder preferences from
 `bin/macos-defaults.sh`. The old script remains available for the legacy setup;
@@ -35,20 +41,68 @@ If the initial activation reports an existing `/etc` file conflict, inspect
 that file and the diagnostic before changing anything; do not delete it blindly.
 
 
+
+## Raspberry Pi OS
+
+Use the official Lix installer on Raspberry Pi OS Lite 64-bit. OS packages,
+Docker and Tailscale remain managed by personal-infra; Home Manager only manages
+the user's development tools and configuration. GPU driver integration is disabled
+for the headless Pi. The legacy Linuxbrew installer
+is a separate setup and is not used for this configuration.
+
+```sh
+sudo apt-get install git curl zsh build-essential locales
+curl -sSfL https://install.lix.systems/lix | sh -s -- install
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+git clone https://github.com/yoshikouki/dotfiles.git "$HOME/src/github.com/yoshikouki/dotfiles"
+cd "$HOME/src/github.com/yoshikouki/dotfiles"
+nix build "path:$PWD#homeConfigurations.raspi.activationPackage"
+./result/activate
+sudo chsh -s /usr/bin/zsh "$USER"
+```
+
+Open a new SSH login, then install the locked runtimes and Yazi plugins:
+
+```sh
+cd "$HOME"
+mise trust "$HOME/src/github.com/yoshikouki/dotfiles/mise/config.toml"
+mise install --locked
+ya pkg install
+```
+
+Run the global runtime install outside the dotfiles checkout. Inside that
+checkout, mise also discovers `mise/config.toml` as a project config, which can
+make locked artifact lookup fail even though the global lockfile has its URL.
+
+Enable `ja_JP.UTF-8` in the OS before using the shared shell locale. The checkout
+is at the shared ghq root (`~/src`); `ghq list` discovers it immediately.
+Use `home-manager switch --flake "path:$HOME/src/github.com/yoshikouki/dotfiles#raspi"`
+to reapply, or `pkg-update` to update the flake lock and apply. Authentication for
+GitHub and other services is completed through each tool's normal login flow.
+
+
 ## User environment
 
-- `home/packages.nix`: common CLI tools, MySQL 8.4, PostgreSQL 17 and Apple
-  development tools. Installing DB packages does not enable DB services.
+- `home/packages.nix`: common CLI tools.
+- `home/macos.nix`: Apple development tools, MySQL 8.4, PostgreSQL 17 and keyboard
+  shortcuts. Installing DB packages does not enable DB services.
+- `home/raspi.nix`: the standalone Linux ARM64 user environment.
+- Linux uses the pinned `nixos-26.05` package channel; macOS retains its Darwin
+  channel and platform-specific fixes in `darwin.nix`.
 - `packages/xcode-build-server.nix`: upstream source pinned by commit and hash,
   using its own Nix Python interpreter.
+- `packages/mise-linux.nix`: pinned official ARM64 musl binary. The Linux release
+  package is too old to read the Ruby options in the shared lockfile. Remove this
+  override when the release channel supports the lockfile format.
 - `home/git.nix`: shared Git settings; ghq repositories live in `~/src`.
 - `home/zsh.nix`: existing zsh functions and bindings, with Nix plugin paths and
   a Nix-based `pkg-update` function. Shell files are generated snapshots; edit
   the repository and rebuild, rather than editing files in the home directory.
 - `home/default.nix`: shared files, local CLI wrappers and configuration links.
 
-Machine-specific `~/.config/git/local.gitconfig` is created once from the macOS
-source template and remains editable. Local zsh overrides and authentication
+Machine-specific `~/.config/git/local.gitconfig` is created once from the matching
+macOS or Linux source template and remains editable. Local zsh overrides and authentication
 files are not imported into the flake.
 
 This first step retains the legacy root Git and zsh files for the old bootstrap
@@ -101,8 +155,10 @@ Open a fresh terminal after activation to load this environment setting.
 archive because the pinned release channel still has vulnerable 8.22.0.
 Remove the override when the release channel includes 8.23.0 or later. This
 updates the user's curl command, not libcurl dependencies in other packages.
-The mise lock records the Node.js 26.12.1 and Go 1.27.3 security updates;
+The mise lock records the Node.js 24.22.1 LTS and Go 1.27.3 security updates;
 existing processes must restart and existing Go programs must be rebuilt.
+The Node request stays on the 24 series so a new LTS major does not invalidate
+the shared lockfile during a fresh install.
 
 `darwin.nix` overrides Brotli throughout the package set to the official 1.2.1
 release to fix CVE-2026-111497. It retains the upstream Nix build recipe, patches
@@ -141,6 +197,38 @@ Wait for active builds to finish before restarting the daemon. Keep the previous
 root profile generation for recovery, and verify both the CLI and daemon after
 the upgrade. Use the upstream binary upgrade again only after checking that its
 Brotli dependency includes the fix.
+
+On Raspberry Pi OS, `nix build '.#lix'` uses the Linux release channel's latest
+Lix package (2.95.4 at this lock), including its fixed Brotli. Upgrade the same
+installer-managed root profile:
+
+```sh
+nix build '.#lix' --out-link /tmp/raspi-lix-result
+sudo /tmp/raspi-lix-result/bin/nix --store local upgrade-nix \
+  --profile /nix/var/nix/profiles/per-user/root/profile \
+  --store-path "$(realpath /tmp/raspi-lix-result)"
+```
+
+The Lix installer units may contain fixed store paths. Inspect
+`systemctl cat nix-daemon.service nix-daemon@.service` before updating them.
+This Pi uses per-connection socket activation. Its
+`/etc/systemd/system/nix-daemon@.service.d/profile.conf` selects the current root
+profile:
+
+```ini
+[Service]
+ExecStart=
+ExecStart=@/nix/var/nix/profiles/default/bin/nix-daemon nix-daemon --for-socket-activation
+```
+
+The inactive fallback `nix-daemon.service` has the same drop-in under its own
+`.service.d` directory, with `--daemon` instead of `--for-socket-activation`.
+After all builds and active daemon instances finish, run
+`sudo systemctl daemon-reload`. New socket connections then use the updated
+profile. Verify the daemon version reported by `nix store ping --json`.
+For recovery, switch the root profile back to its retained generation; new
+connections use that generation. Do not start the fallback service alongside
+the socket.
 
 The mise configuration selects Bun
 1.4, with 1.4.4 locked for macOS and Linux; restart Bun services after updating.

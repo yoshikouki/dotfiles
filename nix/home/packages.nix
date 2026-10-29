@@ -1,8 +1,11 @@
 { pkgs, ... }:
 let
-  xcodeBuildServer = pkgs.callPackage ../packages/xcode-build-server.nix { };
+  # The Linux release package predates the options recorded in mise.lock.
+  mise = if pkgs.stdenv.hostPlatform.system == "aarch64-linux"
+    then pkgs.callPackage ../packages/mise-linux.nix { }
+    else pkgs.mise;
   # The pinned release channel still has 8.22.0. Remove this override once it catches up.
-  curl = pkgs.curl.overrideAttrs (finalAttrs: _: {
+  curl = if pkgs.lib.versionAtLeast pkgs.curl.version "8.23.0" then pkgs.curl else pkgs.curl.overrideAttrs (finalAttrs: _: {
     version = "8.23.0";
     src = pkgs.fetchurl {
       url = "https://curl.se/download/curl-${finalAttrs.version}.tar.xz";
@@ -16,11 +19,6 @@ in
     direnv bat eza fd fzf ripgrep zoxide
     delta difftastic lazygit neovim tree-sitter tmux yazi
     mise
-    # Install DB tools without creating databases or enabling background services.
-    mysql84 postgresql_17
-    # Xcode itself remains installed and updated through Apple's tools.
-    mas xcodegen xcbeautify swiftformat swiftlint ios-deploy fastlane cocoapods
-    xcodeBuildServer
     curl
   ];
 }

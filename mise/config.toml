@@ -8,14 +8,17 @@ ruby.compile = false
 
 [tools]
 go = "1.27"
-node = "26"
-npm = "11"
+node = "24"
+npm = "12"
 ruby = "4.0"
-python = "3.14"
+python = "3.15"
 bun = "1.4"
 rust = "1"
 
 # Service / automation CLIs absent from the pinned Nixpkgs release.
 "npm:@googleworkspace/cli" = "0.22.5"
-"npm:@steipete/summarize" = "0.25.0"
+"npm:@steipete/summarize" = "0.25.3"
 "npm:@playwright/cli" = "0.1.22"
+"npm:@karakeep/cli" = "0.34.0"
+# Keep the existing ACP adapter contract until its consumers migrate together.
+"npm:@agentclientprotocol/codex-acp" = "1.13.0"

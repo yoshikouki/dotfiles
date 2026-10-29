@@ -1,6 +1,6 @@
 # Packages and Applications
 # cask install to /Applications
-cask_args appdir: "/Applications"
+cask_args appdir: "/Applications" if OS.mac?
 
 # ==============================================================================
 # CLI (brew)
@@ -37,10 +37,10 @@ brew "tree-sitter"
 brew "tmux"
 brew "yazi"
 
-## Service CLI
-brew "googleworkspace-cli"
-tap "steipete/tap"
-brew "steipete/tap/summarize"
+## Secret tooling (secret material stays outside this repository)
+brew "sops"
+brew "age"
+# Service CLIs are managed by mise/config.toml.
 
 ## DB
 brew "mysql"
@@ -55,6 +55,8 @@ brew "zsh-syntax-highlighting"
 # ==============================================================================
 # Applications (cask)
 # ==============================================================================
+
+if OS.mac?
 
 ## Browser
 cask "google-chrome"
@@ -98,3 +100,5 @@ cask "tableplus"
 # cask "google-japanese-ime"
 # cask "spark"
 # cask "iterm2"
+
+end # OS.mac?
