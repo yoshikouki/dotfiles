@@ -81,6 +81,18 @@ Use `home-manager switch --flake "path:$HOME/src/github.com/yoshikouki/dotfiles#
 to reapply, or `pkg-update` to update the flake lock and apply. Authentication for
 GitHub and other services is completed through each tool's normal login flow.
 
+Codex CLI uses the [official standalone installer](https://learn.chatgpt.com/docs/codex/cli),
+which manages `~/.local/bin/codex` and its releases under `~/.codex/packages/standalone/`.
+Run the installer again to update it:
+
+```sh
+curl -fsSL https://chatgpt.com/codex/install.sh | sh
+codex login --device-auth
+```
+
+Use the [headless authentication instructions](https://learn.chatgpt.com/docs/auth#login-on-headless-devices)
+for remote login. Keep authentication files outside Git and the Nix store.
+
 
 ## User environment
 
