@@ -46,7 +46,8 @@ that file and the diagnostic before changing anything; do not delete it blindly.
 
 Use the official Lix installer on Raspberry Pi OS Lite 64-bit. OS packages,
 Docker and Tailscale remain managed by personal-infra; Home Manager only manages
-the user's development tools and configuration. The legacy Linuxbrew installer
+the user's development tools and configuration. GPU driver integration is disabled
+for the headless Pi. The legacy Linuxbrew installer
 is a separate setup and is not used for this configuration.
 
 ```sh
