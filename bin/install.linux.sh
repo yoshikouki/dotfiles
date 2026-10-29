@@ -11,8 +11,14 @@ case "$mode" in
 	*) echo "Usage: $0 [--config-only|--dry-run]" >&2; exit 2 ;;
 esac
 
+# A downloaded bootstrap may run before Git is installed.
+if [[ "$mode" == install ]]; then
+	sudo apt-get update
+	sudo apt-get install -y build-essential curl git zsh
+fi
+
 # A checkout is the installation source. A downloaded bootstrap uses ~/dotfiles.
-script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-}")" && pwd)"
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-/dev/null}")" && pwd)"
 if [[ -f "$script_dir/link.linux.sh" ]]; then
 	dotfiles_dir="$(cd "$script_dir/.." && pwd)"
 else
@@ -33,8 +39,6 @@ if [[ "$mode" == --config-only ]]; then
 fi
 
 # Host-wide upgrades and removals belong to personal-infra maintenance.
-sudo apt-get update
-sudo apt-get install -y build-essential curl git zsh
 if [[ "${SHELL:-}" != "$(command -v zsh)" ]]; then
 	chsh -s "$(command -v zsh)"
 fi
