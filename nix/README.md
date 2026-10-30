@@ -152,6 +152,13 @@ behavior using `DOTFILES_PACKAGE_MANAGER`, supplied by Home Manager, rather than
 rewriting shell code during Nix evaluation. GUI casks, Xcode itself and the
 optional GUI installation script remain outside this migration.
 
+OrbStack (the Docker runtime on this Mac) is installed manually from the
+official DMG (https://orbstack.dev/download) into `/Applications`, not through
+Nix or Homebrew. The pinned Nixpkgs `orbstack` package lags upstream security
+fixes, and a Nix-managed app cannot use OrbStack's built-in updater; keep the
+manual install and let it update itself. Its CLIs (`docker`, `docker compose`,
+`orb`) live in `~/.orbstack/bin`.
+
 ## TLS trust stores
 
 `darwin.nix` excludes the Comodo AAA Services and emSign ECC G3 roots to block
