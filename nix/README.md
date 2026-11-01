@@ -259,7 +259,11 @@ configuration after activation as well as explicit CA bundles before it.
 
 ## Mac host metrics
 
-`home/macbook-metrics.nix` supplies Telegraf and a user LaunchAgent. Native
+`home/macbook-metrics.nix` supplies Telegraf 1.40.2, macmon 0.10.0 and a user
+LaunchAgent. Official release archives are pinned by SHA-256 in `packages/`.
+Telegraf standard inputs and procstat handle host/application metrics; macmon
+supplies GPU activity, temperature and power through its one-shot pipe output.
+The LaunchAgent supplies its absolute store path through `MACMON`. Native
 collection is required to see macOS processes and IOAccelerator GPU metrics;
 a Linux VM collector would measure the guest instead. Configure the collector
 first with `bun run macbook-metrics:setup` in the agent repository. The service
