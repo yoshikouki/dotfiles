@@ -256,3 +256,15 @@ Verify both Nix and `/usr/bin/curl` with all test chains listed at
 <https://emudhra.we-have-a-problem.com/> and a normal HTTPS site. Expect a
 certificate error (curl exit 60), not DNS failure or timeout. Test the default
 configuration after activation as well as explicit CA bundles before it.
+
+## Mac host metrics
+
+`home/macbook-metrics.nix` supplies Telegraf and a user LaunchAgent. Native
+collection is required to see macOS processes and IOAccelerator GPU metrics;
+a Linux VM collector would measure the guest instead. Configure the collector
+first with `bun run macbook-metrics:setup` in the agent repository. The service
+reads `~/.config/macbook-metrics/telegraf.conf` and logs under
+`~/.local/state/macbook-metrics`. Apply through the normal Nix configuration.
+Do not run the legacy Homebrew metrics installer. The collector contract belongs
+to agent's `apps/macbook-metrics/README.md`; storage, dashboards and USB recovery
+belong to personal-infra's `docs/monitoring.md`.
