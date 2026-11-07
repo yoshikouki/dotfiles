@@ -54,7 +54,7 @@ bash ~/dotfiles/bin/install.linux.sh
 2. Symlink dotfiles into `$HOME` (`.zshrc`, `.gitconfig`, `nvim/`, `yazi/`, `local-bin/` scripts, etc.)
 3. Create `~/.config/git/local.gitconfig` from the OS template (machine-specific git settings, not tracked)
 4. Install packages from `.Brewfile` (`brew bundle --global`)
-5. Install the standalone [mise](https://mise.jdx.dev/) binary and language runtimes (`~/.config/mise/config.toml`: Go, Node.js, npm, Ruby, Python, Bun, Rust)
+5. Install the standalone [mise](https://mise.jdx.dev/) binary, language runtimes and `npm:` CLIs (`~/.config/mise/config.toml`: Go, Node.js, npm, Ruby, Python, Bun, Rust, plus Google Workspace CLI, summarize, Playwright CLI, Karakeep CLI and codex-acp)
 
 ## What's included
 

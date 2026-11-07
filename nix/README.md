@@ -131,9 +131,10 @@ with `git diff -- mise` and preserved in the repository. Keep the checkout at
 its configured ghq location.
 
 Install the recorded runtimes and service CLIs with `mise install --locked`.
-Google Workspace CLI (`gws`), summarize and Playwright CLI (`playwright-cli`)
-use mise's npm backend with explicit versions because the pinned Nixpkgs release
-does not package them. Their transitive npm dependencies are resolved by npm;
+Google Workspace CLI (`gws`), summarize, Playwright CLI (`playwright-cli`),
+Karakeep CLI (`karakeep`) and the Codex ACP adapter (`codex-acp`) use mise's
+npm backend with explicit versions (`mise/config.toml`) because the pinned
+Nixpkgs release does not package them. Their transitive npm dependencies are resolved by npm;
 the mise lockfile does not pin that dependency graph. These tools require no
 Homebrew installation. Authentication remains machine-local.
 The existing `local-bin/gh` wrapper selects GitHub credentials by repository;

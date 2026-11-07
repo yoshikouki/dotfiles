@@ -4,8 +4,11 @@
 - `bin/`: bootstrap scripts for macOS/Linux, app installs, and macOS defaults.
 - `local-bin/`: small CLI helpers that are symlinked into `~/.local/bin`.
 - `nvim/`: Neovim config in Lua. Core config lives in `nvim/lua/config`, plugins in `nvim/lua/plugins`.
+- `yazi/`: Yazi file manager config; plugins are recorded in `yazi/package.toml`.
+- `nix/` and `flake.nix`: Lix, nix-darwin and Home Manager configuration for macOS and Raspberry Pi OS. See `nix/README.md`.
 - Root dotfiles: `.zshrc`, `.gitconfig*`, `.Brewfile`, `.vimrc`, `loop-keybinds.json`.
 - `mise/`: global runtime configuration and lockfile, symlinked into `~/.config/mise/`.
+- `CLAUDE.md`: notes for Claude Code; it defers to the safety checklist in this file.
 
 ## Build, Test, and Development Commands
 - `bin/install.mac.sh`: bootstrap macOS (packages, symlinks, runtimes).
@@ -16,11 +19,11 @@
 
 ## Coding Style & Naming Conventions
 - Lua is formatted with Stylua (`nvim/stylua.toml`): 2-space indentation, 120-column width. Run `stylua nvim` after edits.
-- Shell scripts in `bin/` use `#!/bin/bash` and tab indentation; keep the existing style consistent.
+- Shell scripts in `bin/` use `#!/bin/bash`, except `bin/install.mac.sh` and `bin/macos-defaults.sh`, which use `#!/bin/zsh`. Indent with tabs (`install.mac.sh` uses four spaces); keep the existing style of each file consistent.
 - Naming: platform scripts follow `install.<platform>.sh`, and Neovim plugin files are kebab-case (e.g., `vscode-style.lua`).
 
 ## Testing Guidelines
-There is no unit test suite. Validate changes by running the relevant install script on a clean VM or container. CI runs `make install`, `make macos`, and `make applications` on macOS; keep those targets green.
+The only automated test is `bin/link.linux.test.sh`, which verifies the Linux symlink restore in a temporary home directory. CI (`.github/workflows/ci.yml`) has two jobs: `build` runs `make install`, `make macos`, and `make applications` on macOS; `linux-config` runs `bash -n` over the Linux scripts and then `bin/link.linux.test.sh` on Ubuntu. Keep both jobs green. Everything else is validated by running the relevant install script on a clean VM or container.
 
 ## Commit & Pull Request Guidelines
 - Commit messages generally follow Conventional Commits: `type(scope): summary` (e.g., `feat(zsh): ...`, `fix(nvim): ...`).
