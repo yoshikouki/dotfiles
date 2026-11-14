@@ -22,3 +22,4 @@ rust = "1"
 "npm:@karakeep/cli" = "0.34.0"
 # Keep the existing ACP adapter contract until its consumers migrate together.
 "npm:@agentclientprotocol/codex-acp" = "1.13.0"
+sops = "3.13.3"
