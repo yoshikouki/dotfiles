@@ -1,0 +1,81 @@
+#!/bin/sh
+
+# Xcode 同梱のエージェントスキルを Claude Code と Codex へ入れ直す
+# Xcode の MCP は入れず、スキルだけを手元の marketplace (xcode-local) から配る
+# Xcode を更新したら実行する
+
+set -eu
+
+marketplace="$HOME/.local/share/xcode-agent-marketplace"
+plugin="xcode-skills"
+id="$plugin@xcode-local"
+
+version=$(xcodebuild -version | awk 'NR == 1 { print $2 }')
+case "$version" in
+  *.*.*) ;;
+  *) version="$version.0" ;;
+esac
+
+stage_plugin() {
+  format="$1"
+  manifest_dir="$2"
+  skills=$(xcrun agent plugin path --plugin-format "$format")/skills
+  dest="$marketplace/plugins/$format"
+
+  command rm -rf "$dest"
+  mkdir -p "$dest/$manifest_dir"
+  # シンボリックリンクはインストール時に落ちるので実体を複製する
+  cp -R "$skills" "$dest/skills"
+  cat >"$dest/$manifest_dir/plugin.json" <<EOF
+{
+  "name": "$plugin",
+  "description": "Apple's agent skills bundled with Xcode (skills only, no Xcode MCP).",
+  "skills": "./skills/",
+  "version": "$version"
+}
+EOF
+}
+
+stage_plugin claude .claude-plugin
+stage_plugin codex .codex-plugin
+
+mkdir -p "$marketplace/.claude-plugin" "$marketplace/.agents/plugins"
+cat >"$marketplace/.claude-plugin/marketplace.json" <<EOF
+{
+  "name": "xcode-local",
+  "description": "Skills exported from the local Xcode install.",
+  "owner": { "name": "local" },
+  "plugins": [
+    { "name": "$plugin", "source": "./plugins/claude", "description": "Apple's agent skills bundled with Xcode", "version": "$version" }
+  ]
+}
+EOF
+cat >"$marketplace/.agents/plugins/marketplace.json" <<EOF
+{
+  "name": "xcode-local",
+  "interface": { "displayName": "Xcode (local)" },
+  "plugins": [
+    { "name": "$plugin", "source": { "source": "local", "path": "./plugins/codex" }, "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" }, "category": "Coding" }
+  ]
+}
+EOF
+
+if claude plugin marketplace list | grep -q 'xcode-local'; then
+  claude plugin marketplace update xcode-local
+else
+  claude plugin marketplace add "$marketplace"
+fi
+if claude plugin list | grep -q "$id"; then
+  claude plugin uninstall "$id"
+fi
+claude plugin install "$id"
+
+if ! codex plugin marketplace list | grep -q '^xcode-local '; then
+  codex plugin marketplace add "$marketplace"
+fi
+if codex plugin list | grep -q "^$id  *installed"; then
+  codex plugin remove "$id"
+fi
+codex plugin add "$id"
+
+echo "Xcode $version のスキル $(find "$marketplace/plugins/claude/skills" -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ') 個を入れ直した"
