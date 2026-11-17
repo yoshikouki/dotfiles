@@ -149,6 +149,10 @@ alias rm_docker_containers='docker ps -aqf status=exited | xargs docker rm -v'
 alias rm_docker_volumes='docker volume ls -qf dangling=true | xargs docker volume rm'
 alias rm_docker_compose_containers='docker-compose rm -fv'
 
+# --- Claude Code ---
+# DISABLE_TELEMETRY があると Code Mode が要る設定を取得しないため、claude の起動時だけ外す
+claude() { env -u DISABLE_TELEMETRY claude "$@"; }
+
 # --- Kubernetes ---
 # クラスタ誤操作防止ラッパー
 alias kc='kubectl-cluster-caution'
