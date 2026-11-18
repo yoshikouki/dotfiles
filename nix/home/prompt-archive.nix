@@ -16,14 +16,14 @@ let
     cd ${agentRepository}
     ${mise} exec -- bun --silent cli prompts collect --host mbp --archive ${archive}
     collected=$?
-    rm -f ${snapshot}
-    [ ! -e ${marker} ] || cp -p ${marker} ${snapshot}
+    rm -f ${snapshot} && { [ ! -e ${marker} ] || cp -p ${marker} ${snapshot}; }
+    copied=$?
     ${ssh} raspi 'mkdir -p -m 700 .local/share/prompt-archive' &&
       /usr/bin/rsync -a -e "${ssh}" --exclude '.last-success' --exclude '.lock*' ${archive}/mbp/ raspi:.local/share/prompt-archive/mbp/ &&
-      { [ ! -e ${snapshot} ] ||
+      { [ "$copied" -ne 0 ] || [ ! -e ${snapshot} ] ||
         /usr/bin/rsync -a -e "${ssh}" ${snapshot} raspi:.local/share/prompt-archive/mbp/.last-success; }
     synced=$?
-    [ "$collected" -eq 0 ] && [ "$synced" -eq 0 ]
+    [ "$collected" -eq 0 ] && [ "$copied" -eq 0 ] && [ "$synced" -eq 0 ]
   '';
 in
 {
