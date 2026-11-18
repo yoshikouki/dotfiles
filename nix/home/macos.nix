@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  imports = [ ./macos-shortcuts.nix ./macbook-metrics.nix ];
+  imports = [ ./macos-shortcuts.nix ./macbook-metrics.nix ./prompt-archive.nix ];
   home.packages = with pkgs; [
     # Installing DB tools does not enable database services.
     mysql84 postgresql_17

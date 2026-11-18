@@ -273,3 +273,14 @@ reads `~/.config/macbook-metrics/telegraf.conf` and logs under
 Do not run the legacy Homebrew metrics installer. The collector contract belongs
 to agent's `apps/macbook-metrics/README.md`; storage, dashboards and USB recovery
 belong to personal-infra's `docs/monitoring.md`.
+
+## Prompt archive
+
+`home/prompt-archive.nix` runs a user LaunchAgent daily at 12:30 (or once
+after wake if the Mac slept through it). It runs `bun cli prompts collect` in
+the agent repository's default checkout, which saves only the messages the
+owner sent to AI agents under `~/.local/share/prompt-archive/mbp/`, then copies
+that directory to raspi with `rsync` over SSH. Logs go to
+`~/.local/state/prompt-archive`. The archive contract belongs to agent's
+`packages/prompt-archive/README.md`. Run it now with
+`launchctl kickstart gui/$(id -u)/org.nix-community.home.prompt-archive`.
