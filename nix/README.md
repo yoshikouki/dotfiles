@@ -281,8 +281,9 @@ after wake if the Mac slept through it). It runs `bun cli prompts collect` in
 the agent repository's default checkout, which saves only the messages the
 owner sent to AI agents under `~/.local/share/prompt-archive/mbp/`, then copies
 that directory to raspi with `rsync` over SSH. The success marker
-`.last-success` is copied only after the rest of the archive arrived, so its age
-on raspi shows when the last complete run landed. Logs go to
+`.last-success` is copied only after the rest of the archive arrived, and
+`rsync -a` keeps its timestamp, so its age on raspi shows how long ago the
+latest complete collection that reached raspi ran. Logs go to
 `~/.local/state/prompt-archive`. The archive contract belongs to agent's
 `packages/prompt-archive/README.md`.
 
