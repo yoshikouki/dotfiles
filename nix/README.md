@@ -280,7 +280,13 @@ belong to personal-infra's `docs/monitoring.md`.
 after wake if the Mac slept through it). It runs `bun cli prompts collect` in
 the agent repository's default checkout, which saves only the messages the
 owner sent to AI agents under `~/.local/share/prompt-archive/mbp/`, then copies
-that directory to raspi with `rsync` over SSH. Logs go to
+that directory to raspi with `rsync` over SSH. The success marker
+`.last-success` is copied only after the rest of the archive arrived, so its age
+on raspi shows when the last complete run landed. Logs go to
 `~/.local/state/prompt-archive`. The archive contract belongs to agent's
-`packages/prompt-archive/README.md`. Run it now with
+`packages/prompt-archive/README.md`.
+
+Before applying, the agent checkout must contain `bun cli prompts` and its
+dependencies: run `git pull --ff-only` and `mise exec -- bun install
+--frozen-lockfile` in `~/src/github.com/yoshikouki/agent`. Run the job now with
 `launchctl kickstart gui/$(id -u)/org.nix-community.home.prompt-archive`.

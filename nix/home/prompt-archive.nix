@@ -5,15 +5,18 @@ let
   archive = "${home}/.local/share/prompt-archive";
   stateDirectory = "${home}/.local/state/prompt-archive";
   mise = "${config.home.profileDirectory}/bin/mise";
+  ssh = "/usr/bin/ssh -o BatchMode=yes";
   # Collect, then copy this host's archive to raspi even when a source failed:
-  # what was read is still worth keeping, and the stale success marker on
-  # raspi is what raises the alert.
+  # what was read is still worth keeping. The success marker goes last and
+  # only after the archive itself arrived, so its age on raspi is the alert.
   script = ''
     cd ${agentRepository}
-    ${mise} exec -- bun --silent cli prompts collect --host mbp
+    ${mise} exec -- bun --silent cli prompts collect --host mbp --archive ${archive}
     collected=$?
-    /usr/bin/ssh -o BatchMode=yes raspi 'mkdir -p -m 700 .local/share/prompt-archive' &&
-      /usr/bin/rsync -a ${archive}/mbp/ raspi:.local/share/prompt-archive/mbp/
+    ${ssh} raspi 'mkdir -p -m 700 .local/share/prompt-archive' &&
+      /usr/bin/rsync -a -e "${ssh}" --exclude .last-success ${archive}/mbp/ raspi:.local/share/prompt-archive/mbp/ &&
+      { [ ! -e ${archive}/mbp/.last-success ] ||
+        /usr/bin/rsync -a -e "${ssh}" ${archive}/mbp/.last-success raspi:.local/share/prompt-archive/mbp/; }
     synced=$?
     [ "$collected" -eq 0 ] && [ "$synced" -eq 0 ]
   '';
