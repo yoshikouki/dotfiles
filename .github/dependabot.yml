@@ -1,4 +1,3 @@
-# Managed by the dependency triage automation (yoshikouki/agent).
 version: 2
 updates:
   - package-ecosystem: github-actions
