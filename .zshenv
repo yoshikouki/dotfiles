@@ -43,7 +43,7 @@ agent_github_identity() {
   setopt localoptions noxtrace
   zmodload -F zsh/datetime p:EPOCHSECONDS 2>/dev/null
   local cache="$HOME/.cache/agent/github-app-token" line expiry token rest
-  if [[ -r "$cache" ]] && IFS= read -r line < "$cache"; then
+  if [[ -r "$cache" ]] && IFS= read -r line < "$cache" && [[ "$line" == *' '* ]]; then
     expiry="${line%% *}"
     token="${line#* }"
     if [[ "$expiry" != <-> || -z "$token" || "$token" == *[[:space:]]* ]] ||
