@@ -260,16 +260,11 @@ configuration after activation as well as explicit CA bundles before it.
 
 ## Mac host metrics
 
-`home/macbook-metrics.nix` supplies Telegraf 1.40.2, macmon 0.10.0 and a user
-LaunchAgent. Official release archives are pinned by SHA-256 in `packages/`.
-Telegraf standard inputs and procstat handle host/application metrics; macmon
-supplies GPU activity, temperature and power through its one-shot pipe output.
-The LaunchAgent supplies its absolute store path through `MACMON`. Native
-collection is required to see macOS processes and IOAccelerator GPU metrics;
-a Linux VM collector would measure the guest instead. Configure the collector
-first with `bun run macbook-metrics:setup` in the agent repository. The service
-reads `~/.config/macbook-metrics/telegraf.conf` and logs under
-`~/.local/state/macbook-metrics`. Apply through the normal Nix configuration.
-Do not run the legacy Homebrew metrics installer. The collector contract belongs
-to agent's `apps/macbook-metrics/README.md`; storage, dashboards and USB recovery
-belong to personal-infra's `docs/monitoring.md`.
+`home/macos.nix` installs Telegraf 1.40.2 and macmon 0.10.0 into the user
+profile (`/etc/profiles/per-user/<user>/bin`). Official release archives are
+pinned by SHA-256 in `packages/`. The collector job itself (the LaunchAgent
+`com.yoshikouki.agent.macbook-metrics`, its Telegraf config and logs) belongs to
+yoshikouki/agent and is installed by its `bun run bootstrap`; see agent's
+`apps/macbook-metrics/README.md`. Storage, dashboards and USB recovery belong to
+personal-infra's `docs/monitoring.md`. Do not run the legacy Homebrew metrics
+installer.
