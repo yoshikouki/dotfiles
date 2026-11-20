@@ -36,26 +36,15 @@ done
 unset bun_bin
 
 # Agents started by T3 Code act on GitHub as the yoshikouki-agents App, so the
-# Event Inbox can tell their work from the operator's. `agent-github-token`
-# reads the cached token; the gh wrapper refreshes it on every call.
-agent_github_identity() {
-  # Never trace the token, even under `zsh -x`.
-  setopt localoptions noxtrace
-  local token
-  if ! token="$(agent-github-token)"; then
-    print -u2 "warning: no GitHub App token for agents; GitHub writes from this shell act as the operator"
-    return 1
-  fi
-  export GH_TOKEN="$token"
+# Event Inbox can tell their work from the operator's. The gh wrapper
+# (local-bin/gh) supplies the App token per call, also to git through
+# `gh auth git-credential`; here only commits are attributed to the bot.
+if [[ -n "$T3CODE_THREAD_ID" ]]; then
   export GIT_AUTHOR_NAME="yoshikouki-agents[bot]"
   export GIT_AUTHOR_EMAIL="359006158+yoshikouki-agents[bot]@users.noreply.github.com"
   export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
-}
-if [[ -n "$T3CODE_THREAD_ID" ]]; then
-  agent_github_identity
 fi
-unfunction agent_github_identity
 
 # Load local secrets (not tracked by git)
 if [ -f "$HOME/.zshenv.local" ]; then

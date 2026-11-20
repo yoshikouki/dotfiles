@@ -69,12 +69,13 @@ fi
 # helper (`gh auth git-credential`) never use an expired one.
 if [ -n "${T3CODE_THREAD_ID:-}" ] &&
     [ "$GH_CONFIG_DIR" = "${GH_CONFIG_DIR_DEFAULT:-$HOME/.config/gh-yoshikouki}" ]; then
-    if GH_TOKEN=$(agent-github-token); then
-        export GH_TOKEN
-    else
-        unset GH_TOKEN
-        printf '%s\n' "warning: no GitHub App token for agents; this gh call acts as the operator" >&2
+    # Never fall back to the operator's login: an agent's write would be
+    # recorded as the operator's own work.
+    if ! GH_TOKEN=$(agent-github-token); then
+        printf '%s\n' "gh: no GitHub App token for agents; refusing to act as the operator" >&2
+        exit 1
     fi
+    export GH_TOKEN
 fi
 
 exec "$real_gh" "$@"

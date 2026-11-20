@@ -1,24 +1,36 @@
 #!/bin/sh
 
 # Print the GitHub App installation token that agents started by T3 Code use.
-# `bun cli github token` in yoshikouki/agent caches it as one line,
+# `bun cli github token` in yoshikouki/agent caches it as exactly one line,
 # "<expires unix seconds> <token>"; reuse it while more than 15 minutes remain.
 
-cache=$HOME/.cache/agent/github-app-token
+is_token() {
+    case $1 in
+        '' | *[!A-Za-z0-9_]*) return 1 ;;
+    esac
+}
 
-if [ -r "$cache" ] && IFS=' ' read -r expiry token rest < "$cache" 2>/dev/null; then
+cache=$HOME/.cache/agent/github-app-token
+now=$(date +%s 2>/dev/null) || now=
+
+case $now in
+    '' | *[!0-9]*) now= ;;
+esac
+
+if [ -n "$now" ] && [ -r "$cache" ] && [ "$(wc -l < "$cache")" -eq 1 ]; then
+    line=$(cat "$cache")
+    expiry=${line%% *}
+    token=${line#* }
     case $expiry in
         '' | *[!0-9]*) token= ;;
     esac
-    [ -z "$rest" ] || token=
-    if [ -n "$token" ] && [ "$expiry" -gt "$(($(date +%s) + 900))" ]; then
+    if [ "$expiry" != "$line" ] && is_token "$token" &&
+        [ "$expiry" -gt "$((now + 900))" ]; then
         printf '%s\n' "$token"
         exit 0
     fi
 fi
 
 token=$(bun --silent --cwd "$HOME/src/github.com/yoshikouki/agent" cli github token 2>/dev/null) || exit 1
-case $token in
-    '' | *[[:space:]]*) exit 1 ;;
-esac
+is_token "$token" || exit 1
 printf '%s\n' "$token"
