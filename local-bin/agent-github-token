@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Print the GitHub App installation token that agents started by T3 Code use.
+# `bun cli github token` in yoshikouki/agent caches it as one line,
+# "<expires unix seconds> <token>"; reuse it while more than 15 minutes remain.
+
+cache=$HOME/.cache/agent/github-app-token
+
+if [ -r "$cache" ] && IFS=' ' read -r expiry token rest < "$cache" 2>/dev/null; then
+    case $expiry in
+        '' | *[!0-9]*) token= ;;
+    esac
+    [ -z "$rest" ] || token=
+    if [ -n "$token" ] && [ "$expiry" -gt "$(($(date +%s) + 900))" ]; then
+        printf '%s\n' "$token"
+        exit 0
+    fi
+fi
+
+token=$(bun --silent --cwd "$HOME/src/github.com/yoshikouki/agent" cli github token 2>/dev/null) || exit 1
+case $token in
+    '' | *[[:space:]]*) exit 1 ;;
+esac
+printf '%s\n' "$token"
