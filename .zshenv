@@ -35,6 +35,32 @@ for bun_bin in "${BUN_INSTALL:-${XDG_CACHE_HOME:-$HOME/.cache}/.bun}/bin" "$HOME
 done
 unset bun_bin
 
+# Agents started by T3 Code act on GitHub as the yoshikouki-agents App, so the
+# Event Inbox can tell their work from the operator's. The token comes from
+# `bun cli github token` in yoshikouki/agent, which caches it with its expiry.
+if [[ -n "$T3CODE_THREAD_ID" ]]; then
+  zmodload -F zsh/datetime p:EPOCHSECONDS 2>/dev/null
+  agent_github_token=""
+  agent_github_cache="$HOME/.cache/agent/github-app-token"
+  if [[ -r "$agent_github_cache" ]]; then
+    read -r agent_github_expiry agent_github_token < "$agent_github_cache"
+    (( ${agent_github_expiry:-0} > EPOCHSECONDS + 900 )) || agent_github_token=""
+  fi
+  if [[ -z "$agent_github_token" ]]; then
+    agent_github_token="$(bun --silent --cwd "$HOME/src/github.com/yoshikouki/agent" cli github token 2>/dev/null)"
+  fi
+  if [[ -n "$agent_github_token" ]]; then
+    export GH_TOKEN="$agent_github_token"
+    export GIT_AUTHOR_NAME="yoshikouki-agents[bot]"
+    export GIT_AUTHOR_EMAIL="359006158+yoshikouki-agents[bot]@users.noreply.github.com"
+    export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
+    export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
+  else
+    print -u2 "warning: no GitHub App token for agents; GitHub writes from this shell act as the operator"
+  fi
+  unset agent_github_token agent_github_expiry agent_github_cache
+fi
+
 # Load local secrets (not tracked by git)
 if [ -f "$HOME/.zshenv.local" ]; then
   source "$HOME/.zshenv.local"
