@@ -10,6 +10,8 @@ on:
       - bin/install_applications.sh
       - bin/macos-defaults.sh
       - .Brewfile
+      - .gitconfig
+      - .gitconfig.macos
       - .zshenv
       - .zprofile
       - .zlogin
@@ -20,6 +22,7 @@ on:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
