@@ -15,7 +15,7 @@
 - `bin/install.linux.sh`: bootstrap Linux (packages, symlinks, runtimes).
 - `bin/install_applications.sh`: optional app installs.
 - `bin/macos-defaults.sh`: apply macOS defaults.
-- `make applications` and `make macos`: wrappers used by CI; update `Makefile` and `.github/workflows/ci.yml` together if scripts change.
+- `make applications` and `make macos`: wrappers used by CI; update `Makefile` and `.github/workflows/macos.yml` together if scripts change.
 
 ## Coding Style & Naming Conventions
 - Lua is formatted with Stylua (`nvim/stylua.toml`): 2-space indentation, 120-column width. Run `stylua nvim` after edits.
@@ -23,7 +23,7 @@
 - Naming: platform scripts follow `install.<platform>.sh`, and Neovim plugin files are kebab-case (e.g., `vscode-style.lua`).
 
 ## Testing Guidelines
-The only automated test is `bin/link.linux.test.sh`, which verifies the Linux symlink restore in a temporary home directory. CI (`.github/workflows/ci.yml`) has two jobs: `build` runs `make install`, `make macos`, and `make applications` on macOS; `linux-config` runs `bash -n` over the Linux scripts and then `bin/link.linux.test.sh` on Ubuntu. Keep both jobs green. Everything else is validated by running the relevant install script on a clean VM or container.
+The only automated test is `bin/link.linux.test.sh`, which verifies the Linux symlink restore in a temporary home directory. CI has two test workflows. `.github/workflows/ci.yml` runs `linux-config` on every push: `bash -n` on each Linux script, then `bin/link.linux.test.sh` on Ubuntu. `.github/workflows/macos.yml` runs `build` (`make install`, `make macos`, `make applications`) on macOS only for pushes to `main` that touch the files listed in its `paths`, because `bin/install.mac.sh` clones `main` and macOS runner minutes are expensive; add a file to that list when the macOS install starts reading it, and use `workflow_dispatch` on `main` to run it by hand. Keep both jobs green. Everything else is validated by running the relevant install script on a clean VM or container.
 
 ## Commit & Pull Request Guidelines
 - Commit messages generally follow Conventional Commits: `type(scope): summary` (e.g., `feat(zsh): ...`, `fix(nvim): ...`).

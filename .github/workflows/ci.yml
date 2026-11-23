@@ -4,22 +4,11 @@ on:
   push:
 
 jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: test install scripts
-        run: make install
-      - name: test macos defaults
-        run: make macos
-      - name: test install applications
-        run: make applications
-
   linux-config:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - name: Check Linux shell syntax
-        run: bash -n bin/install.linux.sh bin/link.linux.sh bin/link.linux.test.sh
+        run: for f in bin/install.linux.sh bin/link.linux.sh bin/link.linux.test.sh; do bash -n "$f"; done
       - name: Verify configuration restore
         run: bash bin/link.linux.test.sh
