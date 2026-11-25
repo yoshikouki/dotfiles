@@ -19,3 +19,6 @@
 
 
 **/.claude/settings.local.json
+
+# Local-only files
+.local/
