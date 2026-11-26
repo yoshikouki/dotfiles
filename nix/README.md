@@ -93,6 +93,17 @@ codex login --device-auth
 Use the [headless authentication instructions](https://learn.chatgpt.com/docs/auth#login-on-headless-devices)
 for remote login. Keep authentication files outside Git and the Nix store.
 
+[Firecrawl Local](https://docs.firecrawl.dev/quickstarts/firecrawl-local) follows
+its official instructions: `cargo install` with the mise Rust, then `init`
+registers its MCP server in Claude Code, Codex and the other AI tools it finds,
+backing up each config first. `.zshenv` puts `~/.cargo/bin` on `PATH`, which mise
+does not. Run the install again to update it:
+
+```sh
+cargo install firecrawl-local
+firecrawl-local init
+```
+
 
 ## User environment
 

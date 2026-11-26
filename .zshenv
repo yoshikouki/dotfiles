@@ -18,6 +18,9 @@ export DISABLE_TELEMETRY=1
 # mise shims (for non-interactive shells like editors/IDEs)
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 
+# cargo install のバイナリ（firecrawl-local など）。mise の Rust は追加しない
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # ~/.local/bin をPATHに追加
 export PATH="$HOME/.local/bin:$PATH"
 
