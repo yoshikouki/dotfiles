@@ -15,11 +15,12 @@ fi
 
 export DISABLE_TELEMETRY=1
 
+# cargo install のバイナリ（firecrawl-local など）。shims より後ろに置き、
+# rustup のプロキシが mise の Rust の選択を上書きしないようにする
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # mise shims (for non-interactive shells like editors/IDEs)
 export PATH="$HOME/.local/share/mise/shims:$PATH"
-
-# cargo install のバイナリ（firecrawl-local など）。mise の Rust は追加しない
-export PATH="$HOME/.cargo/bin:$PATH"
 
 # ~/.local/bin をPATHに追加
 export PATH="$HOME/.local/bin:$PATH"

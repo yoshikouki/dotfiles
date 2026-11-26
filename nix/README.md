@@ -96,8 +96,9 @@ for remote login. Keep authentication files outside Git and the Nix store.
 [Firecrawl Local](https://docs.firecrawl.dev/quickstarts/firecrawl-local) follows
 its official instructions: `cargo install` with the mise Rust, then `init`
 registers its MCP server in Claude Code, Codex and the other AI tools it finds,
-backing up each config first. `.zshenv` puts `~/.cargo/bin` on `PATH`, which mise
-does not. Run the install again to update it:
+backing up each config first. This applies to macOS and the Pi. `.zshenv` puts
+`~/.cargo/bin` on `PATH` behind the mise shims, so shells that start with only
+the shims also find it. Run the install again to update it:
 
 ```sh
 cargo install firecrawl-local
