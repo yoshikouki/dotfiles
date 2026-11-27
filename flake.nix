@@ -1,5 +1,5 @@
 {
-  description = "Personal macOS and Raspberry Pi configuration";
+  description = "Personal macOS and raspi configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";

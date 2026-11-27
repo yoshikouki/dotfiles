@@ -47,7 +47,7 @@ that file and the diagnostic before changing anything; do not delete it blindly.
 Use the official Lix installer on Raspberry Pi OS Lite 64-bit. OS packages,
 Docker and Tailscale remain managed by personal-infra; Home Manager only manages
 the user's development tools and configuration. GPU driver integration is disabled
-for the headless Pi. The legacy Linuxbrew installer
+for raspi. The legacy Linuxbrew installer
 is a separate setup and is not used for this configuration.
 
 ```sh
@@ -230,7 +230,7 @@ sudo /tmp/raspi-lix-result/bin/nix --store local upgrade-nix \
 
 The Lix installer units may contain fixed store paths. Inspect
 `systemctl cat nix-daemon.service nix-daemon@.service` before updating them.
-This Pi uses per-connection socket activation. Its
+On raspi, the Nix daemon uses per-connection socket activation. Its
 `/etc/systemd/system/nix-daemon@.service.d/profile.conf` selects the current root
 profile:
 

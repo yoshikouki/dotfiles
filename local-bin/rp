@@ -1,5 +1,5 @@
 #!/bin/sh
-# Raspberry Pi SSH接続スクリプト
+# raspi への SSH 接続スクリプト
 # 自宅LAN (raspi.local) → Tailscale (raspi) の順で接続を試みる
 
 if [ $# -eq 0 ]; then
