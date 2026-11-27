@@ -8,7 +8,7 @@ Dotfiles managed with Nix on macOS and Raspberry Pi OS, with mise-managed runtim
 - Raspberry Pi OS Lite 64-bit (Trixie, ARM64)
 - Ubuntu/Linux (legacy bootstrap)
 
-## Nix on macOS and Raspberry Pi
+## Nix on macOS and Raspberry Pi OS
 
 The new Mac configuration uses Lix, nix-darwin for macOS preferences, and
 Home Manager for common CLI tools, Git and shell configuration. Raspberry Pi OS
